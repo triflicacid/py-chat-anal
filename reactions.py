@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+"""Reactions each user's messages received over time, and each user's share of them.
+
+The export records how many reactions a message got, not who gave them. With two
+people in the conversation, a reaction on one user's message is almost always from
+the other one, so each line is best read as the other person reacting.
+
+    python reactions.py --dir data
+    python reactions.py --dir data --period M --rolling 0
+"""
+from __future__ import annotations
+
+import argparse
+from pathlib import Path
+
+import pandas as pd
+
+from chatstats import cli
+from chatstats.counts import daily_reactions
+from chatstats.loading import DEFAULT_USERS
+from chatstats.periods import PERIODS, resample_counts, unit
+from chatstats.plotting import plot_lines
+
+OUT = "out/reactions.png"
+NEEDS = (cli.add_rolling_args,)
+
+
+def add_arguments(p) -> None:
+    """Options for the reactions chart."""
+    g = p.add_argument_group("reactions")
+    g.add_argument("--out", default=OUT, help="reactions chart file")
+    g.add_argument("--period", choices=list(PERIODS), default="W",
+                   help="bucket for the reactions chart (default W)")
+    # Reactions are rare enough that a single week says very little.
+    p.set_defaults(rolling=4)
+
+
+def reactions_summary(counts: pd.DataFrame, users: list[str]) -> None:
+    """Print how many reactions each user's messages received."""
+    print("\n=== Reactions received (on each user's own messages) ===")
+    total = max(counts.to_numpy().sum(), 1)
+    for u in users:
+        print(f"{u}: {counts[u].sum():,} ({counts[u].sum() / total * 100:.1f}%)")
+
+
+def plot_reactions(
+    counts: pd.DataFrame,
+    users: list[str] = DEFAULT_USERS,
+    out: str | Path = OUT,
+    period: str = "W",
+    rolling: int = 0,
+) -> Path:
+    """Top: reactions received per period by each user. Bottom: each user's share."""
+    totals = ", ".join(f"{u}: {counts[u].sum():,}" for u in users)
+    return plot_lines(counts, f"Reactions Received per {unit(period).title()}",
+                      "Reactions received", out, rolling, period, share=True,
+                      smooth_share=True, note=f"Totals: {totals}")
+
+
+def run(df: pd.DataFrame, a: argparse.Namespace) -> Path:
+    """Print the totals and draw the reactions chart."""
+    counts = resample_counts(daily_reactions(df, a.users), a.period)
+    reactions_summary(counts, a.users)
+    return plot_reactions(counts, a.users, a.out, a.period, a.rolling)
+
+
+if __name__ == "__main__":
+    cli.run_chart(NEEDS, add_arguments, run, __doc__)

@@ -1,0 +1,519 @@
+ID,Timestamp,Username,Display Name,Server Nickname,Content,Forwarded Content,Attachments,Embeds,Reactions
+"1497221221237129361","04/24/2026 2:02 PM","triflicacid","triflicacid","","What time will you be back tonight from the restaurant?","",0,0,0
+"1497208116230623243","04/24/2026 1:10 PM","megamoleys","Megamoleys","","you will be a master drawer in no time","",0,0,0
+"1497208086815965335","04/24/2026 1:10 PM","megamoleys","Megamoleys","","well done sir","",0,0,0
+"1497207824143614033","04/24/2026 1:09 PM","triflicacid","triflicacid","","Doing drawing stuff","",0,0,0
+"1497207761132458055","04/24/2026 1:09 PM","triflicacid","triflicacid","","Recently","",0,0,0
+"1497207747907817593","04/24/2026 1:09 PM","triflicacid","triflicacid","","I’ve seen quite a few pictures","",0,0,0
+"1497207727653392444","04/24/2026 1:08 PM","triflicacid","triflicacid","","They are","",0,0,0
+"1497206760073728221","04/24/2026 1:05 PM","megamoleys","Megamoleys","","like that really","",0,0,0
+"1497206749340635278","04/24/2026 1:05 PM","megamoleys","Megamoleys","","its how i picture the hare","",0,0,0
+"1497206734396063744","04/24/2026 1:05 PM","triflicacid","triflicacid","","Yeah, I’m sure you could tho","",0,0,0
+"1497206691656110122","04/24/2026 1:04 PM","megamoleys","Megamoleys","","i would like to draw like that though","",0,0,0
+"1497206677429289042","04/24/2026 1:04 PM","triflicacid","triflicacid","","Boney guy","",0,0,0
+"1497206660555608125","04/24/2026 1:04 PM","megamoleys","Megamoleys","","that not mine","",0,0,0
+"1497206653580214292","04/24/2026 1:04 PM","megamoleys","Megamoleys","","oh i should say","",0,0,0
+"1497206614363471933","04/24/2026 1:04 PM","triflicacid","triflicacid","","Ooh","",0,0,0
+"1497201696412012674","04/24/2026 12:45 PM","megamoleys","Megamoleys","","👀","",0,0,0
+"1497201624886546553","04/24/2026 12:44 PM","megamoleys","Megamoleys","","haiii hiii haiii","",0,0,0
+"1497201619279024139","04/24/2026 12:44 PM","megamoleys","Megamoleys","","","",1,0,0
+"1497030839303802951","04/24/2026 1:26 AM","triflicacid","triflicacid","","most opf these comments arefor me to try to understand it ngl","",0,0,0
+"1497030805262962708","04/24/2026 1:25 AM","triflicacid","triflicacid","","```js
+ // move origin to top-left corner of parallelogram, then apply
+    // the exact horizontal shear so content drawn in (0,0)-(cw,ch)
+    // maps onto the leaning screen
+    ctx.translate(cx4, cy4);
+    ctx.transform(1, 0, -(tilt / ch), 1, 0, 0);
+```","",0,0,0
+"1497019221580841083","04/24/2026 12:39 AM","megamoleys","Megamoleys","","tasty maths meal","",0,0,0
+"1497019200957448303","04/24/2026 12:39 AM","megamoleys","Megamoleys","","mmmm","",0,0,0
+"1497019153754882269","04/24/2026 12:39 AM","megamoleys","Megamoleys","","👀","",0,0,0
+"1497016438286717028","04/24/2026 12:28 AM","triflicacid","triflicacid","","```js
+ctx.translate(tubeLen * 0.3, -22); // positions tube on mount
+ctx.rotate(tubeAngle);
+ctx.scale(Math.cos(this._panX), 1);
+```","",0,0,0
+"1497016346897158174","04/24/2026 12:28 AM","triflicacid","triflicacid","","maffs","",0,0,0
+"1497009012405964910","04/23/2026 11:59 PM","megamoleys","Megamoleys","","i used to with krab when we werent as busy","",0,0,0
+"1497008975965716613","04/23/2026 11:59 PM","megamoleys","Megamoleys","","im sure krab and the guys would join in if we did it regularly","",0,0,0
+"1497008922156990646","04/23/2026 11:59 PM","megamoleys","Megamoleys","","but like we should do some watch partys yeah","",0,0,0
+"1497008847632465950","04/23/2026 11:58 PM","megamoleys","Megamoleys","","thats the game i was playing that i made you on","",0,0,0
+"1497008803227504783","04/23/2026 11:58 PM","megamoleys","Megamoleys","","oh no thats uhh","",0,0,0
+"1497008721849749594","04/23/2026 11:58 PM","triflicacid","triflicacid","","is that what you were watching at mine?","",0,0,0
+"1497004117531299860","04/23/2026 11:39 PM","megamoleys","Megamoleys","","i wanna show you my tomodachi world too","",0,0,0
+"1497004091619147899","04/23/2026 11:39 PM","megamoleys","Megamoleys","","yehh","",0,0,0
+"1497004082228105286","04/23/2026 11:39 PM","megamoleys","Megamoleys","","YAAAY","",0,0,0
+"1497004013248315443","04/23/2026 11:39 PM","triflicacid","triflicacid","","we can have a look at it this weekend if you'd like?","",0,0,0
+"1497003912362725407","04/23/2026 11:39 PM","megamoleys","Megamoleys","","rubeeen when are we watching yaoi together","",0,0,0
+"1497003869182361721","04/23/2026 11:38 PM","triflicacid","triflicacid","","well, 'binged' translates to 2-3 episodews a night","",0,0,0
+"1497003863247552513","04/23/2026 11:38 PM","megamoleys","Megamoleys","","whaaat","",0,0,0
+"1497003825985228931","04/23/2026 11:38 PM","triflicacid","triflicacid","","I biunged it with my flatmate at BAE","",0,0,0
+"1497003767617421463","04/23/2026 11:38 PM","triflicacid","triflicacid","","I have the book series, but they also have a 50-odd episode netflix show","",0,0,0
+"1497003698641961130","04/23/2026 11:38 PM","triflicacid","triflicacid","","cultivation-based, but mainly a romance","",0,0,0
+"1497003643705098241","04/23/2026 11:38 PM","triflicacid","triflicacid","","a Chinese MLM","",0,0,0
+"1497003597127225374","04/23/2026 11:37 PM","megamoleys","Megamoleys","","what is itttt","",0,0,0
+"1497000786184376421","04/23/2026 11:26 PM","megamoleys","Megamoleys","","👀","",0,0,0
+"1497000440976380077","04/23/2026 11:25 PM","triflicacid","triflicacid","","you might like MDZS then","",0,0,0
+"1497000422743740458","04/23/2026 11:25 PM","megamoleys","Megamoleys","","","",1,0,0
+"1497000390913298462","04/23/2026 11:25 PM","triflicacid","triflicacid","","nah","",0,0,0
+"1497000382860099776","04/23/2026 11:25 PM","triflicacid","triflicacid","","fag","",0,0,0
+"1497000373272187082","04/23/2026 11:25 PM","triflicacid","triflicacid","","hmm","",0,0,0
+"1497000360315981915","04/23/2026 11:24 PM","megamoleys","Megamoleys","","is that strange","",0,0,0
+"1497000349116928130","04/23/2026 11:24 PM","megamoleys","Megamoleys","","i like watching mlm romance","",0,0,0
+"1497000305106223195","04/23/2026 11:24 PM","megamoleys","Megamoleys","","yes actually","",0,0,0
+"1497000303365455872","04/23/2026 11:24 PM","triflicacid","triflicacid","","yes","",0,0,0
+"1497000262525649026","04/23/2026 11:24 PM","triflicacid","triflicacid","","have you watched any more since we last met","",0,0,0
+"1497000257140162571","04/23/2026 11:24 PM","megamoleys","Megamoleys","","chat should i dress like the 2nd guy in the image","",0,0,0
+"1497000212693127209","04/23/2026 11:24 PM","megamoleys","Megamoleys","","i do love some yaoi","",0,0,0
+"1497000189775450233","04/23/2026 11:24 PM","megamoleys","Megamoleys","","https://x.com/AngryMiloras/status/2040850725883019355/photo/1","",0,1,0
+"1496997934208782468","04/23/2026 11:15 PM","megamoleys","Megamoleys","","life if it was awesome","",0,0,0
+"1496997781678719006","04/23/2026 11:14 PM","triflicacid","triflicacid","","damn, he caked up","",0,0,0
+"1496997725772710018","04/23/2026 11:14 PM","megamoleys","Megamoleys","","mmmmm","",0,0,0
+"1496997716830589050","04/23/2026 11:14 PM","megamoleys","Megamoleys","","https://x.com/_3aem/status/2047080139918561398/photo/1","",0,1,0
+"1496995253360529488","04/23/2026 11:04 PM","megamoleys","Megamoleys","","https://x.com/reddsiram/status/2047259968307646952","",0,1,1
+"1496993131491623146","04/23/2026 10:56 PM","megamoleys","Megamoleys","","YAAAY","",0,0,0
+"1496988797659775017","04/23/2026 10:39 PM","triflicacid","triflicacid","","see you tomorrow :3","",0,0,0
+"1496943324555251742","04/23/2026 7:38 PM","triflicacid","triflicacid","","yeah","",0,0,0
+"1496943031176138914","04/23/2026 7:37 PM","megamoleys","Megamoleys","","Mum wanted to book me a restraint place on the Friday","",0,0,0
+"1496942966751760436","04/23/2026 7:36 PM","megamoleys","Megamoleys","","Trying to figure that out","",0,0,0
+"1496942926167543828","04/23/2026 7:36 PM","megamoleys","Megamoleys","","The Sunday?","",0,0,0
+"1496942908593672192","04/23/2026 7:36 PM","megamoleys","Megamoleys","","Yeah when are you leaving Coventry","",0,0,0
+"1496942873155862641","04/23/2026 7:36 PM","megamoleys","Megamoleys","","I meant well","",0,0,0
+"1496941356109533184","04/23/2026 7:30 PM","triflicacid","triflicacid","","I thought I was eating before hand? I was thinking I'd keave my flat around 17:00","",0,0,0
+"1496941275327365232","04/23/2026 7:30 PM","megamoleys","Megamoleys","","Me asf","",0,0,0
+"1496941215197958355","04/23/2026 7:29 PM","megamoleys","Megamoleys","","Trying to figure out when to do foods","",0,0,0
+"1496941154590261369","04/23/2026 7:29 PM","megamoleys","Megamoleys","","Hi dear when are you leaving cov","",0,0,0
+"1496860321489354883","04/23/2026 2:08 PM","triflicacid","triflicacid","","https://fixupx.com/sugarball_owo/status/2047250507048399031?s=46&t=HzLHhodyLOPLPD-gp58kzw","",0,1,0
+"1496650141455749220","04/23/2026 12:13 AM","triflicacid","triflicacid","","bnnuy","",0,0,0
+"1496649959452442634","04/23/2026 12:12 AM","megamoleys","Megamoleys","","https://tenor.com/view/bunny-gif-18879404","",0,1,0
+"1496609764031987822","04/22/2026 9:32 PM","megamoleys","Megamoleys","","i do like when people do paw hands like that","",0,0,0
+"1496609696415748186","04/22/2026 9:32 PM","megamoleys","Megamoleys","","eat before you get here","",0,0,0
+"1496609667210809484","04/22/2026 9:32 PM","megamoleys","Megamoleys","","uhhh","",0,0,0
+"1496600285894676572","04/22/2026 8:55 PM","triflicacid","triflicacid","","Just cause idk whether to eat beforehand","",0,0,0
+"1496600242567774210","04/22/2026 8:55 PM","triflicacid","triflicacid","","What’s your plan for dinner?","",0,0,0
+"1496598393563123824","04/22/2026 8:47 PM","megamoleys","Megamoleys","","I wouldn’t want you doing it too late","",0,0,0
+"1496598366325575821","04/22/2026 8:47 PM","megamoleys","Megamoleys","","7 is good","",0,0,0
+"1496597814715617461","04/22/2026 8:45 PM","triflicacid","triflicacid","","Around 19:00 or around 21:00","",0,0,0
+"1496597778036424795","04/22/2026 8:45 PM","triflicacid","triflicacid","","What time would you like me to come on froday","",0,0,0
+"1496589607394086982","04/22/2026 8:12 PM","megamoleys","Megamoleys","","If you want a fox I’ll make a good one","",0,0,0
+"1496589575177638029","04/22/2026 8:12 PM","megamoleys","Megamoleys","","That’s not you","",0,0,0
+"1496589521532489870","04/22/2026 8:12 PM","megamoleys","Megamoleys","","Yeah I thought the design was ehhhh so I made him a creature from the dawn of time","",0,0,0
+"1496589435708510479","04/22/2026 8:12 PM","megamoleys","Megamoleys","","Ohhh the fox","",0,0,0
+"1496574654834409542","04/22/2026 7:13 PM","triflicacid","triflicacid","","","",1,0,1
+"1496559899864203525","04/22/2026 6:14 PM","triflicacid","triflicacid","","","",1,0,0
+"1496559890808832142","04/22/2026 6:14 PM","triflicacid","triflicacid","","I was talking about","",0,0,0
+"1496559874702835865","04/22/2026 6:14 PM","triflicacid","triflicacid","","The likeness is impressive","",0,0,0
+"1496559853395509490","04/22/2026 6:14 PM","triflicacid","triflicacid","","I like it","",0,0,0
+"1496513727514808460","04/22/2026 3:11 PM","megamoleys","Megamoleys","","I thought it was cute","",0,0,0
+"1496513475940323348","04/22/2026 3:10 PM","megamoleys","Megamoleys","","I based it off our photos","",1,0,0
+"1496513383212515359","04/22/2026 3:09 PM","megamoleys","Megamoleys","","It’s not supposed to be old 🥺","",0,0,0
+"1496513348970221568","04/22/2026 3:09 PM","megamoleys","Megamoleys","","nah","",0,0,0
+"1496513341688909946","04/22/2026 3:09 PM","megamoleys","Megamoleys","","because you are ANCIENT","",0,0,0
+"1496502823997673472","04/22/2026 2:27 PM","triflicacid","triflicacid","","Why make me so old :(","",0,0,0
+"1496502722382532800","04/22/2026 2:27 PM","triflicacid","triflicacid","","I saw that","",0,0,0
+"1496498872023781416","04/22/2026 2:12 PM","megamoleys","Megamoleys","","I made you a little outfit :3","",0,0,0
+"1496466645894303744","04/22/2026 12:04 PM","megamoleys","Megamoleys","","https://x.com/chipichovy/status/2046559529807282434?s=46","",0,1,1
+"1496466636021170277","04/22/2026 12:04 PM","megamoleys","Megamoleys","","Mhm!!!","",0,0,0
+"1496404636767359006","04/22/2026 7:57 AM","triflicacid","triflicacid","","Us","",0,0,0
+"1496404633613238282","04/22/2026 7:57 AM","triflicacid","triflicacid","","Oh damn","",0,0,0
+"1496343268013768857","04/22/2026 3:53 AM","megamoleys","Megamoleys","","","",1,0,0
+"1496334918886752400","04/22/2026 3:20 AM","megamoleys","Megamoleys","","","",1,0,0
+"1496286774635270275","04/22/2026 12:09 AM","megamoleys","Megamoleys","","Gn dear","",0,0,0
+"1496284939186999441","04/22/2026 12:02 AM","triflicacid","triflicacid","","Goodnight my beautiful boy","",0,0,1
+"1496261608534708266","04/21/2026 10:29 PM","triflicacid","triflicacid","","Different actors but they had the same personalities","",0,0,0
+"1496261551194374322","04/21/2026 10:29 PM","triflicacid","triflicacid","","It was yeah","",0,0,0
+"1496252058007769129","04/21/2026 9:51 PM","megamoleys","Megamoleys","","is it good :3","",0,0,0
+"1496252039166951445","04/21/2026 9:51 PM","megamoleys","Megamoleys","","i did enjoy that one","",0,0,0
+"1496252011350327526","04/21/2026 9:51 PM","megamoleys","Megamoleys","","yooooooo","",0,0,0
+"1496251073344573592","04/21/2026 9:47 PM","triflicacid","triflicacid","","Play that goes wrong","",0,0,0
+"1496234633807921152","04/21/2026 8:42 PM","megamoleys","Megamoleys","","How is it","",0,0,0
+"1496234618121093321","04/21/2026 8:42 PM","megamoleys","Megamoleys","","Ooooooh","",0,0,0
+"1496234584218538076","04/21/2026 8:42 PM","megamoleys","Megamoleys","","https://x.com/hajel0302/status/2046491495621128268?s=46","",0,1,0
+"1496211599797522544","04/21/2026 7:10 PM","triflicacid","triflicacid","","","",1,0,0
+"1496190362308313239","04/21/2026 5:46 PM","triflicacid","triflicacid","","I can call you then if you’d like","",0,0,0
+"1496190330649972847","04/21/2026 5:46 PM","triflicacid","triflicacid","","I’ll see what time I get back","",0,0,0
+"1496186568988168327","04/21/2026 5:31 PM","megamoleys","Megamoleys","","I do miss you","",0,0,0
+"1496186545160323093","04/21/2026 5:31 PM","megamoleys","Megamoleys","","Yaaay","",0,0,0
+"1496185609591722196","04/21/2026 5:27 PM","triflicacid","triflicacid","","i'll be there on Friday evening to helkp you :3","",0,0,0
+"1496185444701044767","04/21/2026 5:26 PM","triflicacid","triflicacid","","and you've got  afew other hurdles in you way just making it more dfifficult","",0,0,0
+"1496185401591726151","04/21/2026 5:26 PM","triflicacid","triflicacid","","Uni is uniquely stressful like that","",0,0,0
+"1496185379940859944","04/21/2026 5:26 PM","triflicacid","triflicacid","","love you too","",0,0,1
+"1496185364124139601","04/21/2026 5:26 PM","triflicacid","triflicacid","","nah not at all","",0,0,0
+"1496185345237192734","04/21/2026 5:26 PM","megamoleys","Megamoleys","","But I do love you","",0,0,0
+"1496185274906968105","04/21/2026 5:26 PM","megamoleys","Megamoleys","","I know it’s be easier to be with someone who’s got it all sorted out","",0,0,0
+"1496185224302956646","04/21/2026 5:25 PM","megamoleys","Megamoleys","","I am sorry to be a source of tumult in your life dear","",0,0,0
+"1496185173077917816","04/21/2026 5:25 PM","triflicacid","triflicacid","","just re-do the year citing undiagnosed ADHD","",0,0,0
+"1496185139846185235","04/21/2026 5:25 PM","megamoleys","Megamoleys","","I will be honest I am not in a good spot with it right now","",0,0,0
+"1496185126328205494","04/21/2026 5:25 PM","triflicacid","triflicacid","","if you try your best and still don't do well - you couldn't have done more, exactly","",0,0,0
+"1496184945901834422","04/21/2026 5:24 PM","triflicacid","triflicacid","","just do your best","",0,0,0
+"1496184935659081778","04/21/2026 5:24 PM","megamoleys","Megamoleys","","I will but at the moment I am floundering a bit","",0,0,0
+"1496184935562743900","04/21/2026 5:24 PM","triflicacid","triflicacid","","for me anyway, every year was super stressful and i felt like I'd fail, but I always did alright","",0,0,0
+"1496184883104452809","04/21/2026 5:24 PM","megamoleys","Megamoleys","","Look I’m leaving that for now","",0,0,0
+"1496184846748352557","04/21/2026 5:24 PM","triflicacid","triflicacid","","you'll do it","",0,0,0
+"1496184810484273406","04/21/2026 5:24 PM","triflicacid","triflicacid","","try framing it as a positive in that light","",0,0,0
+"1496184775453577418","04/21/2026 5:24 PM","megamoleys","Megamoleys","","I just need to get to the end of exams rn","",0,0,0
+"1496184728791814175","04/21/2026 5:23 PM","megamoleys","Megamoleys","","I can think about that later tbh","",0,0,0
+"1496184487388905612","04/21/2026 5:22 PM","triflicacid","triflicacid","","well, if you're with your dad and he agrees (sounds like you mum isnt budging), you can take the year out","",0,0,0
+"1496184045229445211","04/21/2026 5:21 PM","megamoleys","Megamoleys","","It just all kinda sucks","",0,0,0
+"1496184025742573741","04/21/2026 5:21 PM","megamoleys","Megamoleys","","Idk man","",0,0,0
+"1496184024014655508","04/21/2026 5:21 PM","megamoleys","Megamoleys","","Yeah","",0,0,0
+"1496183780988420198","04/21/2026 5:20 PM","triflicacid","triflicacid","","yeah, it's nit of bad timing on her part ngl","",0,0,0
+"1496183744627736586","04/21/2026 5:20 PM","megamoleys","Megamoleys","","And with my exams right now","",0,0,0
+"1496183722792452106","04/21/2026 5:19 PM","megamoleys","Megamoleys","","It’s just a lot to juggle","",0,0,0
+"1496183678613586044","04/21/2026 5:19 PM","megamoleys","Megamoleys","","At some point soon","",0,0,0
+"1496183640135041167","04/21/2026 5:19 PM","triflicacid","triflicacid","","i'm guessing you guys need to have a chat with him?","",0,0,0
+"1496183602491166902","04/21/2026 5:19 PM","triflicacid","triflicacid","","i can imagine","",0,0,0
+"1496183513349755072","04/21/2026 5:19 PM","megamoleys","Megamoleys","","I know she hasn’t but the feeling of it is not great","",0,0,0
+"1496183443069865984","04/21/2026 5:18 PM","megamoleys","Megamoleys","","Just feels bad when it feels like your parents have given up on you","",0,0,0
+"1496183370718249142","04/21/2026 5:18 PM","megamoleys","Megamoleys","","But like just getting me into the right routines and stuff","",0,0,0
+"1496183284235894927","04/21/2026 5:18 PM","megamoleys","Megamoleys","","I mean she still hasn’t changed her mind on that","",0,0,0
+"1496183235259142306","04/21/2026 5:18 PM","megamoleys","Megamoleys","","Regardless","",0,0,0
+"1496183206926483527","04/21/2026 5:17 PM","megamoleys","Megamoleys","","No just","",0,0,0
+"1496183191625662605","04/21/2026 5:17 PM","triflicacid","triflicacid","","oh right","",0,0,0
+"1496183190912499782","04/21/2026 5:17 PM","megamoleys","Megamoleys","","Because it hasn’t worked here","",0,0,0
+"1496183176609927308","04/21/2026 5:17 PM","triflicacid","triflicacid","","if you would take a year out? or to talk about it","",0,0,0
+"1496183138869711032","04/21/2026 5:17 PM","megamoleys","Megamoleys","","And try work through it with him","",0,0,0
+"1496183104761630882","04/21/2026 5:17 PM","megamoleys","Megamoleys","","She seems to want me to go to my dads","",0,0,0
+"1496183056401305763","04/21/2026 5:17 PM","megamoleys","Megamoleys","","Talking to my mum about stuff","",0,0,0
+"1496183027066343514","04/21/2026 5:17 PM","megamoleys","Megamoleys","","Sigh","",0,0,0
+"1496183010628730940","04/21/2026 5:17 PM","megamoleys","Megamoleys","","No I was just very upset","",0,0,0
+"1496182921827061771","04/21/2026 5:16 PM","triflicacid","triflicacid","","was it a panic attack or smth?","",0,0,0
+"1496181945376178176","04/21/2026 5:12 PM","megamoleys","Megamoleys","","Yeah","",0,0,0
+"1496181633869680692","04/21/2026 5:11 PM","triflicacid","triflicacid","","at least you're feeling a bit better now","",0,0,0
+"1496181611480219709","04/21/2026 5:11 PM","triflicacid","triflicacid","","oh dear :/","",0,0,0
+"1496181573991796787","04/21/2026 5:11 PM","megamoleys","Megamoleys","","Was a bit of a mess","",0,0,0
+"1496181542861672458","04/21/2026 5:11 PM","megamoleys","Megamoleys","","I’m feeling better now","",0,0,0
+"1496181523160891433","04/21/2026 5:11 PM","megamoleys","Megamoleys","","Hiya sorry mum took me out on a walk","",0,0,0
+"1496172511547883591","04/21/2026 4:35 PM","triflicacid","triflicacid","","you good?","",0,0,0
+"1496162893865943193","04/21/2026 3:57 PM","megamoleys","Megamoleys","","Okay gimme a few mins","",0,0,0
+"1496162677968474222","04/21/2026 3:56 PM","triflicacid","triflicacid","","ill be out tonight seeing a show","",0,0,0
+"1496162660180295842","04/21/2026 3:56 PM","triflicacid","triflicacid","","im working from home so i can chat now if you want","",0,0,0
+"1496162514755387549","04/21/2026 3:55 PM","megamoleys","Megamoleys","","I need to chat 🥺","",0,0,0
+"1496162467896889365","04/21/2026 3:55 PM","megamoleys","Megamoleys","","Yeah","",0,0,0
+"1496162448003170417","04/21/2026 3:55 PM","triflicacid","triflicacid","","today?","",0,0,0
+"1496162442583998685","04/21/2026 3:55 PM","triflicacid","triflicacid","","sure yeah","",0,0,0
+"1496162420287209675","04/21/2026 3:55 PM","triflicacid","triflicacid","","hai","",0,0,0
+"1496162417967632436","04/21/2026 3:55 PM","megamoleys","Megamoleys","","Can I call you at some point soon","",0,0,0
+"1496162386929778822","04/21/2026 3:55 PM","megamoleys","Megamoleys","","Hi dear","",0,0,0
+"1496144117556711585","04/21/2026 2:42 PM","triflicacid","triflicacid","","Can’t take the hint","",0,0,0
+"1496144107461148814","04/21/2026 2:42 PM","triflicacid","triflicacid","","Rather consistent isn’t he","",0,0,0
+"1496144090960498929","04/21/2026 2:42 PM","triflicacid","triflicacid","","Hmm","",0,0,0
+"1496143661375819856","04/21/2026 2:40 PM","megamoleys","Megamoleys","","","",1,0,0
+"1496143603976769636","04/21/2026 2:40 PM","megamoleys","Megamoleys","","anything","",0,0,0
+"1496143597416878242","04/21/2026 2:40 PM","megamoleys","Megamoleys","","i dont remember just kinda","",0,0,0
+"1496143448938643496","04/21/2026 2:39 PM","triflicacid","triflicacid","","What did he ask","",0,0,0
+"1496143442303258826","04/21/2026 2:39 PM","megamoleys","Megamoleys","","SERVAL","",0,0,0
+"1496143354742964405","04/21/2026 2:39 PM","megamoleys","Megamoleys","","hes been messaging me i just ghosted him","",0,0,0
+"1496142230916698263","04/21/2026 2:35 PM","triflicacid","triflicacid","","https://www.kkinstagram.com/reel/DXX6UX7krZw/?igsh=ZGEwdjhpc2JkMTZ6","",0,1,0
+"1496141962586226728","04/21/2026 2:34 PM","triflicacid","triflicacid","","https://www.kkinstagram.com/reel/DXZCpN9tUvH/?igsh=MWc1bWs0a2l2NWoycw==","",0,1,0
+"1496141648596566156","04/21/2026 2:32 PM","triflicacid","triflicacid","","Not really, but he came to mind","",0,0,0
+"1496141627469860884","04/21/2026 2:32 PM","triflicacid","triflicacid","","https://www.kkinstagram.com/reel/DXTtWf2EfpB/?","",0,1,0
+"1496139298825834606","04/21/2026 2:23 PM","triflicacid","triflicacid","","Forgot I had no sauce or cheese so","",1,0,0
+"1496137086552637530","04/21/2026 2:14 PM","triflicacid","triflicacid","","Like I’m not that hungry sometimes at 1pm but k go get lunch anyway, and I don’t make a smaller oortion","",0,0,0
+"1496137011176935516","04/21/2026 2:14 PM","triflicacid","triflicacid","","I think the best for me is to get into a schedule","",0,0,0
+"1496136929274626190","04/21/2026 2:14 PM","triflicacid","triflicacid","","Yeah…","",0,0,0
+"1496130874771767466","04/21/2026 1:49 PM","megamoleys","Megamoleys","","my mum is already kinda on my back about it and its not fun","",0,0,0
+"1496130825157218334","04/21/2026 1:49 PM","megamoleys","Megamoleys","","not really looking foward to it","",0,0,0
+"1496129572779982848","04/21/2026 1:44 PM","triflicacid","triflicacid","","Three inches","",0,0,0
+"1496129560973021234","04/21/2026 1:44 PM","triflicacid","triflicacid","","True","",0,0,0
+"1496129540995420382","04/21/2026 1:44 PM","megamoleys","Megamoleys","","You’re shorter than me","",0,0,0
+"1496129506610516061","04/21/2026 1:44 PM","megamoleys","Megamoleys","","So just told me to try","",0,0,0
+"1496129504110706758","04/21/2026 1:44 PM","triflicacid","triflicacid","","They gave me meds at 53, but maybe they’re different","",0,0,0
+"1496129414436618342","04/21/2026 1:44 PM","megamoleys","Megamoleys","","I did ask but he said it wouldn’t be a realistic goal","",0,0,0
+"1496129366927868068","04/21/2026 1:43 PM","megamoleys","Megamoleys","","He said I need a blood test, ecg and to try and put on some weight in the next 6 weeks","",0,0,0
+"1496129287785414788","04/21/2026 1:43 PM","triflicacid","triflicacid","","Did they say at what weight they’d be happy to","",0,0,0
+"1496128976266067978","04/21/2026 1:42 PM","triflicacid","triflicacid","","tbf 50 is quite light, I can see why they'd be wary","",0,0,0
+"1496128895148359861","04/21/2026 1:42 PM","triflicacid","triflicacid","",":(","",0,0,0
+"1496128738503688222","04/21/2026 1:41 PM","megamoleys","Megamoleys","","Doctor says I’m too underweight for meds right now","",0,0,0
+"1496114481879842988","04/21/2026 12:44 PM","megamoleys","Megamoleys","","I don’t remember this part of the film","",0,0,0
+"1496114416108834826","04/21/2026 12:44 PM","megamoleys","Megamoleys","","Gleepy guy","",0,0,0
+"1496114376179060737","04/21/2026 12:44 PM","megamoleys","Megamoleys","","Grahm Schmidt orthogonalisation….","",0,0,0
+"1496111693808271431","04/21/2026 12:33 PM","triflicacid","triflicacid","","https://www.kkinstagram.com/p/DXMIZ1TDcG3/?igsh=ZGhxbTI4Ymg5b2Rs","",0,1,0
+"1496093624222355586","04/21/2026 11:21 AM","triflicacid","triflicacid","","This is you","",0,0,0
+"1496093615305392229","04/21/2026 11:21 AM","triflicacid","triflicacid","","https://www.kkinstagram.com/reel/DTmv7o9E9O1/?igsh=MjZjMTlsMzQ3aGxo","",0,1,1
+"1495925764871164037","04/21/2026 12:14 AM","triflicacid","triflicacid","","Thanks, Cleveland","",0,0,0
+"1495925655383048393","04/21/2026 12:14 AM","triflicacid","triflicacid","","https://www.kkinstagram.com/reel/DWFj4ZBlYcP/?igsh=MTJtNWVla2p1bHhyMg==","",0,1,0
+"1495925482703552755","04/21/2026 12:13 AM","triflicacid","triflicacid","","https://www.kkinstagram.com/reel/DXOt-EcCCJ5/?igsh=MXd1aXZtNjB0eTll","",0,1,0
+"1495922662608736296","04/21/2026 12:02 AM","megamoleys","Megamoleys","","It is a joy to get a bespoke gift","",0,0,0
+"1495922610385588384","04/21/2026 12:02 AM","megamoleys","Megamoleys","",":3","",0,0,0
+"1495922582355054654","04/21/2026 12:02 AM","megamoleys","Megamoleys","","You should do this","",0,0,0
+"1495922359432118393","04/21/2026 12:01 AM","triflicacid","triflicacid","","https://www.kkinstagram.com/reel/DSWCLENDOka/?igsh=MW45b2Uycmpia2ZrcQ==","",0,1,0
+"1495922341564121299","04/21/2026 12:01 AM","triflicacid","triflicacid","","I’m having fun making it at least","",0,0,0
+"1495922318072086568","04/21/2026 12:01 AM","triflicacid","triflicacid","","Hope you like it","",0,0,0
+"1495922292067401728","04/21/2026 12:01 AM","triflicacid","triflicacid","","Been making your thing","",0,0,1
+"1495922265743953950","04/21/2026 12:01 AM","triflicacid","triflicacid","","Yeah","",0,0,0
+"1495921036615614634","04/20/2026 11:56 PM","megamoleys","Megamoleys","","Is it bedtime","",0,0,0
+"1495921008278896682","04/20/2026 11:56 PM","megamoleys","Megamoleys","","Hehehehe","",0,0,0
+"1495920815412215980","04/20/2026 11:55 PM","triflicacid","triflicacid","","Eepy","",0,0,0
+"1495920808139296868","04/20/2026 11:55 PM","triflicacid","triflicacid","","Good thanks","",0,0,1
+"1495919991848042526","04/20/2026 11:51 PM","megamoleys","Megamoleys","","How are you","",0,0,0
+"1495919981127532744","04/20/2026 11:51 PM","megamoleys","Megamoleys","","Hi love","",0,0,0
+"1495919368104837261","04/20/2026 11:49 PM","triflicacid","triflicacid","","<3","",0,0,0
+"1495856905594343454","04/20/2026 7:41 PM","triflicacid","triflicacid","","yeah","",0,0,0
+"1495856875630100654","04/20/2026 7:41 PM","megamoleys","Megamoleys","","its good you finally got it sorted tho","",0,0,0
+"1495856344362647693","04/20/2026 7:39 PM","triflicacid","triflicacid","","well done government 👏","",0,0,0
+"1495856297638101073","04/20/2026 7:38 PM","triflicacid","triflicacid","","mine is just the initial phone call","",0,0,0
+"1495856278235385987","04/20/2026 7:38 PM","triflicacid","triflicacid","","good luck","",0,0,0
+"1495854401666158592","04/20/2026 7:31 PM","megamoleys","Megamoleys","","https://tenor.com/view/steamhappy-steam-happy-steam-happy-emoji-gif-8108676584237132839","",0,1,0
+"1495854380404965466","04/20/2026 7:31 PM","megamoleys","Megamoleys","","cuute","",0,0,0
+"1495854338038304789","04/20/2026 7:31 PM","triflicacid","triflicacid","","next Thursday","",0,0,0
+"1495854323660488815","04/20/2026 7:31 PM","megamoleys","Megamoleys","","mines tomorrow","",0,0,0
+"1495854313887629383","04/20/2026 7:31 PM","megamoleys","Megamoleys","","whens it for","",0,0,0
+"1495854304718753943","04/20/2026 7:30 PM","megamoleys","Megamoleys","","well done boy","",0,0,0
+"1495854274469564577","04/20/2026 7:30 PM","megamoleys","Megamoleys","","👀","",0,0,0
+"1495822164975288572","04/20/2026 5:23 PM","triflicacid","triflicacid","","","",1,0,0
+"1495817588637175839","04/20/2026 5:05 PM","triflicacid","triflicacid","","Got my ADHD appointment booked!!","",0,0,0
+"1495815091046846707","04/20/2026 4:55 PM","triflicacid","triflicacid","","","",1,0,0
+"1495810408630583495","04/20/2026 4:36 PM","triflicacid","triflicacid","","Damn, gimme reject this person too","",0,0,0
+"1495787622772117684","04/20/2026 3:05 PM","megamoleys","Megamoleys","","😋","",1,0,0
+"1495782960132001842","04/20/2026 2:47 PM","triflicacid","triflicacid","","How is it","",0,0,0
+"1495782935822077952","04/20/2026 2:47 PM","triflicacid","triflicacid","","Especially since the border is growing","",0,0,0
+"1495782878598926436","04/20/2026 2:47 PM","triflicacid","triflicacid","","Yeah that was quite rude","",0,0,0
+"1495782612445167667","04/20/2026 2:46 PM","megamoleys","Megamoleys","","I’m still annoyed with fomx from yesterday","",0,0,0
+"1495782577183654084","04/20/2026 2:45 PM","megamoleys","Megamoleys","","Working","",0,0,0
+"1495782562956705855","04/20/2026 2:45 PM","megamoleys","Megamoleys","",":(","",0,0,0
+"1495782536566145115","04/20/2026 2:45 PM","megamoleys","Megamoleys","","Hope it goes well","",0,0,0
+"1495782444056707354","04/20/2026 2:45 PM","triflicacid","triflicacid","","I’ve got an interview in 40 minutes","",0,0,0
+"1495782413929021606","04/20/2026 2:45 PM","triflicacid","triflicacid","","How are you doing love","",0,0,0
+"1495775297851752571","04/20/2026 2:17 PM","megamoleys","Megamoleys","","Sounds disturbing","",0,0,0
+"1495775268323725392","04/20/2026 2:16 PM","megamoleys","Megamoleys","","Damn","",0,0,0
+"1495708818804310086","04/20/2026 9:52 AM","triflicacid","triflicacid","","Dunno what triggered that","",0,0,0
+"1495708798961061939","04/20/2026 9:52 AM","triflicacid","triflicacid","","A friend was in a bucket, blood and guts left","",0,0,0
+"1495708746033401938","04/20/2026 9:52 AM","triflicacid","triflicacid","","I just had a very nasty dream about getting tortured","",0,0,0
+"1495584181508509848","04/20/2026 1:37 AM","triflicacid","triflicacid","","i think so","",0,0,0
+"1495581582419955733","04/20/2026 1:27 AM","megamoleys","Megamoleys","","this one is newer i presume","",0,0,0
+"1495581558290124810","04/20/2026 1:27 AM","megamoleys","Megamoleys","","OKLAB is what people got into using","",0,0,0
+"1495581480695365763","04/20/2026 1:26 AM","megamoleys","Megamoleys","","interesting","",0,0,0
+"1495581472546099300","04/20/2026 1:26 AM","megamoleys","Megamoleys","","oooh","",0,0,0
+"1495579998030139554","04/20/2026 1:20 AM","triflicacid","triflicacid","","talking about colours","",0,0,0
+"1495579987581866137","04/20/2026 1:20 AM","triflicacid","triflicacid","","good thanks","",0,0,0
+"1495579978631483426","04/20/2026 1:20 AM","triflicacid","triflicacid","","https://oklch.com/","",0,1,0
+"1495578108831600731","04/20/2026 1:13 AM","megamoleys","Megamoleys","","hows ben","",0,0,0
+"1495578102934278254","04/20/2026 1:13 AM","megamoleys","Megamoleys","","how are you dear","",0,0,0
+"1495578020583440486","04/20/2026 1:13 AM","triflicacid","triflicacid","","meow","",0,0,0
+"1495574905297834105","04/20/2026 1:00 AM","megamoleys","Megamoleys","","meowmeow","",0,0,0
+"1495574893679607878","04/20/2026 1:00 AM","megamoleys","Megamoleys","","meow","",0,0,0
+"1495514564505370654","04/19/2026 9:00 PM","megamoleys","Megamoleys","","YAAAY","",0,0,0
+"1495473544623030415","04/19/2026 6:17 PM","triflicacid","triflicacid","","hope you'll like it","",0,0,0
+"1495473530974769294","04/19/2026 6:17 PM","triflicacid","triflicacid","","im cookin' up some program for you love","",0,0,1
+"1495426068788674664","04/19/2026 3:09 PM","triflicacid","triflicacid","","Best thing is to just get st at yer in one topic and forget the rest for now","",0,0,0
+"1495425985728872469","04/19/2026 3:08 PM","triflicacid","triflicacid","","Yes it does suck","",0,0,0
+"1495425966389071972","04/19/2026 3:08 PM","triflicacid","triflicacid","",":(","",0,0,0
+"1495425917206401237","04/19/2026 3:08 PM","megamoleys","Megamoleys","","yeah","",0,0,0
+"1495419657941680158","04/19/2026 2:43 PM","triflicacid","triflicacid","","Stress for exams?","",0,0,0
+"1495417989724504064","04/19/2026 2:37 PM","megamoleys","Megamoleys","","Stress not nice","",0,0,0
+"1495417946971967659","04/19/2026 2:37 PM","megamoleys","Megamoleys","","Ooooough I feel ill","",0,0,0
+"1495399100378648636","04/19/2026 1:22 PM","megamoleys","Megamoleys","","the mooooon...","",0,0,0
+"1495399077540790372","04/19/2026 1:22 PM","megamoleys","Megamoleys","","thank u dear","",0,0,0
+"1495396965528244405","04/19/2026 1:13 PM","triflicacid","triflicacid","","got u some netheriyte :3","",0,0,0
+"1495361235334594581","04/19/2026 10:51 AM","triflicacid","triflicacid","","https://www.kkinstagram.com/reel/DXR3V4EiVNq/?igsh=MTJ3MnE1aHMydndmNg==","",0,1,0
+"1495255563267997777","04/19/2026 3:51 AM","triflicacid","triflicacid","","","",1,0,0
+"1495255359546327160","04/19/2026 3:50 AM","triflicacid","triflicacid","","","",1,0,0
+"1495108071977123850","04/18/2026 6:05 PM","megamoleys","Megamoleys","","https://fixupx.com/socalbussy/status/2045212775518269866?s=46","",0,1,0
+"1495104186914836530","04/18/2026 5:50 PM","triflicacid","triflicacid","","Aw","",0,0,0
+"1495104156279771156","04/18/2026 5:50 PM","megamoleys","Megamoleys","","Mum called us two foxes in a foxhole","",0,0,0
+"1495099007536463872","04/18/2026 5:29 PM","triflicacid","triflicacid","","Having a good time love?","",0,0,0
+"1495076710855610529","04/18/2026 4:01 PM","triflicacid","triflicacid","","yeah I might say it quite clearly, I've slready said 'and what am I gonna do'","",0,0,0
+"1495075756152324097","04/18/2026 3:57 PM","triflicacid","triflicacid","","aah","",0,0,0
+"1495075755112140800","04/18/2026 3:57 PM","triflicacid","triflicacid","","","The stresa from human ick
+truma
+autism
+deppresion
+anxity
+sleep problems
+more other stuff
+
+served as a blended smoothy",0,0,0
+"1495075580918366208","04/18/2026 3:56 PM","triflicacid","triflicacid","","rate my response","",0,0,0
+"1495075578628280370","04/18/2026 3:56 PM","triflicacid","triflicacid","","","i mean, that's kinda fair? given your age",0,0,0
+"1495075542771175525","04/18/2026 3:56 PM","triflicacid","triflicacid","","lmao he's complaining about paying rent to live at home","",0,0,0
+"1495075282049171629","04/18/2026 3:55 PM","megamoleys","Megamoleys","","Sometimes you gotta draw a line","",0,0,0
+"1495075257252577390","04/18/2026 3:55 PM","megamoleys","Megamoleys","","I know cause I’ve done it many times before it’s not worth it","",0,0,0
+"1495075216450392104","04/18/2026 3:55 PM","megamoleys","Megamoleys","","Or you get dragged into people’s mess","",0,0,0
+"1495075179523477614","04/18/2026 3:54 PM","triflicacid","triflicacid","","I tried telling him to go to the job centre but","",0,0,0
+"1495075178030563568","04/18/2026 3:54 PM","triflicacid","triflicacid","","","Yes, im unfit for work",0,0,0
+"1495075166571729017","04/18/2026 3:54 PM","megamoleys","Megamoleys","","It’s important","",0,0,0
+"1495075147584114781","04/18/2026 3:54 PM","megamoleys","Megamoleys","","You need to learn how to say no dear","",0,0,0
+"1495075120442773575","04/18/2026 3:54 PM","megamoleys","Megamoleys","","Idk why you expend emotional energy on this guy","",0,0,0
+"1495075059608588378","04/18/2026 3:54 PM","megamoleys","Megamoleys","","Just","",0,0,0
+"1495074790837457038","04/18/2026 3:53 PM","megamoleys","Megamoleys","","Not his therapist","",0,0,0
+"1495074790791446558","04/18/2026 3:53 PM","triflicacid","triflicacid","","like wtf am I supposed to do with the messages he sent me ebfore this","",0,0,0
+"1495074765889863681","04/18/2026 3:53 PM","megamoleys","Megamoleys","","Poor guy but yeah you’re","",0,0,0
+"1495074704455634975","04/18/2026 3:53 PM","triflicacid","triflicacid","","sillylilguy","",0,0,0
+"1495074698197864551","04/18/2026 3:53 PM","megamoleys","Megamoleys","","Silly guy","",0,0,0
+"1495074694234243242","04/18/2026 3:53 PM","triflicacid","triflicacid","","im on the verge of saying ""i cba"" (to myself)","",0,0,0
+"1495074685212426290","04/18/2026 3:53 PM","megamoleys","Megamoleys","","What’s this???","",0,0,0
+"1495074625770619063","04/18/2026 3:52 PM","triflicacid","triflicacid","","😭 ffs man","",0,0,0
+"1495074624218599456","04/18/2026 3:52 PM","triflicacid","triflicacid","","","i cant cope with anything anymore",0,0,0
+"1495073462765752511","04/18/2026 3:48 PM","megamoleys","Megamoleys","","Not sure","",0,0,0
+"1495073416917815407","04/18/2026 3:47 PM","triflicacid","triflicacid","","how long is that for","",0,0,0
+"1495073401855807660","04/18/2026 3:47 PM","triflicacid","triflicacid","","well, good luck","",0,0,0
+"1495073103057911995","04/18/2026 3:46 PM","megamoleys","Megamoleys","","Nah not really","",0,0,0
+"1495071836256338042","04/18/2026 3:41 PM","triflicacid","triflicacid","","you're not too close to them either I imagine?","",0,0,0
+"1495071741234511943","04/18/2026 3:41 PM","megamoleys","Megamoleys","","They’re always just very awkward it’s like hhhh","",0,0,0
+"1495071681214156931","04/18/2026 3:41 PM","triflicacid","triflicacid","","ah right","",0,0,0
+"1495071650872299600","04/18/2026 3:40 PM","megamoleys","Megamoleys","","Mums partners mothers birthday","",0,0,0
+"1495071605590851807","04/18/2026 3:40 PM","triflicacid","triflicacid","","?","",0,0,0
+"1495071579657343199","04/18/2026 3:40 PM","megamoleys","Megamoleys","","Going to a thing","",0,0,0
+"1495057125070602280","04/18/2026 2:43 PM","megamoleys","Megamoleys","","It’s was funny tho :3","",0,0,0
+"1495057082800672808","04/18/2026 2:43 PM","megamoleys","Megamoleys","","I’m not suprised it leaves you drained","",0,0,0
+"1495057040081682613","04/18/2026 2:42 PM","megamoleys","Megamoleys","","Your work is very involved in that aspect so","",0,0,0
+"1495056970430939240","04/18/2026 2:42 PM","megamoleys","Megamoleys","","After a long day at uni I struggle to formulate proper thoughts","",0,0,0
+"1495056900654628875","04/18/2026 2:42 PM","megamoleys","Megamoleys","","Probably just tired","",0,0,0
+"1495023919663550584","04/18/2026 12:31 PM","triflicacid","triflicacid","","Don’t know why I was so distracted, don’t even know what by","",0,0,0
+"1495023870963617872","04/18/2026 12:31 PM","triflicacid","triflicacid","","Yeah it melted a little last night","",0,0,0
+"1495023843046330518","04/18/2026 12:31 PM","triflicacid","triflicacid","","","",1,0,1
+"1494889654430994522","04/18/2026 3:37 AM","megamoleys","Megamoleys","","i need your brain working for these test suites","",0,0,0
+"1494889617042964531","04/18/2026 3:37 AM","megamoleys","Megamoleys","","sleep well","",0,0,0
+"1494889610239807589","04/18/2026 3:37 AM","megamoleys","Megamoleys","","love you too dear","",0,0,0
+"1494876812759531643","04/18/2026 2:46 AM","triflicacid","triflicacid","","","",1,0,1
+"1494876635235614780","04/18/2026 2:46 AM","triflicacid","triflicacid","","Love you :3","",0,0,0
+"1494794047896686643","04/17/2026 9:17 PM","megamoleys","Megamoleys","","","",1,0,0
+"1494793001862697020","04/17/2026 9:13 PM","megamoleys","Megamoleys","","","",1,0,0
+"1494770149989941279","04/17/2026 7:42 PM","megamoleys","Megamoleys","","https://x.com/nekolapiss/status/2044857506933899401?s=46","",0,1,1
+"1494770114694873118","04/17/2026 7:42 PM","megamoleys","Megamoleys","","https://x.com/nekolapiss/status/2044465623741149367?s=46","",0,1,1
+"1494617768190935090","04/17/2026 9:37 AM","triflicacid","triflicacid","","You just wanna feel men","",0,0,0
+"1494617747517214760","04/17/2026 9:37 AM","triflicacid","triflicacid","","Faggpt","",0,0,0
+"1494617741548720258","04/17/2026 9:37 AM","triflicacid","triflicacid","","Yup","",0,0,0
+"1494610844535750708","04/17/2026 9:09 AM","megamoleys","Megamoleys","","Sounds like something I might say","",0,0,0
+"1494610807542124627","04/17/2026 9:09 AM","megamoleys","Megamoleys","","Ehehehehe","",0,0,0
+"1494607247790047323","04/17/2026 8:55 AM","triflicacid","triflicacid","","And you were lying on it, tracing its abs and stomach as ‘anatomical research’ while doing a drawing","",0,0,0
+"1494607162511589413","04/17/2026 8:55 AM","triflicacid","triflicacid","","There was a marble statue of a man laying on the floor","",0,0,0
+"1494607075085385840","04/17/2026 8:54 AM","triflicacid","triflicacid","","I had a dream about you last night","",0,0,0
+"1494602530510868530","04/17/2026 8:36 AM","triflicacid","triflicacid","","Ooh","",0,0,0
+"1494602479978156193","04/17/2026 8:36 AM","triflicacid","triflicacid","","Meow","",0,0,0
+"1494532705956925500","04/17/2026 3:59 AM","megamoleys","Megamoleys","","drool","",0,0,0
+"1494532693537591399","04/17/2026 3:59 AM","megamoleys","Megamoleys","","gojo anatomy","",0,0,0
+"1494532682158440559","04/17/2026 3:59 AM","megamoleys","Megamoleys","","","",2,0,0
+"1494532601048989737","04/17/2026 3:58 AM","megamoleys","Megamoleys","","pinterest is feeding me well today","",0,0,0
+"1494532580001976400","04/17/2026 3:58 AM","megamoleys","Megamoleys","","","",1,0,0
+"1494482362719928530","04/17/2026 12:39 AM","megamoleys","Megamoleys","","thayouuu 🥺","",0,0,0
+"1494482323121508585","04/17/2026 12:39 AM","megamoleys","Megamoleys","","meow","",0,0,0
+"1494482319300628611","04/17/2026 12:39 AM","megamoleys","Megamoleys","","meow","",0,0,0
+"1494482315194404915","04/17/2026 12:39 AM","megamoleys","Megamoleys","","meow","",0,0,0
+"1494482310966411336","04/17/2026 12:39 AM","megamoleys","Megamoleys","","meow","",0,0,0
+"1494482305656422430","04/17/2026 12:39 AM","megamoleys","Megamoleys","","meow","",0,0,0
+"1494482301600530673","04/17/2026 12:39 AM","megamoleys","Megamoleys","","meow","",0,0,0
+"1494482297833918736","04/17/2026 12:39 AM","megamoleys","Megamoleys","","meow","",0,0,0
+"1494482293425967169","04/17/2026 12:39 AM","megamoleys","Megamoleys","","meow","",0,0,0
+"1494482289332326471","04/17/2026 12:39 AM","megamoleys","Megamoleys","","meow","",0,0,0
+"1494482284303089734","04/17/2026 12:39 AM","megamoleys","Megamoleys","","meow","",0,0,0
+"1494415139300970537","04/16/2026 8:12 PM","triflicacid","triflicacid","","You’re very good","",0,0,3
+"1494415011932536913","04/16/2026 8:11 PM","megamoleys","Megamoleys","","not that i was ever that unrusted in the firs tplace","",0,0,0
+"1494414978151743528","04/16/2026 8:11 PM","megamoleys","Megamoleys","","i feel so rusty","",0,0,0
+"1494414965002473624","04/16/2026 8:11 PM","megamoleys","Megamoleys","","like a year???","",0,0,0
+"1494414938633015386","04/16/2026 8:11 PM","megamoleys","Megamoleys","","a whileeee","",0,0,0
+"1494414929954865254","04/16/2026 8:11 PM","megamoleys","Megamoleys","","first time using the pc for drawing + photoshop in","",0,0,0
+"1494414897373515776","04/16/2026 8:11 PM","triflicacid","triflicacid","","Nife eye","",0,0,0
+"1494414883377119323","04/16/2026 8:11 PM","triflicacid","triflicacid","","Oph","",0,0,0
+"1494414839265886279","04/16/2026 8:11 PM","megamoleys","Megamoleys","","","",1,0,0
+"1494384662754365661","04/16/2026 6:11 PM","triflicacid","triflicacid","","Fiddling around with preferences all day","",0,0,0
+"1494384632278290613","04/16/2026 6:11 PM","triflicacid","triflicacid","","Good thanks","",0,0,0
+"1494383397605347530","04/16/2026 6:06 PM","megamoleys","Megamoleys","","How was your day my love","",0,0,0
+"1494383366210977972","04/16/2026 6:05 PM","megamoleys","Megamoleys","",":3","",0,0,0
+"1494383048513556571","04/16/2026 6:04 PM","triflicacid","triflicacid","","Gleepy","",0,0,0
+"1494383046579982529","04/16/2026 6:04 PM","triflicacid","triflicacid","","Yeah","",0,0,0
+"1494380431242559658","04/16/2026 5:54 PM","megamoleys","Megamoleys","","Are you sleeeepy","",0,0,0
+"1494379399082934312","04/16/2026 5:50 PM","triflicacid","triflicacid","","I’m tired","",0,0,0
+"1494378165349515356","04/16/2026 5:45 PM","megamoleys","Megamoleys","","WTF","",0,0,0
+"1494375228737065070","04/16/2026 5:33 PM","triflicacid","triflicacid","","No it’s too far","",0,0,0
+"1494374591085150409","04/16/2026 5:31 PM","megamoleys","Megamoleys","","Pleaaaase","",0,0,0
+"1494374575637790840","04/16/2026 5:31 PM","megamoleys","Megamoleys","","Can you run back to cov now","",0,0,0
+"1494374539973627964","04/16/2026 5:30 PM","megamoleys","Megamoleys","","Wow","",0,0,0
+"1494373867244748840","04/16/2026 5:28 PM","triflicacid","triflicacid","","I’m ran really fast","",0,0,0
+"1494373852065566820","04/16/2026 5:28 PM","triflicacid","triflicacid","","I’m here","",0,0,1
+"1494326604690886656","04/16/2026 2:20 PM","megamoleys","Megamoleys","","Hop to it","",0,0,0
+"1494326591709515817","04/16/2026 2:20 PM","megamoleys","Megamoleys","","From London","",0,0,0
+"1494326580644679851","04/16/2026 2:20 PM","megamoleys","Megamoleys","","Yep","",0,0,0
+"1494321272820076596","04/16/2026 1:59 PM","triflicacid","triflicacid","","What, walk to the Lake District?","",0,0,1
+"1494315723743432725","04/16/2026 1:37 PM","megamoleys","Megamoleys","","https://www.instagram.com/reel/DVZLVrajPfE/?igsh=enB5aW11ZXVpYnpo","",0,1,0
+"1494315708719435867","04/16/2026 1:37 PM","megamoleys","Megamoleys","","You should do that","",0,0,0
+"1494315680239980674","04/16/2026 1:37 PM","megamoleys","Megamoleys","","👀","",0,0,0
+"1494239231495770163","04/16/2026 8:33 AM","triflicacid","triflicacid","","","",1,0,0
+"1494095084562415640","04/15/2026 11:00 PM","triflicacid","triflicacid","","yeah","",0,0,0
+"1494095060617265316","04/15/2026 11:00 PM","megamoleys","Megamoleys","","oh is that the walking one","",0,0,0
+"1494093712618291362","04/15/2026 10:55 PM","triflicacid","triflicacid","","The Tale oif Harold Fry (or similar)","",0,0,0
+"1494093660407595231","04/15/2026 10:54 PM","triflicacid","triflicacid","","it was great thanks!","",0,0,0
+"1494085491044122715","04/15/2026 10:22 PM","megamoleys","Megamoleys","","how was it!!!","",0,0,0
+"1494084040347615384","04/15/2026 10:16 PM","triflicacid","triflicacid","","I don’t want to think about what the floor costs","",0,0,0
+"1494084003362508871","04/15/2026 10:16 PM","triflicacid","triflicacid","","A bit blocked but could see most of it","",0,0,0
+"1494083966368485537","04/15/2026 10:16 PM","triflicacid","triflicacid","","But only £15","",0,0,0
+"1494083950518472744","04/15/2026 10:16 PM","triflicacid","triflicacid","","Mhm","",0,0,0
+"1494067559018922166","04/15/2026 9:11 PM","megamoleys","Megamoleys","","tthis fancy","",0,0,0
+"1494067544556961984","04/15/2026 9:11 PM","megamoleys","Megamoleys","","oh wow","",0,0,0
+"1494061713912500329","04/15/2026 8:47 PM","triflicacid","triflicacid","","","",1,0,0
+"1494021672842563594","04/15/2026 6:08 PM","triflicacid","triflicacid","","Thanks","",0,0,0
+"1494021324321067062","04/15/2026 6:07 PM","megamoleys","Megamoleys","","have a nice time dear :3","",0,0,0
+"1494020613050732715","04/15/2026 6:04 PM","triflicacid","triflicacid","","","",1,0,1
+"1494020402236621091","04/15/2026 6:03 PM","triflicacid","triflicacid","","","",1,0,0
+"1494015469840240690","04/15/2026 5:44 PM","triflicacid","triflicacid","","","",0,0,0
+"1493980377948225636","04/15/2026 3:24 PM","megamoleys","Megamoleys","","https://fixupx.com/cl0wntism/status/2043770630164635742?s=46","",0,1,0
+"1493967767232053388","04/15/2026 2:34 PM","triflicacid","triflicacid","","Anyway can I suck your dick on your birthday","",0,0,0
+"1493967703361196084","04/15/2026 2:34 PM","triflicacid","triflicacid","","But not me","",0,0,0
+"1493967691747164282","04/15/2026 2:34 PM","triflicacid","triflicacid","","Endlessly horny","",0,0,0
+"1493967679818698852","04/15/2026 2:34 PM","triflicacid","triflicacid","","Ikr","",0,0,0
+"1493964877738278932","04/15/2026 2:23 PM","megamoleys","Megamoleys","","awwwww","",0,0,0
+"1493964838865604731","04/15/2026 2:22 PM","megamoleys","Megamoleys","","men 🙄","",0,0,0
+"1493927980161044672","04/15/2026 11:56 AM","triflicacid","triflicacid","","","",1,0,1
+"1493895281627103252","04/15/2026 9:46 AM","triflicacid","triflicacid","","You’re not a loser boy","",0,0,0
+"1493806850997485588","04/15/2026 3:55 AM","megamoleys","Megamoleys","","🥺","",0,0,0
+"1493806835931676722","04/15/2026 3:55 AM","megamoleys","Megamoleys","","Do you love my loser boy personality","",0,0,0
+"1493806803106926703","04/15/2026 3:54 AM","megamoleys","Megamoleys","","","",1,0,0
+"1493712901477765141","04/14/2026 9:41 PM","triflicacid","triflicacid","","I’ll be on in a sec","",0,0,0
+"1493712875800494240","04/14/2026 9:41 PM","triflicacid","triflicacid","","Eepy boy","",0,0,0
+"1493711148388712479","04/14/2026 9:34 PM","megamoleys","Megamoleys","","im so sleepppy","",0,0,0
+"1493695362681012365","04/14/2026 8:32 PM","megamoleys","Megamoleys","","have fun :3","",0,0,0
+"1493695317349105865","04/14/2026 8:31 PM","megamoleys","Megamoleys","","yaay","",0,0,0
+"1493695298340655215","04/14/2026 8:31 PM","triflicacid","triflicacid","","I’ll probs get on mc soon","",0,0,0
+"1493695267621441627","04/14/2026 8:31 PM","triflicacid","triflicacid","","Watching some tv","",0,0,0
+"1493695169101435040","04/14/2026 8:31 PM","megamoleys","Megamoleys","","whatcha doing atm","",0,0,0
+"1493694906315706551","04/14/2026 8:30 PM","megamoleys","Megamoleys","","a good chicken noodle soup","",0,0,0
+"1493694873847595129","04/14/2026 8:30 PM","megamoleys","Megamoleys","","and by that i mean","",0,0,0
+"1493694862216925295","04/14/2026 8:30 PM","megamoleys","Megamoleys","","he makes a mean chicken soup","",0,0,0
+"1493694770110005409","04/14/2026 8:29 PM","megamoleys","Megamoleys","","my dads","",0,0,0
+"1493694745845960785","04/14/2026 8:29 PM","megamoleys","Megamoleys","","no","",0,0,0
+"1493694697548419194","04/14/2026 8:29 PM","triflicacid","triflicacid","","It was inspired from his recipe right?","",0,0,0
+"1493694541843136592","04/14/2026 8:28 PM","megamoleys","Megamoleys","","what do you mean","",0,0,0
+"1493693338585661701","04/14/2026 8:24 PM","triflicacid","triflicacid","","Did he recognise where it quasi-came from","",0,0,0
+"1493693305580687401","04/14/2026 8:23 PM","triflicacid","triflicacid","","high praise","",0,0,0
+"1493693192149925888","04/14/2026 8:23 PM","megamoleys","Megamoleys","","iain seemed to like it","",0,0,0
+"1493693177625051236","04/14/2026 8:23 PM","megamoleys","Megamoleys","","well apparently","",0,0,0
+"1493693168628011098","04/14/2026 8:23 PM","megamoleys","Megamoleys","","she didnt eat a dish of it but she did try it and liked it","",0,0,0
+"1493693080967315476","04/14/2026 8:23 PM","triflicacid","triflicacid","","Did your mum try any?","",0,0,0
+"1493693059022716938","04/14/2026 8:22 PM","triflicacid","triflicacid","","Leftover good food is great","",0,0,0
+"1493693035232624680","04/14/2026 8:22 PM","triflicacid","triflicacid","","Sounds delicious","",0,0,0
+"1493693015259349025","04/14/2026 8:22 PM","triflicacid","triflicacid","","Mmm","",0,0,0
+"1493693001418014873","04/14/2026 8:22 PM","megamoleys","Megamoleys","","mmmm","",0,0,0
+"1493692986746212383","04/14/2026 8:22 PM","megamoleys","Megamoleys","","the leftovers of the soup i made","",0,0,0
+"1493692984250728569","04/14/2026 8:22 PM","triflicacid","triflicacid","","Nice!","",0,0,0
+"1493692956748677280","04/14/2026 8:22 PM","megamoleys","Megamoleys","","i jjust had dinner","",0,0,0
+"1493692940051026074","04/14/2026 8:22 PM","megamoleys","Megamoleys","","HAIIII","",0,0,0
+"1493675270962548948","04/14/2026 7:12 PM","triflicacid","triflicacid","","Getting dinnar","",0,0,0
+"1493675256488132688","04/14/2026 7:12 PM","triflicacid","triflicacid","","Hai","",0,0,0
+"1493657569913475082","04/14/2026 6:01 PM","megamoleys","Megamoleys","","whats going on","",0,0,0
+"1493657550992969739","04/14/2026 6:01 PM","megamoleys","Megamoleys","","haiiiii love","",0,0,0
+"1493645638284349592","04/14/2026 5:14 PM","triflicacid","triflicacid","","I’m I’m free","",0,0,0
+"1493618107170689145","04/14/2026 3:25 PM","triflicacid","triflicacid","","Yeah","",0,0,0
+"1493618100321648773","04/14/2026 3:25 PM","triflicacid","triflicacid","","Meow","",0,0,0
+"1493603461118562514","04/14/2026 2:26 PM","megamoleys","Megamoleys","","like way to early","",0,0,0
+"1493603448367616080","04/14/2026 2:26 PM","megamoleys","Megamoleys","","you was up earrrly","",0,0,0
+"1493603433050144948","04/14/2026 2:26 PM","megamoleys","Megamoleys","","not suprised","",0,0,0
+"1493603412426887248","04/14/2026 2:26 PM","megamoleys","Megamoleys","","meowmeowmeow","",0,0,0
+"1493585907373314249","04/14/2026 1:17 PM","triflicacid","triflicacid","","A bit eepy","",0,0,0
+"1493585894039490661","04/14/2026 1:17 PM","triflicacid","triflicacid","","Good thanks","",0,0,0
+"1493585885646684271","04/14/2026 1:17 PM","triflicacid","triflicacid","","Hai","",0,0,0
+"1493568761826119730","04/14/2026 12:09 PM","megamoleys","Megamoleys","","What’s up dear","",0,0,0
+"1493485382019580026","04/14/2026 6:37 AM","triflicacid","triflicacid","","Hi! :(","",0,0,0
+"1493421017476104304","04/14/2026 2:21 AM","megamoleys","Megamoleys","","https://tenor.com/view/talking-heads-lamp-gif-talking-heads-lamp-david-byrne-this-must-be-the-place-gif-14107285","",0,1,0
+"1493401240259006625","04/14/2026 1:03 AM","megamoleys","Megamoleys","","My WiFi keeps going out randomly for some reason","",0,0,0
+"1493374488878780528","04/13/2026 11:17 PM","triflicacid","triflicacid","","So I can leave earlier","",0,0,0
+"1493374470344409300","04/13/2026 11:16 PM","triflicacid","triflicacid","","At least I’ll get in earlier","",0,0,0
+"1493373997776113872","04/13/2026 11:15 PM","megamoleys","Megamoleys","","my dolences","",0,0,0
+"1493373975219408916","04/13/2026 11:15 PM","megamoleys","Megamoleys","","hhhhhhouughhh","",0,0,0
+"1493373938690949171","04/13/2026 11:14 PM","megamoleys","Megamoleys","","😋","",0,0,0
+"1493373910081732838","04/13/2026 11:14 PM","triflicacid","triflicacid","","Also gives you an extra citation","",0,0,0
+"1493373888170692671","04/13/2026 11:14 PM","triflicacid","triflicacid","","Just to be sure","",0,0,0
+"1493373877085278330","04/13/2026 11:14 PM","triflicacid","triflicacid","","I’d probably cite the first instance","",0,0,0
+"1493373827806269551","04/13/2026 11:14 PM","megamoleys","Megamoleys","","idk","",0,0,0
+"1493373823268028477","04/13/2026 11:14 PM","megamoleys","Megamoleys","","i mean nothing specific is being referenced i guess?","",0,0,0
+"1493373773880098936","04/13/2026 11:14 PM","megamoleys","Megamoleys","","and move on","",0,0,0

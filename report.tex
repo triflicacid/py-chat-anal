@@ -1,0 +1,621 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{parskip}
+\usepackage[hidelinks]{hyperref}
+\usepackage[none]{hyphenat}  % no word is broken across a line
+\sloppy
+
+\graphicspath{{out/}}
+\captionsetup{font=small,labelfont=bf}
+
+\newcommand{\userA}{\textit{triflicacid}}
+\newcommand{\userB}{\textit{megamoleys}}
+% A quoted argument and a long option, as typed at the command line.
+\newcommand{\q}[1]{\textquotedbl #1\textquotedbl}
+\newcommand{\opt}[1]{-{}-#1}
+% \chart{file}{caption}{command that produced the file}
+\newcommand{\chart}[3]{%
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]{#1}
+    \caption{#2 Generated with: \texttt{#3}}
+  \end{figure}}
+
+\title{A Quantitative Analysis of a Two Person Message History}
+\author{}
+\date{21 September 2025 to 7 October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report analyses a direct message history between two participants, \userA{} and \userB{}.
+The history contains 39,072 messages and 212,571
+words sent over 382 days. Nineteen charts are presented, each describing one measurable
+aspect of the conversation. Overall volume was shared almost equally throughout. The
+measures that changed were those of initiative. From May 2026 one participant started
+fewer conversations each month and by September seldom sent the first message of the
+day or followed up after silence, and the other participant did more of each.
+\end{abstract}
+
+\tableofcontents
+
+\section{Chronology}
+
+Table~\ref{tab:chronology} gives the principal dates of the relationship, which are
+referred to throughout.
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{tabular}{ll}
+    \toprule
+    Date & Event \\
+    \midrule
+    21 September 2025 & First message in the history \\
+    15 November 2025 & The participants met in person for the first time \\
+    30 November 2025 & The relationship began \\
+    12 and 13 September 2026 & \userB{} sent no messages \\
+    14 September 2026 & \userB{} apologised for the silence and asked to meet \\
+    19 September 2026 & The relationship ended \\
+    7 October 2026 & Last message in the history \\
+    \bottomrule
+  \end{tabular}
+  \caption{Principal dates in the history.}
+  \label{tab:chronology}
+\end{table}
+
+The participants began as friends, and for the first ten weeks the conversation
+concerned shared interests. They met in person on 15 November 2025. The relationship
+began on 30 November 2025, during a conversation that lasted through the night. With
+1,801 messages, that day is the busiest in the history.
+
+The relationship lasted a little under ten months. On 12 and 13 September 2026
+\userB{} sent nothing. On the morning of 13 September \userA{} wrote, in part:
+
+\begin{quote}
+``Is everything okay? I'm guessing you just need some space atm. I'm here if you need
+me''
+\end{quote}
+
+\userB{} replied on the afternoon of 14 September with four messages sent within
+forty seconds of one another:
+
+\begin{quote}
+``Hi ruben hope you've been alright''
+
+``Very sorry for the radio silence the past few days ive just been busy and thinking
+about things a lot''
+
+``Id like to come down to London this weekend for a day to see and talk to you if
+that's okay''
+
+``Would it be alright to hold off finalising plans for the 10th October till after we
+chat''
+\end{quote}
+
+\userA{} agreed at once, replying ``yeah of course, you're welcome whenever'' and
+``sure okay'', and then asked ``are you okay though?''. Within ten minutes the
+participants had settled on the Saturday of that week.
+
+They met on Saturday 19 September 2026 and the relationship ended that day. The
+decision was made by \userB{}. Contact continued afterwards: message volume had been
+recovering since late August and rose a little further in the following two weeks.
+
+\section{Data and Method}
+
+The data is an export of a Discord direct message channel covering 21 September 2025
+to 7 October 2026. \userA{} sent 19,337 messages containing 110,000 words, and \userB{}
+sent 19,735 messages containing 102,571 words. At least one message was sent on 367 of
+the 382 days.
+
+A conversation is defined as a run of messages with no silence longer than
+two hours, which yields 1,020 conversations. A turn is a run of consecutive messages
+by one participant, and a handover is the point at which the other participant
+replies.
+
+Most charts plot weekly values. Weekly counts are small in the quieter months, so the
+bold line in each chart is a rolling average over four weeks, drawn over a faint line
+showing the raw weekly values. Shares and ratios are calculated over the same four
+week window. \userA{} is drawn in orange and \userB{} in navy in every chart.
+
+\section{Overview}
+
+\subsection{Highlights}
+
+The highlights card collects headline figures for the whole period, first for the
+pair and then for each participant. The longest unbroken run of daily contact lasted
+86 days, from 8 October 2025 to 1 January 2026, and the longest silence 3.1 days. The
+largest single conversation contained 1,616 messages over 14.3 hours. A typical one
+was far smaller, at nine messages and 56 minutes. The busiest hour was 23:00 and the
+busiest day of the week was Sunday. \userA{} started 64\% of conversations and sent
+the first message on 274 days, against 94 days for \userB{}.
+
+\chart{highlights.png}{Headline figures for the pair and for each participant.}{python highlights.py}
+
+\subsection{Messages per Day as a Calendar}
+
+Each square in the calendar chart is one day, with weeks running left to right and
+weekdays top to bottom. Colour gives the number of messages on a logarithmic scale,
+and grey marks a day without any. The grey squares are few and scattered across the
+year, and the three longest runs of daily contact lasted 86, 63 and 45 days. The
+darkest region runs from late November 2025 to February 2026, and from April 2026 the
+squares are noticeably paler.
+
+\chart{calendar_heatmap.png}{Messages on each day of the period, on a logarithmic colour scale.}{python calendar\_heatmap.py}
+
+\section{Volume}
+
+\subsection{Messages per Day}
+
+This chart has three panels. The first plots the number of messages sent each day by
+each participant on a logarithmic axis. The five busiest days of each participant are
+labelled with the count and the date. Every period in which both participants were
+quiet, defined as a combined total of no more than one message in a day, is shaded
+grey. Periods of two days or more in which only one participant was quiet, sending no
+more than one message a day while the other continued to write, are shaded in that
+participant's colour. The second panel shows the running total, and the third shows
+each participant's share of each day's messages.
+
+\paragraph{Growth and peaks.}
+The history begins slowly, with 142 messages in the final ten days of September 2025
+and 2,179 in October. Volume rose to 6,137 messages in November, peaked at 8,048 in
+December, and eased to 6,741 in January 2026. The median day across the whole period
+contained 51 messages, and ten days exceeded 500. The busiest was 30 November 2025,
+with 1,801 messages (882 and 919). The second busiest was 18 January 2026, with
+1,589. The three days from 24 to 26 December each contained about 800 to 900. On all
+of these days the two participants sent nearly the same number of messages.
+
+\paragraph{Decline and partial recovery.}
+After January the monthly total fell in every month until May: 4,414 in February,
+2,865 in March, 1,262 in April and 915 in May. The running total in the second panel
+climbs steeply until February and is almost flat from April. Volume then recovered
+somewhat, to 1,316 in June, 1,257 in July, 1,458 in August and 2,190 in September.
+One late peak falls on 25 July 2026, when a single long conversation produced 397
+messages. It is the only labelled peak in which the participants differed much, with
+247 messages from \userB{} and 150 from \userA{}.
+
+\paragraph{Quiet periods shared by both participants.}
+Only 23 of the 382 days contained one message or none. They form the seventeen
+periods listed in Table~\ref{tab:quiet}, none of which lasted longer than three days.
+
+Nine of the seventeen were days on which the participants were together in person.
+The messages on either side of them are travel arrangements and remarks made on
+parting. This group includes both of the three day periods, in the first days of
+January 2026 and during a camping trip in August, and single days during visits in
+February, March, April, May and June. In this history an absence of messages usually
+means that the participants were in the same place.
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{tabular}{lrrl}
+    \toprule
+    Period & Days & Messages & Context from adjacent messages \\
+    \midrule
+    1 to 3 January 2026 & 3 & 1 & Together in person \\
+    18 to 20 August 2026 & 3 & 2 & Together in person \\
+    23 to 24 September 2025 & 2 & 0 & Before daily contact was established \\
+    15 to 16 August 2026 & 2 & 0 & Together in person \\
+    26 September 2025 & 1 & 0 & Before daily contact was established \\
+    7 October 2025 & 1 & 0 & Before daily contact was established \\
+    15 February 2026 & 1 & 0 & Together in person \\
+    23 March 2026 & 1 & 0 & Together in person \\
+    26 May 2026 & 1 & 0 & Together in person \\
+    3 July 2026 & 1 & 0 & Not explained by adjacent messages \\
+    19 July 2026 & 1 & 0 & Not explained by adjacent messages \\
+    4 October 2026 & 1 & 0 & Not explained by adjacent messages \\
+    13 February 2026 & 1 & 1 & Together in person \\
+    28 March 2026 & 1 & 1 & Not explained by adjacent messages \\
+    25 April 2026 & 1 & 1 & Together in person \\
+    20 June 2026 & 1 & 1 & Together in person \\
+    12 September 2026 & 1 & 1 & One participant silent \\
+    \bottomrule
+  \end{tabular}
+  \caption{Every period in which the combined total did not exceed one message in a
+  day, longest first.}
+  \label{tab:quiet}
+\end{table}
+
+Three further periods fall in the first weeks of the history, before the participants
+wrote to each other every day. Four have no explanation in the surrounding messages.
+That leaves 12 September 2026, when the only message was sent by \userA{} and \userB{}
+sent nothing on that day or the next. No meeting took place, and the relationship
+ended a week later.
+
+\paragraph{Quiet periods of one participant.}
+\userA{} had six such periods covering 13 days, and \userB{} had seven covering 18
+days. Most are the visits already described, seen from one side. During a visit one
+participant often sent a single message on a day when the other sent none, which
+makes the period slightly longer for one of them. This accounts for the periods in
+the middle of December, February and March, and at the end of May. Three periods have
+no such explanation. \userA{} was quiet on 12 and 13 July 2026, and \userB{} on 18 and
+19 July and again on 12 and 13 September. In both of the periods belonging to
+\userB{} no messages at all were sent on either day. No other period of two days
+outside a known visit was entirely silent for either participant.
+
+\paragraph{Share of messages.}
+The split between the participants stayed close to even throughout. \userA{} sent
+between 44\% and 53\% of each month's messages until July 2026, and about 55\% in
+August and September. Daily values scatter more widely in the quieter months, since a
+day of twenty messages can be divided more unevenly than a day of five hundred.
+
+\chart{messages_per_day.png}{Daily message counts with peaks and quiet periods marked, running totals, and share of messages.}{python messages\_per\_day.py \opt{total} false \opt{axis} log \opt{quiet} 50 \opt{user-quiet} 100 \opt{quiet-threshold} 1}
+
+\subsection{Message Length}
+
+Messages were short throughout, with overall means of 5.7 words for \userA{} and 5.2
+for \userB{}. The chart plots the mean for each participant in each week, with the
+middle half of individual messages shaded. The weekly means ran five to six words
+during the busiest months, fell to about four in the spring of 2026, and lengthened
+again to about six over the summer, with the two lines moving together throughout.
+
+\chart{message_length.png}{Mean words per message in each week, with the middle half of messages shaded.}{python message\_length.py}
+
+\subsection{Volume Breakdown}
+
+The number of words written equals the number of conversations, multiplied by the
+messages sent in each conversation, multiplied by the words in each message. This
+chart plots the total in its first panel and the three factors beneath it.
+
+Almost all of the decline in volume came from the second factor. The number of
+conversations stayed between about 15 and 23 per week in every part of the year. The
+number of messages each participant sent in a conversation fell from about 50 in
+January 2026 to about seven by April. There were 517 conversations in the first half
+of the period and 503 in the second, and the median conversation fell from 15
+messages lasting 95 minutes to seven messages lasting 38 minutes.
+
+\chart{volume_breakdown.png}{Words per week and the three factors that multiply to give it.}{python volume\_breakdown.py}
+
+\subsection{Conversation Duration}
+
+The previous chart measured a conversation by the number of messages in it. This one
+measures it in time, from the first message to the last. The two upper panels show
+the median duration of the conversations started by each participant, with the
+middle half of conversations shaded, on a logarithmic axis. The lower panel shows the
+difference between the two medians in minutes. Only conversations in which both
+participants took part are included, which is 686 of the 1,020. Each point is
+calculated from all conversations in the preceding four weeks.
+
+The median conversation lasted about five hours in December 2025, about four hours in
+January 2026 and a little over three in February. It fell steadily to about one hour
+in June and July, the lowest level of the period, and recovered to about two hours in
+September. Duration fell by a factor of about five, which is less than the fall in
+the number of messages per conversation.
+
+It made almost no difference which participant started a conversation. The overall
+medians were 2.0 hours for those started by \userA{} and 1.9 hours for those started
+by \userB{}, and the two upper panels have the same shape. The difference in the
+lower panel sits slightly above zero for most of the period and has no trend.
+
+\chart{conversation_duration.png}{Median duration of answered conversations by the participant who started them, and the difference between the two.}{python conversation\_duration.py}
+
+\section{Timing}
+
+\subsection{Message Timing}
+
+Both heat maps are scaled by column, each to its own month, which removes the effect
+of the fall in volume. The upper one gives the share of each month's messages sent in
+each hour of the day, and the lower one the share sent on each day of the week.
+
+Messaging was concentrated in the late evening, and 23:00 was the busiest hour
+overall. In November 2025 about a quarter of all messages were sent between 01:00 and
+06:00. That share was about 16\% in January and stayed below 5\% from March onward.
+Sunday was the busiest day in most months. The two participants are plotted together
+because their timing could not be told apart: the differences between them in any
+month were no larger than chance would produce at that volume.
+
+\chart{daily_rhythm.png}{Share of each month's messages by hour of day and by day of week.}{python daily\_rhythm.py}
+
+\subsection{Reply Time}
+
+Replies were fast in every part of the year. The overall median was 16 seconds for
+\userA{} and 23 seconds for \userB{}, and neither participant slowed appreciably over
+the period. Each participant's weekly median is plotted on a logarithmic axis, with
+the shaded band covering the middle half of replies.
+
+\chart{reply_times.png}{Median reply time within a conversation, by week.}{python reply\_times.py}
+
+\subsection{Reply Time Distribution and Longer Waits}
+
+Every handover in the history is included here, divided at two hours. The upper panel
+shows, for replies given within two hours, the proportion of messages still unanswered
+after each length of time. The lower panel counts the waits that
+lasted longer than two hours, grouped by duration, and shows how many of those waits
+ended with the waiting participant writing again.
+
+Of 15,085 handovers, 14,514 (96.2\%) were answered within two hours, and half of all
+replies arrived within 16 to 23 seconds. One reply in ten took longer than about
+eleven minutes. Of the remaining 571 waits, \userA{} was the one waiting on 264
+occasions and \userB{} on 307. The two curves in the upper panel are almost
+identical.
+
+\chart{response_curve.png}{Distribution of reply times within two hours, and the duration of longer waits.}{python response\_curve.py}
+
+\section{Initiative}
+
+\subsection{Conversation Initiation}
+
+The largest change in the data is here. The three panels show the number of
+conversations each participant started in each week, each participant's share of those
+starts, and each participant's share of the days on which they sent the first message.
+
+Until April 2026 the two participants
+started conversations at broadly similar rates, with \userB{} starting 41 in each of
+March and April. The figure for \userB{} then fell to 26 in May, 19 in June, 17 in
+July and 13 in August. Over the same months the figure for \userA{} rose, and the
+share of conversations started by \userA{} went from 56\% in March to 83\% in
+September. The first message of the day follows the same course: \userA{} sent it on
+about 67\% of days in March and about 90\% of days from June. The decline began
+during an examination period for \userB{} in May and did not reverse when that period
+ended.
+
+\chart{initiators.png}{Conversations started per week, share of starts, and share of first messages of the day.}{python initiators.py}
+
+\subsection{Conversation Endings}
+
+The final message of a conversation is the one followed by at least two hours of
+silence, and therefore by no reply. This chart shows which participant sent it, with
+the lower panel giving each participant's share.
+
+Over the whole period \userA{} sent the final message in 614 conversations (60.2\%)
+and \userB{} in 406 (39.8\%). The split was close to even through the spring of 2026.
+It diverged from late July and reached about 80\% for \userA{} by late September.
+Part of this follows directly from the previous chart, since a conversation that
+receives no answer is both started and ended by the same participant.
+
+\chart{last_word.png}{Conversations ended per week and each participant's share.}{python last\_word.py}
+
+\subsection{Consecutive Messages}
+
+A value of one in this chart would mean strict alternation. It plots the mean number
+of messages each participant sent in a row before the other replied. Both participants
+sent about 2.5 messages per turn for most of the year, and their overall means were
+almost identical at 2.56 and 2.62. From August 2026 the figure for \userA{} rose to
+about 3.5 and that for \userB{} stayed near 2.7, a gap that lasted about six weeks.
+
+\chart{messages_in_a_row.png}{Mean consecutive messages sent before a reply, by week.}{python messages\_in\_a\_row.py}
+
+\subsection{Nudges}
+
+A nudge is defined here as a message sent by a participant more than one hour after
+their own previous message, when no reply had arrived in between. The chart shows the
+number of nudges sent each week and each participant's share.
+
+\userA{} sent 556 nudges in total and \userB{} sent 171. The monthly figures for
+\userB{} fell from 21 in April to 13 in May, seven in June and no more than three in
+any month thereafter. Those for \userA{} rose from about 40 in April to 89 in
+September.
+
+\chart{nudges.png}{Nudges sent per week and each participant's share.}{python nudges.py}
+
+\subsection{Questions}
+
+Counting question marks alone gives a misleading result for this pair. \userB{}
+omitted the question mark from about three questions in four, and a count based on the
+mark attributed 71\% of questions to \userA{}. A message is therefore counted here as a
+question if it contains a question mark or is worded as a question, for example by
+opening with an interrogative word or ending with a tag such as ``is it''. The chart
+gives the weekly counts and each participant's share.
+
+With wording included the totals are 1,669 for \userA{} (54.1\%) and 1,415 for
+\userB{} (45.9\%). The share of \userA{} stayed between about 50\% and 60\% for most
+of the year, and \userB{} asked the larger number in late January and again in July.
+The share moved to about 70\% for \userA{} only in September. The number of questions
+asked by \userB{} did not fall during the summer.
+
+\chart{questions.png}{Questions asked per week and each participant's share.}{python questions.py}
+
+\section{Content}
+
+\subsection{Links Shared}
+
+\userB{} shared 1,161 links in total and \userA{} shared 781. Until March 2026
+\userB{} shared roughly two to three times as many as \userA{}, for example 199
+against 57 in February. The balance reversed in June, and by September \userA{} shared
+72 links against 21. The chart gives the weekly counts and each participant's share.
+
+\chart{links.png}{Links shared per week and each participant's share.}{python links.py}
+
+\subsection{Reactions}
+
+The export records how many reactions a message received but not who gave them. In a
+conversation between two people a reaction on one participant's message will nearly
+always have come from the other. The chart counts the reactions received each week by
+each participant's messages.
+
+Messages from \userA{} received 1,144 reactions and messages from \userB{} received
+622. Both figures peaked between December 2025 and March 2026. After April the
+reactions received by \userA{} settled at about six to fifteen per week and stayed at
+that level. Those received by \userB{} fell to about one to three per week. Read the
+other way round, as a count of who gave the reactions rather than who received them,
+\userB{} went on reacting through the summer and \userA{} largely stopped.
+
+\chart{reactions.png}{Reactions received per week by each participant's messages.}{python reactions.py}
+
+\subsection{Topics}
+
+Eleven topics were specified in advance, each defined by a set of words: work,
+university, art, the furry community, games, sleep, food, family, seeing each other,
+affection and intimacy. A message is counted under a topic if it contains any of that
+topic's words, and may be counted under several. The first row of the chart shows, for
+each participant separately, the share of their topic mentions that fell under each
+topic. The second row is a heat map of the difference between the two participants,
+coloured toward whichever gave a topic the larger share. The third row shows the
+proportion of each participant's messages that mentioned any listed topic.
+
+The topics cover only part of the conversation: 15.6\% of the messages of \userA{}
+and 17.0\% of those of \userB{} mentioned at least one. The first
+row also shows shares, so a topic can widen simply because others have narrowed. In
+the quietest months each participant made only about a hundred topic mentions, and
+single monthly figures from that period are unreliable.
+
+\paragraph{Before the relationship.}
+In October and November 2025 the mix for both participants was dominated by shared
+interests. For \userB{} art was the largest single topic in October, at 27\% of topic
+mentions, followed by the furry community at 16\%. For \userA{} the furry community
+was largest at 23\%, with art, work and games each at about a tenth. Affection and
+intimacy together accounted for about a tenth of mentions in October and about a
+fifth in November. Across the whole period art was mentioned in 303 messages by
+\userB{} and 173 by \userA{}, and the art row of the heat map lies on the side of
+\userB{} in these weeks.
+
+\paragraph{The first three months of the relationship.}
+From December 2025 affection was the largest topic for both participants, at 28\% of
+mentions for \userA{} and 35\% for \userB{} in that month. The shared interests of the
+autumn each shrank to between 3\% and 7\%. In January 2026 the largest topic for
+\userA{} was intimacy, at 27\%, ahead of affection at 22\%. For \userB{} intimacy
+reached 9\% in January, with affection at 33\% and rising to 41\% in February. Over
+the whole period intimate vocabulary appeared in 374 messages from \userA{} and 130
+from \userB{}. Affectionate vocabulary appeared in 1,042 messages from \userB{} and
+615 from \userA{}.
+
+\paragraph{The spring.}
+Intimate vocabulary declined first. For \userB{} it fell from 9\% of mentions in
+January to 1\% in February and did not return. For \userA{} it fell more gradually,
+from 27\% in January to 10\% in February, 7\% in March and 2\% in April. Affectionate
+vocabulary took a different course for each participant. For \userB{} it remained at
+about a third of all topic mentions from March to May (32\%, 33\% and 36\%), and was
+still 28\% in June and 26\% in July. For \userA{} it fell earlier, from 23\% in March
+to 12\% in May and 7\% in July. The share of messages from \userB{} that mentioned
+any topic was highest in these months, at about 20\% from March to May, largely
+because of affectionate terms.
+
+\paragraph{Arrangements to meet.}
+The topic of seeing each other, which covers travel and visits, belongs mainly to
+\userA{}, with 373 messages against 243. It was the largest topic for \userA{} in May
+2026, at 39\% of mentions, and remained at 14\% to 17\% in June and July. For \userB{}
+it reached 14\% in May and 17\% in June and was otherwise small.
+
+\paragraph{The summer and the end of the relationship.}
+From July 2026 the mix for both participants came to resemble that of the previous
+autumn. For \userB{} art returned to about 13\% of mentions from July, the furry
+community to 13\% and 14\% in August and September, and games reached 16\% in
+September. For \userA{} work was the largest topic in August at 18\%, and the furry
+community and art also rose, to 14\% and 13\%. Affection from \userB{} fell to 18\% in
+August and to 6\% in September. In that final month affection made up 16\% of the
+mentions of \userA{}, against 6\% for \userB{}, and the affection row of the heat map
+changes colour.
+
+\chart{topics.png}{Topic share for each participant, the difference between them, and overall coverage.}{python topics.py}
+
+\subsection{Distinctive Words}
+
+This chart lists, for each month, the words that were used at least three times more
+often in that month than in the remainder of the history. No topics are specified in
+advance, and a word is counted once for each message in which it appears.
+
+October 2025 is dominated by the vocabulary of a factory building game. November
+includes words associated with flirting and with meeting in person. January 2026
+contains sexually explicit terms alongside programming terms. April is characterised
+by a second game, May by travel between two cities, August by exercise and costume
+making, and September by a card game. June and July yield few distinctive words.
+
+\chart{distinctive_words.png}{The most distinctive words of each month, coloured by strength.}{python distinctive\_words.py}
+
+\subsection{Word Usage}
+
+Eighteen terms were chosen and their use plotted over time, with one panel for each
+and a first panel combining them. Eleven are terms common between partners and four
+are names, both of which are discussed below. The remaining
+three panels show other expressions characteristic of this pair and are not discussed
+here.
+
+\paragraph{Terms common between partners.}
+The eleven terms are ``love'', ``dear'', ``miss you'', ``boyfriend'', its
+abbreviation ``bf'', ``cute'', ``handsome'', the heart symbol, and all words
+beginning with ``kiss'', ``cuddl'' and ``hug''. Use of these rose sharply in December
+2025, peaked in January and February 2026, and fell steeply in March. The
+participants favoured different terms. \userB{} used ``dear'' 366 times against 39
+for \userA{}, ``love'' 399 times against 248, and ``miss you'' 51 times against 12.
+\userA{} used words beginning with ``kiss'' 132 times against 62 and the heart symbol
+70 times against seven. Most of the terms had fallen to almost nothing by April 2026.
+The exception is ``dear'', which \userB{} continued to use about four or five times a
+week until September. The phrase ``miss you'' does not appear from \userB{} after May.
+
+\paragraph{Usernames and real names.}
+The last four panels show how the participants referred to each other by name. Two
+count uses of the usernames, each panel combining the full username with its
+shortened forms: ``triflic'' and ``triflicacid'' in one, and ``mega'', ``megamoleys''
+and ``moleys'' in the other. The remaining two count uses of the participants' real
+first names, ``ruben'' for \userA{} and ``theo'' for \userB{}.
+
+Names of either kind were used rarely, about a hundred times in more than 39,000
+messages. The usernames belong almost entirely to the weeks before the relationship
+began. \userB{} used the username of \userA{} 24 times, 19 of them in November 2025,
+and \userA{} used the username of \userB{} 29 times, 16 of them in the same month.
+After November both usernames almost disappear. The real names were used less often
+still. \userB{} wrote ``ruben'' 14 times, six of them in December 2025, and \userA{}
+wrote ``theo'' six times. \userB{} used ``ruben'' three times in September 2026,
+including in the opening message of 14 September quoted in the chronology, having
+last used it in March.
+
+Taken together, the eighteen terms were used 1,693 times by \userB{} and 945 times by
+\userA{}.
+
+\chart{word_usage.png}{Weekly use of eighteen terms, comprising terms common between partners, three other expressions, and the usernames and real names of the participants.}{python word\_usage.py \opt{rolling} 4 \opt{words} love dear \q{miss you} boyfriend bf cute handsome \q{kiss*} \q{cuddl*} \q{hug*} \q{<3} \q{:3} \q{hai+} meow \q{triflic|triflicacid} \q{mega|megamoleys|moleys} theo ruben}
+
+\section{Qualifications}
+
+Several results do not fit a single account, and some of the measures are weaker than
+the charts make them look.
+
+Some measures did not move against \userB{} at all. Reply times were unchanged to the
+end. The number of questions asked by \userB{} held up through the summer, and so did
+the reactions that \userB{} gave. Conversations started by either participant lasted
+equally long.
+
+Intimate vocabulary came mostly from \userA{}, at nearly three times the number of
+messages, so its disappearance is as much a change in what \userA{} wrote as in what
+\userB{} wrote. The affectionate share of the topic
+mentions of \userA{} also fell before that of \userB{}, from 23\% in March to 7\% in
+July. Some of that fall is an effect of working in shares, because messages about
+arranging visits took up 39\% of the topic mentions of \userA{} in May, though the
+data does not show how much of the fall that accounts for.
+
+The timing of the decline in initiative has an obvious alternative explanation. May
+2026 was an examination period for \userB{}, and a fall in conversation starts during
+examinations would be unremarkable. The data cannot separate that from a change in
+the relationship. All that can be said is that the figures did not recover in June,
+July or August.
+
+Contact outside the direct message text record is not measured.
+
+Several definitions were chosen for convenience and have not been tested against
+alternatives. A conversation ends after two hours of silence, and a different
+threshold would change the counts of starts and endings.
+
+\section{Conclusion}
+
+Between late November 2025 and February 2026 the participants exchanged several
+thousand messages each month, often through the night. By April the monthly volume
+had fallen by more than four fifths. Conversations were held as often as before, and
+the fall came from each one being much shorter. Across the whole history the
+participants sent almost equal numbers of messages and replied at the same high
+speed.
+
+The measures that diverged were those of initiative. \userB{} started progressively
+fewer conversations from May 2026. By September more than 80\% of conversation starts
+were \userA{}'s, as were almost all nudges. \userA{} also arranged the visits, and was
+the participant most often left without a reply. The content of the messages had
+changed earlier and in stages. Intimate vocabulary declined from February, first for
+\userB{} and then for \userA{}. Affectionate language from \userB{} stayed prominent
+through the spring and early summer, declined over July and August, and fell sharply
+in September. Questions and reactions from \userB{} continued until the end.
+
+The record therefore shows three changes in sequence rather than one: the vocabulary
+of the messages, then their number through the spring, then the initiative behind them
+from May. Conduct within a conversation changed least, with replies staying fast to
+the end and conversations running the same length whoever had begun them. The
+relationship ended on 19 September 2026, and message volume rose slightly in the two
+weeks that followed.
+
+\end{document}
