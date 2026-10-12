@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 """How long conversations last, by who started them, and the difference between the two.
 
-Duration is the time from the first message of a conversation to its last. Only
-conversations both of us took part in are counted: one nobody answered has no
-duration worth the name.
+Duration is first message to last. Only conversations more than one person took
+part in are counted.
 
-    python conversation_duration.py --dir data
-    python conversation_duration.py --dir data --gap 4 --min-conversations 8
+    python conversation_duration.py
+    python conversation_duration.py --gap 4 --min-conversations 8
 """
 from __future__ import annotations
 
@@ -72,11 +71,11 @@ def plot_conversation_duration(
     min_conversations: int = 5,
     gap_hours: float = 2.0,
 ) -> Path:
-    """Top: median duration of the conversations each user started, one panel each,
-    with the middle half shaded. Bottom: the first user's median minus the second's.
+    """Top: median duration of each user's conversations, middle half shaded.
+    Bottom: the first user's median minus the second's.
 
-    The top row is on a log scale, because durations run from a minute to most of a
-    day. The difference is in plain minutes, since a difference has no log.
+    The top row is log, since durations run from a minute to most of a day; the
+    difference is in plain minutes.
     """
     stats = windowed_stats(convs, users, "Secs", period, rolling, min_conversations, span)
     colors = user_colors(users)

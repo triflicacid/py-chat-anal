@@ -5,9 +5,9 @@ With more than one word, the first panel adds them all together.
 
 Produces nothing unless --words is given.
 
-    python word_usage.py --dir data --words dear love
-    python word_usage.py --dir data --words "love you" --period M --mode messages
-    python word_usage.py --dir data --words love --partial   # also "lovely", "loved"
+    python word_usage.py --words dear love
+    python word_usage.py --words "love you" --period M --mode messages
+    python word_usage.py --words love --partial   # also "lovely", "loved"
 """
 from __future__ import annotations
 
@@ -75,9 +75,8 @@ def plot_word_usage(
 ) -> Path:
     """A grid of line charts, one per word, sharing a date axis and one legend.
 
-    Each panel keeps its own y axis, because a common word would otherwise flatten a
-    rare one. The totals in each panel title make the two comparable anyway. With
-    more than one word, a panel summing all of them comes first.
+    Each panel keeps its own y axis, or a common word would flatten a rare one.
+    With more than one word, a panel summing all of them comes first.
     """
     users = resolve_users(tables, users)
     panels = {f'"{word}"': counts for word, counts in tables.items()}
@@ -103,8 +102,8 @@ def plot_word_usage(
             narrow_date_axis(ax)
     for ax in cells[len(panels):]:
         ax.set_visible(False)
-    # sharex hides the tick labels above the last row, which leaves a column with an
-    # empty cell under it without any. Turn them back on for the lowest panel in each.
+    # sharex hides tick labels above the last row, so a short column loses them.
+    # Turn them back on for the lowest panel in each.
     for col in range(ncols):
         shown = [axs[row, col] for row in range(nrows) if row * ncols + col < len(panels)]
         shown[-1].tick_params(axis="x", which="both", labelbottom=True)

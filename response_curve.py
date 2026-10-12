@@ -6,8 +6,8 @@ Bottom panel: how long the waits run once nobody is, and who breaks the silence.
 
 Unlike reply_times.py this keeps every handover, including the overnight ones.
 
-    python response_curve.py --dir data
-    python response_curve.py --dir data --gap 4 --nudge-hours 2
+    python response_curve.py
+    python response_curve.py --gap 4 --nudge-hours 2
 """
 from __future__ import annotations
 
@@ -134,8 +134,7 @@ def _draw_footer(fig, hand: pd.DataFrame, users: list[str], colors: dict[str, st
                  nudge_hours: float) -> None:
     """Every handover again, from the waiting side.
 
-    Fixed-width columns in a monospace font, every row padded to one length, so
-    centring each row on the figure still lines the columns up.
+    Monospace, every row padded to one length, so centring still lines the columns up.
     """
     rows = []
     for u in users:
@@ -165,9 +164,8 @@ def plot_response_curve(
 ) -> Path:
     """Two panels over the same handovers, split at the conversation gap.
 
-    They are split because one regime otherwise hides the other: the overwhelming
-    majority of handovers land inside the gap, so on a single axis every wait is
-    squeezed into an invisible tail.
+    Split because most handovers land inside the gap, squeezing the waits into an
+    invisible tail on a single axis.
     """
     users = resolve_users(hand, users)
     cut = gap_hours * 3600
@@ -180,8 +178,7 @@ def plot_response_curve(
                 nudge_hours, len(hand))
 
     fig.tight_layout(rect=(0, 0.12, 1, 1))
-    # tight_layout under-reserves against a fixed hspace, so pin the margin that
-    # keeps the lower panel's x-label clear of the footer.
+    # tight_layout under-reserves against a fixed hspace; pin the bottom margin.
     fig.subplots_adjust(bottom=0.145)
     _draw_footer(fig, hand, users, colors, nudge_hours)
     return save(fig, out)

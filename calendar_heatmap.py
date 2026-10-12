@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Every day as one square, coloured by how many messages we sent on it.
+"""Every day as one square, coloured by how many messages it holds.
 
-Weeks run left to right and weekdays top to bottom, so a streak shows as a solid
-block and a silence as a gap. The longest streak and the busiest day are marked.
+Weeks run left to right, weekdays top to bottom. The longest streak and the
+busiest day are marked.
 
-    python calendar_heatmap.py --dir data
-    python calendar_heatmap.py --dir data --out calendar.svg
+    python calendar_heatmap.py
+    python calendar_heatmap.py --out calendar.svg
 """
 from __future__ import annotations
 
@@ -38,16 +38,16 @@ def add_arguments(p) -> None:
 
 
 def calendar_grid(daily: pd.Series) -> tuple[np.ndarray, pd.Timestamp]:
-    """Daily totals laid out as weekday rows by week columns.
+    """Daily totals as weekday rows by week columns.
 
-    Returns the grid and the Monday its first column starts on. Days outside the
-    range are NaN, which keeps them apart from days inside it that were silent.
+    Returns the grid and the Monday it starts on. Days outside the range are NaN,
+    to keep them apart from silent days inside it.
     """
     monday = daily.index[0] - pd.Timedelta(days=daily.index[0].weekday())
     days_in = (daily.index - monday).days
     grid = np.full((7, days_in.max() // 7 + 1), np.nan)
-    # A log scale has no place for zero, so a silent day is held just under one
-    # message, where the colour map's "under" colour picks it up.
+    # A log scale has no zero, so a silent day sits just under one message,
+    # where the colour map's "under" colour picks it up.
     grid[days_in % 7, days_in // 7] = daily.where(daily > 0, 0.5).to_numpy()
     return grid, monday
 
@@ -67,8 +67,7 @@ def plot_calendar_heatmap(
 ) -> Path:
     """One strip of squares for the whole range, on a log colour scale.
 
-    Log, because the busiest day holds over a thousand messages and a typical one a
-    few dozen. On a linear scale every ordinary day would be the same pale square.
+    Log: the busiest day can hold a hundred times what a typical one does.
     """
     users = resolve_users(df, users)
     daily = daily_counts(df, users).sum(axis=1)

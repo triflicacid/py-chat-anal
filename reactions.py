@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 """Reactions each user's messages received over time, and each user's share of them.
 
-The export records how many reactions a message got, not who gave them. With two
-people in the conversation, a reaction on one user's message is almost always from
-the other one, so each line is best read as the other person reacting.
+The export records how many reactions a message got, not who gave them. In a
+two-person conversation a line is best read as the other person reacting.
 
-    python reactions.py --dir data
-    python reactions.py --dir data --period M --rolling 0
+    python reactions.py
+    python reactions.py --period M --rolling 0
 """
 from __future__ import annotations
 

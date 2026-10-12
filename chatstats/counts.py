@@ -1,7 +1,4 @@
-"""Per-day tallies: messages, and uses of a given word.
-
-One aggregator, `per_day`, backs both, because a message is just a word count of 1 per row.
-"""
+"""Per-day tallies: messages, and uses of a given word. Both run through `per_day`."""
 from __future__ import annotations
 
 import re
@@ -30,10 +27,9 @@ def period_stats(
 ) -> dict[str, pd.DataFrame]:
     """Mean, median and quartiles of `column` per period per user.
 
-    `frame` must already carry the `User` and `Date` columns that `selected` adds.
-    Periods holding fewer than `min_rows` rows come back blank, so one stray value
-    cannot masquerade as a trend. `index_from` supplies the date range when `frame`
-    has been filtered down to a subset of the messages.
+    `frame` needs the `User` and `Date` columns `selected` adds. Periods under
+    `min_rows` rows come back blank. `index_from` gives the date range when `frame`
+    is a subset of the messages.
     """
     g = frame.groupby([period_grouper(period), "User"])[column]
     span = index_from if index_from is not None else frame
@@ -56,10 +52,10 @@ def windowed_stats(
     min_rows: int = 1,
     index_from: pd.DataFrame | None = None,
 ) -> dict[str, pd.DataFrame]:
-    """period_stats, taken over the trailing `window` periods instead of one.
+    """period_stats over the trailing `window` periods instead of one.
 
-    A median cannot be smoothed by averaging the weekly medians, so each point is
-    worked out afresh from every row in its window. A window of one is period_stats.
+    Each point is worked out afresh from every row in its window: a median does not
+    average. A window of one is period_stats.
     """
     if window <= 1:
         return period_stats(frame, users, column, period, min_rows, index_from)
@@ -110,10 +106,8 @@ def daily_words(df: pd.DataFrame, users: list[str] | None = None) -> pd.DataFram
 URL = re.compile(r"https?://\S+", re.IGNORECASE)
 
 
-# How a question is worded when it carries no question mark. Each pattern is matched
-# against the message in lower case with apostrophes removed, so "what's" is "whats".
-# They are deliberately narrow: "how" must be followed by a verb or a measure, or
-# "how lovely" would count, and "which" and "where" must not be starting a clause.
+# How a question is worded when it carries no question mark. Matched against the
+# message in lower case with apostrophes removed, so "what's" is "whats".
 _LEAD = r"^(?:(?:so|and|but|or|wait|oh|btw|also|ok|okay|well|then|hmm+) )?"
 _SUBJECT = (r"(?:you|u|ya|we|i|he|she|it|they|that|this|these|those|there|anyone|everyone|"
             r"your|ur|the)")
@@ -128,8 +122,7 @@ QUESTION_WORDING = re.compile("|".join([
     # how, followed by a verb or a measure
     _LEAD + rf"(?:hows|howd|how (?:{_VERB}|come|about|much|many|long|far|often|old|big|late|"
             r"early|soon|u|ya|you)\b)",
-    # verb before subject: "do you", "is it", "can we", "havent they". Not "do it" or
-    # "do that", which are instructions.
+    # verb before subject: "do you", "is it". Not "do it"/"do that", which are instructions.
     _LEAD + rf"(?!do (?:it|that|this|these|those|the)\b)"
             rf"(?:{_VERB}|arent|isnt|wasnt|werent|dont|doesnt|didnt|cant|couldnt|wouldnt|wont|"
             rf"shouldnt|havent|hasnt) {_SUBJECT}\b",
@@ -143,19 +136,16 @@ QUESTION_WORDING = re.compile("|".join([
     r" (?:is it|isnt it|innit|do you|did you|are you|have you|would you|can you|will you|"
     r"dont you|didnt you|arent you|wont you|or+|or what)$",
     r"(?<!uh) huh$",
-    # "... right", unless "right" is doing its ordinary job: "get it right", "thats right"
+    # "... right", unless it is the ordinary word: "get it right", "thats right"
     r"^(?!.*\b(?:it|its|thats|that|get|gets|got|getting|be|is|are|was|done|do|doing|eating|"
     r"them|this|something|quite|just|all|about|not|so|too|very) right$).+ right$",
 ]))
 
 
 def is_question(df: pd.DataFrame) -> pd.Series:
-    """True for each message that asks something.
+    """True for each message holding a question mark or worded as a question.
 
-    A message counts if it holds a question mark or is worded as a question. The
-    wording matters as much as the mark: plenty of questions are typed without one,
-    and one user can leave it off far more than the other. Links are removed first,
-    because a URL very often carries a question mark of its own.
+    Links are removed first: a URL often carries a question mark of its own.
     """
     text = (df["Content"].str.replace(URL, " ", regex=True).str.lower()
             .str.replace("[’']", "", regex=True).str.replace(r"\s+", " ", regex=True).str.strip())
@@ -181,12 +171,10 @@ def daily_links(df: pd.DataFrame, users: list[str] | None = None) -> pd.DataFram
 
 
 def word_table(sub: pd.DataFrame, by: pd.Series) -> pd.DataFrame:
-    """How many messages each word was said in, with one column per value of `by`.
+    """How many messages each word was said in, one column per value of `by`.
 
-    A word counts once per message however often it is repeated there, so a single
-    long list cannot make a word look common. Links are ignored, and apostrophes are
-    dropped so that "it's" and "its" count as one word; otherwise a habit of
-    punctuation would look like a choice of words.
+    Once per message however often repeated. Links are ignored and apostrophes
+    dropped, so "it's" and "its" are one word.
     """
     text = sub["Content"].str.replace(URL, " ", regex=True).str.lower().str.replace("'", "")
     return (text.str.findall(r"[a-z]{3,}").map(set).explode().dropna()
@@ -196,17 +184,16 @@ def word_table(sub: pd.DataFrame, by: pd.Series) -> pd.DataFrame:
 def distinctive(
     table: pd.DataFrame, n: int = 3, min_uses: int = 25, min_ratio: float = 0.0
 ) -> dict:
-    """The words that set each column of a word table apart from the other columns.
+    """The words setting each column of a word table apart from the rest.
 
-    A word's score is how many times more often it is said in that column than in
-    the rest put together. Returns {column: scores}, best first, keeping at most `n`
-    words said at least `min_uses` times and scoring at least `min_ratio`.
+    Score: how many times more often a word is said in that column than in the others
+    together. Returns {column: scores}, best first, at most `n` per column.
     """
     rate = table / table.sum()
     out = {}
     for col in table.columns:
         rest = table.drop(columns=col)
-        # The +3 stops a word the others never used from scoring infinitely.
+        # +3 stops a word the others never used scoring infinitely.
         score = rate[col] / ((rest.sum(axis=1) + 3) / max(rest.to_numpy().sum(), 1))
         score = score[(table[col] >= min_uses) & (score >= min_ratio)]
         out[col] = score.sort_values(ascending=False, kind="stable").head(n)
@@ -227,10 +214,9 @@ def period_words(
     df: pd.DataFrame, users: list[str] | None = None, period: str = "M", n: int = 8,
     min_uses: int = 8, min_ratio: float = 3.0,
 ) -> dict[pd.Timestamp, pd.Series]:
-    """Each period's most distinctive words, both users together, keyed by its start.
+    """Each period's most distinctive words, all users together, keyed by its start.
 
-    `min_ratio` is what keeps the filler out: in a quiet period nothing stands out,
-    and the best of a bad lot would otherwise be words like "there" and "something".
+    `min_ratio` keeps filler out of a quiet period.
     """
     users = resolve_users(df, users)
     sub = selected(df, users)
@@ -241,12 +227,11 @@ def period_words(
 def word_pattern(word: str, partial: bool = False) -> re.Pattern:
     """Case-insensitive pattern for a word or phrase.
 
-    Whole-word by default, so "love" matches "love" and "Love!" but not "lovely".
-    With partial=True it matches anywhere ("love" also hits "lovely", "gloves").
-    A word ending in * matches anything that begins with it ("draw*" hits "drawing").
-    A word ending in + lets its last letter repeat ("hai+" hits "haiii" but not "hair").
-    Several words joined by | count as one ("mum|mom|mother"), each following the
-    rules above in its own right.
+    Whole-word by default: "love" hits "Love!" but not "lovely".
+    partial=True   matches anywhere ("love" also hits "gloves")
+    trailing *     matches any ending ("draw*" hits "drawing")
+    trailing +     lets the last letter repeat ("hai+" hits "haiii", not "hair")
+    a | b          either, each following the rules above
     """
     if "|" in word:
         parts = [part.strip() for part in word.split("|") if part.strip()]

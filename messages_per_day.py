@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Messages per day for each user, with peaks labelled and quiet spells shaded.
 
-    python messages_per_day.py --dir data
-    python messages_per_day.py --dir data --period W --rolling 4
-    python messages_per_day.py --dir data --axis linear
-    python messages_per_day.py --dir data --metric words
-    python messages_per_day.py --dir data --peaks 0 --quiet 0 --user-quiet 0
+    python messages_per_day.py
+    python messages_per_day.py --period W --rolling 4
+    python messages_per_day.py --axis linear
+    python messages_per_day.py --metric words
+    python messages_per_day.py --peaks 0 --quiet 0 --user-quiet 0
 """
 from __future__ import annotations
 
@@ -63,10 +63,9 @@ def add_arguments(p) -> None:
 def solo_quiet_runs(
     counts: pd.DataFrame, users: list[str], threshold: int, min_length: int
 ) -> dict[str, list[tuple]]:
-    """Each user's quiet runs, minus the ones falling wholly inside a shared silence.
+    """Each user's quiet runs, minus those falling wholly inside a shared silence.
 
-    Those stretches are already covered by the grey "both quiet" shading, and showing
-    them again as a solo gap would blame one person for a silence neither broke.
+    Those are already under the grey "both quiet" shading.
     """
     everyone_quiet = counts.sum(axis=1) <= threshold
     runs = {}

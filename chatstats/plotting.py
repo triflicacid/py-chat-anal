@@ -17,65 +17,47 @@ from .peaks import find_peaks
 from .periods import DEFAULT_PEAK_DISTANCE, format_date_axis, period_end, unit
 
 DPI = 150
-# Space left above the tallest line for peak labels, as a multiple of the data
-# ceiling. A log axis needs a far larger factor, because the same multiple covers
-# much less height there than it does on a linear one.
+# Space left above the tallest line for peak labels, as a multiple of the data ceiling.
+# A log axis needs a far larger factor to cover the same height.
 PEAK_HEADROOM_LOG = 5.0
 PEAK_HEADROOM_LINEAR = 1.32        # plus PER_LINE for each line drawn
 PEAK_HEADROOM_PER_LINE = 0.10
 LOG_TICKS = (0, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1_000, 2_000, 5_000, 10_000)
-# Heights of the optional lower panels, against 3.0 for the main one. The cumulative
-# panel is deliberately short: it is there for the overall trend, not for reading
-# values off. PANEL_INCH is the figure height each unit of panel height adds.
+# Heights of the optional lower panels, against 3.0 for the main one. PANEL_INCH is the
+# figure height each unit adds.
 MAIN_PANEL_HEIGHT = 3.0
 CUMULATIVE_PANEL_HEIGHT = 0.8
 SHARE_PANEL_HEIGHT = 1.0
 PANEL_INCH = 1.8
 
 
-# Each user keeps the same colour in every chart, so a line, a shaded span and a bar
-# for one person always agree. A colour given in config.toml under [usernames] is that
-# user's for good; anyone not named there takes one of matplotlib's own, below. Red is
-# left out of those so nothing competes with the crimson total line.
+# Colours for users not named in config.toml. Red is left out: it is the total line.
 SPARE_COLORS = ("C0", "C1", "C2", "C4", "C5", "C6", "C7", "C8", "C9")
-# Quantities belonging to everyone rather than to one person: the combined total,
-# and the conversations they share.
+# Quantities belonging to everyone rather than to one person.
 TOTAL_COLOR = "crimson"
 PAIR_COLOR = "#3F4A54"
-# Topics, which are neither a person nor the pair. Crimson is left out because it is
-# the total line, and these are far enough apart to tell a dozen topics apart.
+# Topics, which are neither a person nor the pair.
 TOPIC_COLORS = ("#2CA02C", "#17BECF", "#BCBD22", "#8C564B", "#E377C2", "#7F7F7F",
                 "#1B9E77", "#A6761D", "#66A61E", "#9467BD", "#D4A6C8", "#4E9A9A")
-# A key date is drawn as a divider: a line across the chart, labelled where there is
-# room. Which dates those are comes from the config file, not from here.
+# A key date is drawn as a divider: a line across the chart, labelled where there is room.
 DIVIDER_COLOR = "black"
 DATE_FORMATTERS = (mdates.DateFormatter, mdates.AutoDateFormatter, mdates.ConciseDateFormatter)
 _dividers: list[tuple[pd.Timestamp, str]] = []  # filled by show_key_dates
-# Sequential ramp for magnitude, one hue running light to dark. Teal deliberately:
-# orange and navy already mean a specific person everywhere else in these charts.
+# Sequential ramp for magnitude, one hue running light to dark.
 HEATMAP_CMAP = LinearSegmentedColormap.from_list(
     "rhythm", ["#F3FAF9", "#A8D9D3", "#4A9E95", "#1E6B64", "#0C3B37"])
 
 
 def diverging_cmap(low: str, high: str) -> LinearSegmentedColormap:
-    """A ramp from one colour through white to another, for a difference between two.
-
-    Grey marks cells with nothing to compare, which keeps them apart from the white
-    of an even match.
-    """
+    """A ramp from one colour through white to another, for a difference. Grey = no data."""
     return LinearSegmentedColormap.from_list("difference", [low, "white", high]).with_extremes(
         bad="#E4E4E4")
 
 
 def user_colors(users) -> dict[str, str]:
-    """One stable colour per user, so lines, shading and bars always agree.
+    """One colour per user: the config's where given, else a spare one, in name order.
 
-    A user given a colour in config.toml keeps it come what may, which is what stops
-    two charts disagreeing about who is who. Anyone else takes one of matplotlib's own,
-    handed out in name order rather than in the order --users happens to list them, so
-    that at least listing the same people the other way round does not repaint them.
-    Charting a *different* set of people still can, since the colours are handed out
-    among whoever is in the chart: name a user in config.toml to pin theirs for good.
+    Name order, not argument order, so that --users cannot repaint anyone.
     """
     named = configured_colors()
     fixed = {u: named.get(str(u).lower(), "") for u in users}
@@ -86,11 +68,7 @@ def user_colors(users) -> dict[str, str]:
 
 
 def show_key_dates(on: bool) -> None:
-    """Turn the key dates on or off for every chart drawn from here on.
-
-    The dates themselves come from the config file, so with none listed there this
-    leaves every chart unmarked however it is called.
-    """
+    """Turn the config's key dates on or off for every chart drawn from here on."""
     _dividers[:] = [(pd.Timestamp(day), label) for day, label in key_dates()] if on else []
 
 
@@ -100,10 +78,9 @@ def dividers() -> list[tuple[pd.Timestamp, str]]:
 
 
 def divider_positions(starts: pd.DatetimeIndex, period: str) -> list[tuple[float, str]]:
-    """Where each divider falls on an axis that counts periods instead of dates.
+    """Where each divider falls on an axis counting periods, not dates.
 
-    `starts` is the start of each period in order. A date part of the way through
-    a period lands that far between its two edges, and one outside them is left out.
+    `starts` is each period's start, in order. A date outside them is left out.
     """
     found = []
     for date, label in _dividers:
@@ -140,11 +117,7 @@ def draw_dividers(ax, positions: list[tuple[float, str]], vertical: bool = True,
 
 
 def _divide_date_axes(fig) -> None:
-    """Mark the dividers on every panel whose x axis is dates.
-
-    Done here, as the figure is saved, so that no chart has to ask for it. Only the
-    first panel is labelled; on the ones under it the lines speak for themselves.
-    """
+    """Mark the dividers on every panel whose x axis is dates. Only the first is labelled."""
     labelled = False
     for ax in fig.axes:
         if not ax.get_visible() or not isinstance(ax.xaxis.get_major_formatter(), DATE_FORMATTERS):
@@ -153,8 +126,7 @@ def _divide_date_axes(fig) -> None:
         inside = [(mdates.date2num(date), label) for date, label in _dividers
                   if low <= mdates.date2num(date) <= high]
         draw_dividers(ax, inside, labels=not labelled)
-        # Only a panel that actually wrote a label counts as the labelled one, so a
-        # set of unlabelled dates does not silence the panel below.
+        # Only a panel that wrote a label counts as labelled.
         labelled = labelled or any(label for _pos, label in inside)
 
 
@@ -170,11 +142,7 @@ def save(fig, out: str | Path) -> Path:
 
 
 def chart_title(ax, title: str, note: str = "", lift: float = 0.0) -> None:
-    """A chart's title, with an optional line of explanation under it in small grey type.
-
-    The title names what is plotted and nothing else; how to read the chart goes in
-    the note. `lift` raises both, in points, to clear tick labels along the top edge.
-    """
+    """A title, with `note` under it in small grey type. `lift` clears top tick labels."""
     ax.set_title(title, fontsize=12, pad=6 + lift + (14 if note else 0))
     if note:
         ax.annotate(note, xy=(0.5, 1), xycoords="axes fraction", xytext=(0, 5 + lift),
@@ -189,11 +157,9 @@ def legend_below(ax, ncol: int = 4) -> None:
 
 
 def place_peak_labels(ax, fig, labels: list[tuple], box_w: float = 62, box_h: float = 24) -> None:
-    """Annotate peaks, nudging each label upwards until it clears the ones already placed.
+    """Annotate peaks, nudging each label up until it clears those already placed.
 
-    `labels` is [(date, value, text, color)]. Works in points (1/72 inch) so the
-    spacing is the same whatever the data scale. Lower peaks are placed first, so
-    a higher peak's label stacks above a lower neighbour's rather than hiding it.
+    `labels` is [(date, value, text, color)]. Measured in points, lowest peak first.
     """
     to_pts = 72 / fig.dpi
     placed: list[tuple[float, float, float]] = []  # (x_centre, y_bottom, y_top) in points
@@ -222,17 +188,15 @@ def span_label(ax, start, end, period, text, y, color) -> None:
 
 
 def rolling_sums(counts: pd.DataFrame, rolling: int = 0) -> pd.DataFrame:
-    """Counts summed over the rolling window, so that a share or a rate taken from
-    them covers the same stretch as a rolling-average line drawn above it."""
+    """Counts summed over the rolling window, to match a rolling-average line above."""
     return counts.rolling(rolling, min_periods=1).sum() if rolling > 1 else counts
 
 
 def rolling_line(ax, series: pd.Series, color: str, label: str, rolling: int = 0,
                  period: str = "W", smoothed: pd.Series | None = None) -> None:
-    """One line, or with `rolling` its average drawn over a faint copy of the raw line.
+    """One line, or with `rolling` its average over a faint copy of the raw line.
 
-    `smoothed` replaces the plain rolling mean, for a ratio whose smooth form has to
-    be worked out from rolling sums rather than by averaging the ratio itself.
+    `smoothed` replaces the plain rolling mean, for a ratio taken from rolling sums.
     """
     if rolling > 1:
         if smoothed is None:
@@ -246,10 +210,7 @@ def rolling_line(ax, series: pd.Series, color: str, label: str, rolling: int = 0
 
 
 def stack_date_axis(axes, index: pd.DatetimeIndex, period: str) -> None:
-    """Give a stack of panels sharing one x axis its dates.
-
-    The date axis belongs to the lowest panel; the rest keep their grid but drop it.
-    """
+    """Date the lowest of a stack of panels sharing one x axis; the rest keep the grid."""
     format_date_axis(axes[-1], index, period)
     for other in axes[:-1]:
         other.grid(True, which="major", alpha=0.4)
@@ -274,11 +235,7 @@ def legend_under_figure(fig, ax, ncol: int = 4) -> None:
 
 
 def cumulative_panel(ax, counts: pd.DataFrame, total: bool = False) -> None:
-    """Running total of each column, so slope is the rate and a flat stretch is silence.
-
-    Always linear, whatever the main panel uses. A running total is already a sum, and
-    a log axis would flatten exactly the changes in slope this panel exists to show.
-    """
+    """Running total of each column: slope is the rate, flat is silence. Always linear."""
     colors = user_colors(counts.columns)
     for u in counts.columns:
         running = counts[u].cumsum()
@@ -296,16 +253,14 @@ def cumulative_panel(ax, counts: pd.DataFrame, total: bool = False) -> None:
 
 
 def share_panel(ax, counts: pd.DataFrame, period: str, ylabel: str = "Share (%)") -> None:
-    """Stacked area showing each column's share of its period total, out of 100%.
+    """Stacked area of each column's share of its period total, out of 100%.
 
-    A dashed line at 50% makes parity easy to read. Periods in which nothing happened
-    at all are left blank rather than drawn as an even split between nobody.
+    Empty periods are left blank, not drawn as an even split.
     """
     colors = user_colors(counts.columns)
     total = counts.sum(axis=1)
     share = counts.div(total.where(total > 0), axis=0) * 100  # NaN where nothing happened
-    # step="post" draws each value up to the *next* point, so repeat the last row at the
-    # end of its period; otherwise the final bucket would have zero width.
+    # step="post" draws up to the next point, so repeat the last row at its period end.
     end = period_end(share.index[-1], period)
     share = pd.concat([share, share.iloc[[-1]].set_axis([end])])
     total = pd.concat([total, total.iloc[[-1]].set_axis([end])])
@@ -344,12 +299,11 @@ def plot_lines(
     peaks       -> label the top-n local peaks of each line (on the smoothed line if rolling)
     quiet       -> spans when everyone was quiet: shaded grey
     user_quiet  -> {user: spans} when just that user was quiet: shaded in their faint colour
-    axis        -> "log" to keep a handful of 900-message days from flattening the rest
+    axis        -> "log", so that a few huge days do not flatten the rest
     total       -> add a red line for the combined total across all columns
     cumulative  -> add a lower panel with the running total of each column
     share       -> add a lower panel with each column's share of the period total
-    smooth_share -> take that share over the rolling window instead of one period,
-                    for counts too small to give a steady share period by period
+    smooth_share -> take that share over the rolling window instead of one period
     note        -> a line of explanation under the title
     """
     noun = unit(period)
@@ -368,7 +322,7 @@ def plot_lines(
         lower_axes = []
     distance = peak_distance if peak_distance is not None else DEFAULT_PEAK_DISTANCE[period]
     colors = user_colors(counts.columns)
-    peak_labels: list[tuple] = []  # placed at the end, once the axis limits are final
+    peak_labels: list[tuple] = []  # placed once the axis limits are final
 
     # --- shading (behind the lines) -----------------------------------------
     for k, (user, spans) in enumerate((user_quiet or {}).items()):
@@ -407,8 +361,7 @@ def plot_lines(
                                     color))
                 ax.plot(date, value, "o", color=color, markersize=5, zorder=5)
 
-    # Combined total, last so it sits over the user lines. It carries no peak labels;
-    # those belong to the individual lines.
+    # Combined total, last so it sits over the user lines. No peak labels of its own.
     if total and len(counts.columns) > 1:
         combined = counts.sum(axis=1)
         drawn = combined.rolling(rolling, min_periods=1).mean() if rolling > 1 else combined
@@ -419,8 +372,7 @@ def plot_lines(
     chart_title(ax, title, note)
     ax.set_ylabel(ylabel)
     if axis == "log":
-        # symlog, not log: silent days are real zeros, and a plain log axis would drop
-        # them without a word. Below linthresh the axis is linear, so 0 has a place.
+        # symlog, not log: silent days are real zeros, and log would drop them.
         ax.set_yscale("symlog", linthresh=1, linscale=0.4)
         ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _p: f"{v:,.0f}"))
         ax.yaxis.set_minor_formatter(plt.NullFormatter())
@@ -445,7 +397,6 @@ def plot_lines(
     place_peak_labels(ax, fig, peak_labels)
 
     if lower_axes:
-        # One legend under the stack, taken from the lines rather than the panels.
         legend_under_figure(fig, ax, ncol=5)
         fig.tight_layout(rect=(0, 0.05, 1, 1))
     else:

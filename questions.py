@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Questions each user asked over time, and each user's share of them.
 
-A question is a message that holds a question mark or is worded as one ("how are
-you", "did it go ok", "... is it"). The wording matters: one of us leaves the mark
-off most questions, so counting marks alone badly undercounts them.
+A question is a message holding a question mark or worded as one ("how are you",
+"did it go ok", "... is it"). Wording counts too: someone who leaves the mark off
+would otherwise be badly undercounted.
 
-    python questions.py --dir data
-    python questions.py --dir data --period M --rolling 0
+    python questions.py
+    python questions.py --period M --rolling 0
 """
 from __future__ import annotations
 

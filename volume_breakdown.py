@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 """Words per week for each user, split into the three things that make it up.
 
-Words written is conversations held, times messages sent in each, times words in each
-message. The top panel is the total and the three under it are the factors, so a
-change in how much was said can be put down to talking less often, to shorter
-conversations, or to shorter messages.
+Words written is conversations held, times messages in each, times words in each
+message. The top panel is the total, the three under it the factors, so a change
+can be put down to talking less often, shorter conversations, or shorter messages.
 
-    python volume_breakdown.py --dir data
-    python volume_breakdown.py --dir data --gap 4
-    python volume_breakdown.py --dir data --period M --rolling 0
+    python volume_breakdown.py
+    python volume_breakdown.py --gap 4
+    python volume_breakdown.py --period M --rolling 0
 """
 from __future__ import annotations
 
@@ -70,10 +69,9 @@ def plot_volume_breakdown(
 ) -> Path:
     """Four stacked panels: words, then the three factors that multiply to give it.
 
-    Conversations belong to both of us, so that panel has one line; the others have
-    one per user. Each ratio is smoothed as one rolling sum over another, which is
-    the true average for the window and keeps the panels multiplying back to the
-    top one. Averaging the weekly ratios would weigh a quiet week like a busy one.
+    Conversations are shared, so that panel has one line; the others have one per
+    user. Each ratio is smoothed as one rolling sum over another, so the panels
+    still multiply back to the top one.
     """
     users = resolve_users(df, users)
     words = resample_counts(daily_words(df, users), period)

@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 """Median reply time per week for each user, with the middle 50% shaded.
 
-Counts only replies inside a conversation: anything slower than --gap is treated as a
-new conversation rather than a slow reply. For the waits that cutoff discards, see
-response_curve.py.
+Counts only replies inside a conversation: anything slower than --gap starts a new
+one. For the waits that cutoff discards, see response_curve.py.
 
-    python reply_times.py --dir data
-    python reply_times.py --dir data --gap 3 --period M
+    python reply_times.py
+    python reply_times.py --gap 3 --period M
 """
 from __future__ import annotations
 

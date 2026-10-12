@@ -2,10 +2,10 @@
 """Nudges each user sent over time, and each user's share of them.
 
 A nudge is speaking again after --hours of no answer. response_curve.py totals
-them; this puts them on a date axis, which shows who was sending them when.
+them; this puts them on a date axis.
 
-    python nudges.py --dir data
-    python nudges.py --dir data --hours 2 --period M --rolling 0
+    python nudges.py
+    python nudges.py --hours 2 --period M --rolling 0
 """
 from __future__ import annotations
 

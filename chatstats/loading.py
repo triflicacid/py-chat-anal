@@ -15,25 +15,22 @@ EXPECTED_COLUMNS = [
 ]
 FILE_GLOB = "page-*.csv"
 
-# The exported "Timestamp" column is local wall-clock truncated to the minute, which is
-# too coarse for reply times (most replies land in the same minute, so they read as 0s)
-# and is mislabelled as UTC for half the year. Message IDs carry the real time instead:
-# a Discord snowflake's top 42 bits are milliseconds since 2015-01-01T00:00:00Z.
+# A Discord snowflake's top 42 bits are milliseconds since 2015-01-01T00:00:00Z.
 DISCORD_EPOCH_MS = 1_420_070_400_000
 DEFAULT_TZ = "Europe/London"  # timezone the export's wall-clock times were written in
 
-# Attachments/Embeds/Reactions hold counts, not text, so "0" must not read as truthy.
+# These columns hold counts, not text.
 COUNT_COLUMNS = ("Attachments", "Embeds", "Reactions")
 
 
 def _page_number(path: Path) -> int:
-    """Extract NN from page-NN.csv so pages sort numerically."""
+    """NN from page-NN.csv, for numeric sorting."""
     m = re.search(r"page-(\d+)", path.stem)
     return int(m.group(1)) if m else 0
 
 
 def _detect_delimiter(path: Path) -> str:
-    """Exports may be comma- or tab-separated despite the .csv extension."""
+    """The delimiter: exports may be comma- or tab-separated."""
     with path.open("r", encoding="utf-8-sig", newline="") as f:
         header = f.readline()
     try:
@@ -61,11 +58,9 @@ def load_file(path: Path) -> pd.DataFrame:
 
 
 def snowflake_times(ids: pd.Series) -> pd.Series:
-    """Exact UTC send time decoded from Discord message IDs (NaT for non-snowflake IDs).
+    """Exact UTC send time decoded from message IDs; NaT where an ID is not a snowflake.
 
-    Millisecond-precise and strictly ordered, unlike the minute-truncated local
-    wall-clock in the Timestamp column. Parsed from the digit string straight to
-    int64: snowflakes exceed float64's exact range, so a float step would corrupt them.
+    Parsed straight to int64: snowflakes exceed float64's exact range.
     """
     ok = ids.str.fullmatch(r"\d{1,19}").fillna(False)
     out = pd.Series(pd.NaT, index=ids.index, dtype="datetime64[ns, UTC]")
@@ -80,9 +75,7 @@ def load_messages(
 ) -> pd.DataFrame:
     """Load every export page, combine, de-duplicate and resolve timestamps.
 
-    `tz` is the timezone the export's wall-clock times were written in. It is used to
-    read the Timestamp column when an ID is not a usable snowflake, and to decide which
-    local day and hour each message belongs to.
+    `tz` reads the wall-clock column and sets the local day and hour buckets.
     """
     files = sorted(Path(directory).glob(pattern), key=_page_number)
     if not files:
@@ -90,12 +83,11 @@ def load_messages(
 
     df = pd.concat([load_file(p) for p in files], ignore_index=True)
 
-    # Pages can overlap at the boundaries; message IDs are unique.
+    # Pages overlap at the boundaries; message IDs are unique.
     df = df.drop_duplicates(subset="ID", keep="first")
 
     # Prefer the ID's exact time; fall back to the wall-clock column read in `tz`.
-    # ambiguous/nonexistent -> NaT: the hour repeated or skipped at a DST change is not
-    # a single real instant, and such rows are dropped below.
+    # An hour repeated or skipped at a DST change is not one instant, so -> NaT, dropped.
     wall = pd.to_datetime(df["Timestamp"], errors="coerce", format="mixed")
     fallback = wall.dt.tz_localize(tz, ambiguous="NaT", nonexistent="NaT").dt.tz_convert("UTC")
     exact = snowflake_times(df["ID"])
@@ -111,8 +103,7 @@ def load_messages(
     df = df.dropna(subset=["Timestamp"]).sort_values("Timestamp").reset_index(drop=True)
 
     df["Username"] = df["Username"].str.strip()
-    # Day and hour buckets follow the local clock, so a late-night message lands on the
-    # night its sender was actually having.
+    # Buckets follow the local clock, so a late-night message lands on the right night.
     df["Local"] = df["Timestamp"].dt.tz_convert(tz)
     df["Date"] = df["Local"].dt.tz_localize(None).dt.normalize()
     for col in COUNT_COLUMNS:

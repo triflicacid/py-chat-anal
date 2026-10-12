@@ -2,10 +2,10 @@
 """Who has the last word: who sent the final message of each conversation.
 
 The counterpart to initiators.py. The last word is the message followed by --gap
-hours of silence, so having it means being the one left without an answer.
+hours of silence.
 
-    python last_word.py --dir data
-    python last_word.py --dir data --gap 4 --period M --rolling 0
+    python last_word.py
+    python last_word.py --gap 4 --period M --rolling 0
 """
 from __future__ import annotations
 

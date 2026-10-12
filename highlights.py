@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """The whole history as one card of headline numbers: totals, records and habits.
 
-    python highlights.py --dir data
-    python highlights.py --dir data --gap 4
-    python highlights.py --dir data --output-longest       # ten longest messages each
-    python highlights.py --dir data --output-longest 25
+    python highlights.py
+    python highlights.py --gap 4
+    python highlights.py --output-longest       # ten longest messages each
+    python highlights.py --output-longest 25
 """
 from __future__ import annotations
 
@@ -44,7 +44,7 @@ def add_arguments(p) -> None:
 
 
 def pair_tiles(df: pd.DataFrame, users: list[str], conv: pd.DataFrame) -> list[Tile]:
-    """The headline numbers that belong to both of us together."""
+    """The headline numbers belonging to everyone together."""
     sub = selected(df, users)
     daily = daily_counts(df, users).sum(axis=1)
     convs = conversation_list(conv)
@@ -81,7 +81,7 @@ def pair_tiles(df: pd.DataFrame, users: list[str], conv: pd.DataFrame) -> list[T
 
 
 def user_tiles(df: pd.DataFrame, users: list[str], conv: pd.DataFrame) -> dict[str, list[Tile]]:
-    """The same set of numbers for each of us, to read side by side."""
+    """The same set of numbers per user, to read side by side."""
     sub = selected(df, users)
     starts = conv[conv["IsStart"]].groupby("User").size().reindex(users, fill_value=0)
     first = first_of_day_counts(df, users, "D").sum()
@@ -155,10 +155,9 @@ def plot_highlights(
     per_user: dict[str, list[Tile]],
     out: str | Path = OUT,
 ) -> Path:
-    """Draw the card: a grid of shared tiles, then a grid of tiles for each user.
+    """Draw the card: a grid of shared tiles, then a grid per user.
 
-    Everything is text placed on one invisible axes, measured in tiles across and
-    rows down, so the layout follows however many tiles there are.
+    All text on one invisible axes, measured in tiles across and rows down.
     """
     colors = user_colors(per_user)
     pair_rows = -(-len(pair) // PAIR_COLUMNS)

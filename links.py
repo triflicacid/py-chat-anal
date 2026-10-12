@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Links each user shared over time, and each user's share of them.
 
-    python links.py --dir data
-    python links.py --dir data --period M --rolling 0
+    python links.py
+    python links.py --period M --rolling 0
 """
 from __future__ import annotations
 

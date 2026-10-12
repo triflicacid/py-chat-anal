@@ -7,11 +7,9 @@ Run = tuple[pd.Timestamp, pd.Timestamp, int, int]
 
 
 def find_peaks(series: pd.Series, n: int = 5, distance: int = 14) -> pd.Series:
-    """Top-n local peaks, at least `distance` periods apart.
+    """Top-n local peaks, at least `distance` periods apart, in date order.
 
-    Greedy: take the highest point, rule out everything within `distance`
-    of it, repeat. Each pick is therefore the maximum of its neighbourhood.
-    Returns the chosen points (index = date), in date order.
+    Greedy: highest point first, then everything outside `distance` of it.
     """
     s = series[series > 0]
     chosen: list[pd.Timestamp] = []
@@ -28,7 +26,7 @@ def _runs(total: pd.Series, wanted: pd.Series, min_length: int) -> list[Run]:
     """Every unbroken run of periods flagged in `wanted`, in date order."""
     runs: list[Run] = []
     start = None
-    for i, flag in enumerate(list(wanted.to_numpy()) + [False]):  # sentinel closes a trailing run
+    for i, flag in enumerate(list(wanted.to_numpy()) + [False]):  # sentinel closes the last run
         if flag and start is None:
             start = i
         elif not flag and start is not None:
@@ -42,10 +40,10 @@ def _runs(total: pd.Series, wanted: pd.Series, min_length: int) -> list[Run]:
 def find_quiet_periods(
     total: pd.Series, n: int | None = 3, threshold: int = 0, min_length: int = 1
 ) -> list[Run]:
-    """The n longest runs (all of them if n is None) where `total` stays <= `threshold`.
+    """The n longest runs (all if None) where `total` stays <= `threshold`.
 
-    Returns (first_period, last_period, length_in_periods, messages_in_run),
-    longest first; ties are broken by fewest messages.
+    Returns (first_period, last_period, length, messages), longest first,
+    ties broken by fewest messages.
     """
     runs = _runs(total, total <= threshold, min_length)
     runs.sort(key=lambda r: (-r[2], r[3], r[0]))
@@ -53,10 +51,9 @@ def find_quiet_periods(
 
 
 def find_streaks(total: pd.Series, n: int | None = 3, min_length: int = 1) -> list[Run]:
-    """The n longest unbroken runs (all of them if n is None) where `total` is above zero.
+    """The n longest runs (all if None) where `total` is above zero.
 
-    Returns the same tuples as find_quiet_periods, longest first; ties are broken by
-    most messages.
+    Same tuples as find_quiet_periods, longest first, ties broken by most messages.
     """
     runs = _runs(total, total > 0, min_length)
     runs.sort(key=lambda r: (-r[2], -r[3], r[0]))

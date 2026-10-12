@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Who starts the conversation, and who sends the first message of the day.
 
-    python initiators.py --dir data
-    python initiators.py --dir data --gap 3 --period M --rolling 0
+    python initiators.py
+    python initiators.py --gap 3 --period M --rolling 0
 """
 from __future__ import annotations
 
@@ -30,8 +30,7 @@ def add_arguments(p) -> None:
     g.add_argument("--day-start", type=float, default=5.0,
                    help="local hour at which a new day begins for the first-message "
                         "panel (default 5, so a 1am message belongs to the night before)")
-    # Weekly starts are small numbers, and a share of them swings a long way on one
-    # conversation, so this chart is smoothed unless told otherwise.
+    # Weekly starts are small numbers whose share swings on one conversation.
     p.set_defaults(rolling=4)
 
 

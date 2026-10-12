@@ -1,12 +1,9 @@
 """Conversation structure: turns, who starts, how long an answer takes.
 
-Two views of the same message stream, and the difference matters:
+Two views of the same stream:
 
-  conversation_table  splits the stream into conversations at `gap_hours` of silence
-                      and times replies *within* one. Anything slower is treated as a
-                      new conversation, not a slow reply, so the long waits drop out.
-  handover_times      every speaker change with no cutoff at all, so an overnight wait
-                      is still a wait. Use this to ask how long someone waited.
+  conversation_table  splits at `gap_hours` of silence, times replies within one
+  handover_times      every speaker change, no cutoff, so an overnight wait counts
 """
 from __future__ import annotations
 
@@ -24,15 +21,12 @@ def conversation_table(
 ) -> pd.DataFrame:
     """The selected users' messages, annotated with conversation structure.
 
-    A new conversation starts whenever nobody (of `users`) has messaged for
-    `gap_hours`. Adds columns:
+    A new conversation starts after `gap_hours` of silence. Adds columns:
       User         canonical username
       ConvID       conversation number
       IsStart      True for the first message of a conversation
       ReplySecs    seconds since the other person's last message, on the first
-                   message of each turn (NaN otherwise, and NaN for conversation
-                   starters: answering after a long gap is a new conversation,
-                   not a slow reply)
+                   message of each turn; NaN otherwise and on starters
     """
     users = resolve_users(df, users)
     sub = selected(df, users)
@@ -45,8 +39,7 @@ def conversation_table(
 
 
 def conversation_list(conv: pd.DataFrame) -> pd.DataFrame:
-    """One row per conversation: when it started, who started it, how many took part,
-    how many messages and how long."""
+    """One row per conversation: start, starter, how many took part, messages, length."""
     out = conv.groupby("ConvID").agg(Date=("Date", "first"), Start=("Timestamp", "min"),
                                      End=("Timestamp", "max"), Msgs=("ID", "size"),
                                      Starter=("User", "first"), Users=("User", "nunique"))
@@ -56,11 +49,7 @@ def conversation_list(conv: pd.DataFrame) -> pd.DataFrame:
 
 def fastest_burst(df: pd.DataFrame, users: list[str] | None = None,
                   size: int = 100) -> tuple[float, pd.Timestamp] | None:
-    """The shortest time in which `size` messages in a row were sent.
-
-    Returns (seconds, when the burst began), or None when there are fewer messages
-    than that.
-    """
+    """(seconds, start) of the shortest run of `size` messages, or None if too few."""
     users = resolve_users(df, users)
     sub = selected(df, users)
     if len(sub) < size:
@@ -74,8 +63,7 @@ def _turns(df: pd.DataFrame, users: list[str], nudge_hours: float = 1.0) -> pd.D
     sub = selected(df, users)
     same_speaker = sub["User"] == sub["User"].shift()
     sub["Turn"] = (~same_speaker).cumsum()
-    # A nudge is a message following the sender's own last one after a long silence:
-    # they got no answer and spoke again anyway.
+    # A nudge: the sender got no answer and spoke again anyway.
     gap = sub["Timestamp"].diff().dt.total_seconds().where(same_speaker)
     sub["IsNudge"] = gap > nudge_hours * 3600
     return sub
@@ -84,10 +72,7 @@ def _turns(df: pd.DataFrame, users: list[str], nudge_hours: float = 1.0) -> pd.D
 def turn_counts(
     df: pd.DataFrame, users: list[str] | None = None, period: str = "W"
 ) -> pd.DataFrame:
-    """Turns taken per period per user, each dated by its first message.
-
-    A turn is a run of messages by one person, ended by the other one speaking.
-    """
+    """Turns per period per user, dated by first message. A turn is one person's run."""
     users = resolve_users(df, users)
     sub = _turns(df, users)
     return resample_counts(per_day(sub[sub["Turn"] != sub["Turn"].shift()], users), period)
@@ -109,8 +94,7 @@ def first_of_day_counts(
 ) -> pd.DataFrame:
     """Days on which each user sent the first message, per period.
 
-    The day turns over at `day_start` o'clock local time rather than at midnight, so
-    a message at 1am carries on the night before instead of opening the next day.
+    The day turns over at `day_start` local, so 1am belongs to the night before.
     """
     users = resolve_users(df, users)
     sub = selected(df, users)
@@ -124,15 +108,13 @@ def first_of_day_counts(
 def handover_times(
     df: pd.DataFrame, users: list[str] | None = None, nudge_hours: float = 1.0
 ) -> pd.DataFrame:
-    """Every speaker change and how long the answer took, with no conversation cutoff.
+    """Every speaker change and how long the answer took, with no cutoff.
 
-    A *turn* is a maximal run of messages by one person; each turn ends when the other
-    person speaks. One row per handover:
+    One row per handover:
       Waiter     who spoke last and then waited
       Responder  who eventually came back
       Secs       the waiter's last message -> the responder's first
-      Nudges     messages the waiter sent into the silence while waiting, i.e. after
-                 `nudge_hours` with no answer
+      Nudges     messages the waiter sent into the silence, after `nudge_hours`
       At         when the wait started
     """
     users = resolve_users(df, users)
@@ -155,10 +137,9 @@ def handover_times(
 def reply_time_stats(
     conv: pd.DataFrame, users: list[str], period: str = "W", min_replies: int = 3
 ) -> dict[str, pd.DataFrame]:
-    """Median and quartiles of reply time per period per user (in seconds).
+    """Median and quartiles of reply time per period per user, in seconds.
 
-    Periods with fewer than `min_replies` replies are left blank (NaN) so a
-    single slow reply doesn't make a spike.
+    Periods under `min_replies` are left blank.
     """
     return period_stats(conv.dropna(subset=["ReplySecs"]), users, "ReplySecs",
                         period, min_replies, index_from=conv)
@@ -179,10 +160,7 @@ def initiator_counts(conv: pd.DataFrame, users: list[str], period: str = "W") ->
 
 
 def ender_counts(conv: pd.DataFrame, users: list[str], period: str = "W") -> pd.DataFrame:
-    """Conversations ended per period per user: who sent the last message of each.
-
-    A conversation nobody answered is ended by the person who started it.
-    """
+    """Conversations ended per period per user: who sent the last message of each."""
     return _conversation_counts(conv.groupby("ConvID").tail(1), conv, users, period)
 
 
@@ -202,7 +180,7 @@ def starter_summary(conv: pd.DataFrame, users: list[str], gap_hours: float) -> N
 
 
 def reply_summary(conv: pd.DataFrame, users: list[str]) -> None:
-    """Print reply-time percentiles, counting only replies inside a conversation."""
+    """Print reply-time percentiles for replies inside a conversation."""
     print("\n=== Reply times (within a conversation) ===")
     for u in users:
         r = conv.loc[conv["User"] == u, "ReplySecs"].dropna()

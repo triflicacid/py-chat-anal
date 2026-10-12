@@ -3,10 +3,10 @@
 
 A word is listed under a month when it was said several times more often then than
 at any other time. Nothing is told what to look for, so this finds topics a word
-list would miss, and shows which words are worth adding to topics.toml.
+list would miss.
 
-    python distinctive_words.py --dir data
-    python distinctive_words.py --dir data --top 12 --min-ratio 2
+    python distinctive_words.py
+    python distinctive_words.py --top 12 --min-ratio 2
 """
 from __future__ import annotations
 
@@ -81,8 +81,8 @@ def plot_distinctive_words(
         spine.set_visible(False)
     chart_title(ax, f"Distinctive Words per {unit(period).title()}",
                 "Most distinctive first")
-    # Time runs down this chart, so the dividers lie across it. Each is moved to the
-    # nearest edge of its row, because a line through the middle strikes the words out.
+    # Time runs down this chart, so dividers lie across it, snapped to a row edge:
+    # a line through the middle would strike the words out.
     marks = divider_positions(pd.DatetimeIndex(list(found)), period)
     draw_dividers(ax, [(round(pos), label) for pos, label in marks], vertical=False)
     bar = fig.colorbar(mesh, ax=ax, pad=0.015,

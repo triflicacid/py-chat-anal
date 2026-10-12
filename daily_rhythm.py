@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
-"""When in the day and week we talk, and whether that changed over the year.
+"""When in the day and week the messages land, and whether that changed over time.
 
-Each column is normalised to its own month, so these are shares rather than counts.
-That is deliberate: raw counts would just restate the volume trend and hide the
-rhythm, which is the only thing this chart is for.
+Each column is normalised to its own month, so these are shares, not counts: raw
+counts would restate the volume trend and hide the rhythm.
 
-Both users together, because we are talking to each other and our clocks are
-therefore forced into alignment. Splitting by user gives two near identical panels.
+All users pooled; people talking to each other share a clock, so splitting them
+gives near identical panels.
 
-    python daily_rhythm.py --dir data
-    python daily_rhythm.py --dir data --period W
+    python daily_rhythm.py
+    python daily_rhythm.py --period W
 """
 from __future__ import annotations
 
@@ -42,8 +41,7 @@ def add_arguments(p) -> None:
 def rhythm_table(df: pd.DataFrame, users: list[str], period: str, by: str) -> pd.DataFrame:
     """Share of each period's messages falling in each hour, or on each weekday.
 
-    Rows are the hour or weekday, columns are the period, and every column sums to
-    100 so that periods of very different size stay comparable.
+    Rows are the hour or weekday, columns the period. Every column sums to 100.
     """
     sub = selected(df, users)
     key = sub["Local"].dt.hour if by == "hour" else sub["Local"].dt.day_name()
@@ -79,8 +77,7 @@ def _heatmap(ax, table: pd.DataFrame, label: str, mark_peak: bool = True):
 def rhythm_summary(df: pd.DataFrame, users: list[str]) -> None:
     """Print how the shape of the day and week changed between the two halves.
 
-    Halves rather than the first and last column: the range starts and ends mid
-    month, so those columns cover a handful of days and say very little.
+    Halves, not first and last column: the range starts and ends mid month.
     """
     sub = selected(df, users)
     mid = sub["Date"].min() + (sub["Date"].max() - sub["Date"].min()) / 2

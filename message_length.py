@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Average message length over time: words per message, for each user.
 
-Counting messages tells you how much someone talked; this tells you how they talked.
-The two move independently, and in this export they move in opposite directions.
+Counting messages says how much someone talked; this says how they talked. The two
+move independently.
 
-    python message_length.py --dir data
-    python message_length.py --dir data --period M
-    python message_length.py --dir data --text-only
+    python message_length.py
+    python message_length.py --period M
+    python message_length.py --text-only
 """
 from __future__ import annotations
 
@@ -78,10 +78,8 @@ def plot_message_length(
 ) -> Path:
     """Mean words per message per period, with the middle 50% of messages shaded.
 
-    The mean is the headline, because that is what "average message length" means and
-    what the overview reports. The band behind it is the quartile range of individual
-    messages, which keeps the skew visible: most messages are very short, and the mean
-    sits above the median because a few long ones pull it up.
+    The band is the quartile range of individual messages, which keeps the skew
+    visible: the mean sits above the median because a few long messages pull it up.
     """
     users = resolve_users(df, users)
     stats, sub = length_stats(df, users, period, min_messages, text_only)

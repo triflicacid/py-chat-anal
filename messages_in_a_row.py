@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """How many messages each user sends in a row before the other one replies.
 
-A run of messages by one person is a turn. This is the average length of a turn, so
-1 means strict back and forth and a rising line means saying more before an answer.
+A run of messages by one person is a turn. 1 means strict back and forth.
 
-    python messages_in_a_row.py --dir data
-    python messages_in_a_row.py --dir data --period M --rolling 0
+    python messages_in_a_row.py
+    python messages_in_a_row.py --period M --rolling 0
 """
 from __future__ import annotations
 
@@ -48,8 +47,8 @@ def plot_messages_in_a_row(
 ) -> Path:
     """Mean messages per turn per period for each user.
 
-    Smoothed as rolling messages over rolling turns, which is the true average for
-    the window. Averaging the weekly averages would weigh a quiet week like a busy one.
+    Smoothed as rolling messages over rolling turns: averaging the weekly averages
+    would weigh a quiet week like a busy one.
     """
     users = resolve_users(df, users)
     sent = resample_counts(daily_counts(df, users), period)

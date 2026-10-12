@@ -48,9 +48,8 @@ def period_end(start: pd.Timestamp, period: str) -> pd.Timestamp:
 
 
 def format_date_axis(ax, index: pd.DatetimeIndex, period: str) -> None:
-    """Month labels on major ticks, a faint line + short day label for every week.
+    """Month labels on major ticks, a faint line and day label for every week.
 
-    Adapts to long ranges so labels never pile up:
       <= ~13 months : every month labelled, every Monday labelled ("06", "13", ...)
       <= 3 years    : every month labelled, weekly lines without labels
       longer        : every 3rd month labelled, no weekly lines

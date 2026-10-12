@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-"""What each of us talked about over time, from a list of topics and their words.
+"""What each user talked about over time, from a list of topics and their words.
 
-One chart per user, side by side, with a heatmap under them of where the two differ.
+One chart per user, side by side, with a heatmap under them of where two differ.
 
-The topics live in topics.toml, a plain file of names and word lists. Nothing here
-works a topic out for itself; it counts the words that file says to count.
+Topics live in topics.toml, a file of names and word lists.
 
-    python topics.py --dir data
-    python topics.py --dir data --topics my_topics.toml --period M --rolling 0
+    python topics.py
+    python topics.py --topics my_topics.toml --period M --rolling 0
 """
 from __future__ import annotations
 
@@ -53,8 +52,7 @@ def topics_summary(user: str, counts: pd.DataFrame, names: list[str]) -> None:
     for name in sorted(names, key=lambda n: -counts[n].sum()):
         line = (f"{name:<20}{counts[name].sum():>10,}"
                 f"{counts[name].sum() / max(counts['messages'].sum(), 1) * 100:>7.1f}%   ")
-        # A month with a handful of mentions can top the shares by chance, most of
-        # all the part months at either end of the range.
+        # A month with few mentions can top the shares by chance.
         steady = share[name][monthly[name] >= PEAK_MIN_MENTIONS]
         if steady.empty:
             print(line + "too few mentions to say")
@@ -67,8 +65,7 @@ def topics_summary(user: str, counts: pd.DataFrame, names: list[str]) -> None:
 def topic_mix(window: pd.DataFrame, names: list[str], min_mentions: int) -> pd.DataFrame:
     """Each topic's share of one user's topic mentions per period, out of 100.
 
-    Periods holding fewer than `min_mentions` are left blank: a share of a handful
-    of mentions says nothing.
+    Periods under `min_mentions` are left blank.
     """
     mentions = window[names].sum(axis=1)
     return window[names].div(mentions.where(mentions >= min_mentions), axis=0) * 100
@@ -92,14 +89,12 @@ def _draw_difference(fig, ax, mixes: dict[str, pd.DataFrame], colors: dict[str, 
                      period: str) -> None:
     """Heatmap of the gap between two users' mixes: a row per topic, a column per period.
 
-    Each cell is the first user's share of a topic minus the second's, in percentage
-    points, coloured towards whoever gave the topic more of their talk.
+    Each cell is the first user's share of a topic minus the second's, in points.
     """
     first, second = mixes
     gap = (mixes[first] - mixes[second]).T
     edges = mdates.date2num(list(gap.columns) + [period_end(gap.columns[-1], period)])
-    # The scale stops short of the single largest gap, so one freak week cannot wash
-    # out every other cell.
+    # The scale stops short of the largest gap, so one freak week cannot wash out the rest.
     limit = max(5.0, float(np.ceil(np.nanpercentile(np.abs(gap.to_numpy()), 98) / 5) * 5))
     mesh = ax.pcolormesh(edges, np.arange(len(gap) + 1), gap.to_numpy(),
                          cmap=diverging_cmap(colors[second], colors[first]),
@@ -128,11 +123,8 @@ def plot_topics(
 ) -> Path:
     """Top: each user's mix of topics. Middle: where the two differ. Bottom: coverage.
 
-    The top row is the mix, out of 100%, so it shows what took the place of what.
-    The middle row takes one mix from the other, which is where a large change in
-    what one of us was talking about shows up. Neither can show that the listed
-    topics are only part of what was said, which is what the bottom row is for: one
-    line per user, on a single panel.
+    The top row is the mix out of 100%, so it shows what took the place of what. The
+    bottom row is what neither can show: how much of all talk the topics cover.
 
     The middle row needs exactly two users and is left out otherwise.
     """
