@@ -7,5 +7,6 @@ sleep = ["sleep*", "slept", "asleep", "bed", "tired", "nap*", "eepy", "woke", "w
 food = ["food", "eat*", "ate", "dinner", "lunch", "breakfast", "hungry", "cook*", "meal*"]
 family = ["family", "mum", "mums", "dad", "dads", "parents", "sister", "brother"]
 "seeing each other" = ["meet*", "visit*", "train", "trains", "station", "london", "travel*", "weekend", "stay", "staying", "bus"]
-affection = ["love", "miss", "dear", "darling", "kiss*", "cuddl*", "hug*", "cute", "handsome", "beautiful", "lovely", "boyfriend*", "mwah"]
+affection = ["love", "miss", "darling", "kiss*", "cuddl*", "hug*", "cute", "handsome", "beautiful", "lovely", "boyfriend*", "mwah"]
+dear = ["dear"]
 intimate = ["sex", "horny", "cum", "dick", "naked", "moan*", "jerk*", "lube", "nsfw", "sucking", "bulge", "balls", "underwear"]
