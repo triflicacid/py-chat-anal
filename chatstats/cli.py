@@ -12,6 +12,9 @@ from .loading import DEFAULT_TZ, FILE_GLOB, load_messages, resolve_users
 from .periods import PERIODS
 from .plotting import dividers, show_key_dates
 
+# Where the export pages normally sit, relative to the project root.
+DEFAULT_DIR = "./data"
+
 AddArguments = Callable[[argparse.ArgumentParser], None]
 
 
@@ -27,7 +30,8 @@ def base_parser(doc: str | None = None) -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description=doc,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
     g = p.add_argument_group("input")
-    g.add_argument("--dir", default=".", help="folder containing the export CSVs")
+    g.add_argument("--dir", default=DEFAULT_DIR,
+                   help=f"folder containing the export CSVs (default {DEFAULT_DIR})")
     g.add_argument("--pattern", default=FILE_GLOB, help="filename glob")
     g.add_argument("--users", nargs="+", default=None,
                    help="usernames to compare (default: every username in the export, "

@@ -18,8 +18,7 @@ uv sync          # or: pip install pandas matplotlib
 The scripts read export pages named `page-NN.csv`, which is what `--pattern`
 matches. To generate this data, I used Discrub.
 
-The default for `--dir` is the current folder, so in this project you almost always
-want `--dir data`.
+`--dir` defaults to `./data`. Point it elsewhere to read a different export.
 
 Two properties of the export are worth knowing, because the scripts work around both
 of them.
@@ -42,7 +41,7 @@ In PowerShell:
 
 ```powershell
 $all = 'overview','highlights','calendar_heatmap','messages_per_day','message_length','volume_breakdown','conversation_duration','daily_rhythm','reply_times','initiators','last_word','messages_in_a_row','response_curve','nudges','questions','links','reactions','topics','distinctive_words'
-foreach ($s in $all) { python "$s.py" --dir data }
+foreach ($s in $all) { python "$s.py" }
 ```
 
 In bash:
@@ -50,7 +49,7 @@ In bash:
 ```bash
 for s in overview highlights calendar_heatmap messages_per_day message_length volume_breakdown conversation_duration daily_rhythm \
          reply_times initiators last_word messages_in_a_row response_curve nudges questions links reactions topics distinctive_words; do
-    python "$s.py" --dir data
+    python "$s.py"
 done
 ```
 
@@ -61,7 +60,7 @@ convenience.
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages inside that folder. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. Matching ignores case. |
 | `--tz TZ` | `Europe/London` | The timezone the export's wall clock times were written in. It decides which local day and hour each message counts towards. |
@@ -85,7 +84,7 @@ outlines the days and names them in the note under its title. `response_curve.py
 effect. A date outside the range of the export is left out wherever it falls.
 
 ```
-python initiators.py --dir data --key-dates
+python initiators.py --key-dates
 ```
 
 ## Output
@@ -177,7 +176,7 @@ by weekday, and the busiest hour of the day.
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
@@ -188,9 +187,9 @@ by weekday, and the busiest hour of the day.
 ### Examples
 
 ```
-python overview.py --dir data
-python overview.py --dir data --csv per_user.csv
-python overview.py --dir data --tz UTC
+python overview.py
+python overview.py --csv per_user.csv
+python overview.py --tz UTC
 ```
 
 ## highlights.py
@@ -222,7 +221,7 @@ folder. Each message is headed by its rank, date, time and word count, longest f
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to include. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
@@ -235,11 +234,11 @@ folder. Each message is headed by its rank, date, time and word count, longest f
 ### Examples
 
 ```
-python highlights.py --dir data
-python highlights.py --dir data --gap 4
-python highlights.py --dir data --output-longest
-python highlights.py --dir data --output-longest 25
-python highlights.py --dir data --out highlights.svg
+python highlights.py
+python highlights.py --gap 4
+python highlights.py --output-longest
+python highlights.py --output-longest 25
+python highlights.py --out highlights.svg
 ```
 
 ## calendar_heatmap.py
@@ -263,7 +262,7 @@ terminal.
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to count. They are pooled rather than compared. |
 | `--tz TZ` | `Europe/London` | The timezone that decides which day a message belongs to. |
@@ -274,9 +273,9 @@ terminal.
 ### Examples
 
 ```
-python calendar_heatmap.py --dir data
-python calendar_heatmap.py --dir data --tz UTC
-python calendar_heatmap.py --dir data --out calendar.svg
+python calendar_heatmap.py
+python calendar_heatmap.py --tz UTC
+python calendar_heatmap.py --out calendar.svg
 ```
 
 ## messages_per_day.py
@@ -314,7 +313,7 @@ together, so they become words per day, cumulative words and share of words.
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
@@ -338,17 +337,17 @@ together, so they become words per day, cumulative words and share of words.
 ### Examples
 
 ```
-python messages_per_day.py --dir data
-python messages_per_day.py --dir data --period W --rolling 4
-python messages_per_day.py --dir data --axis linear
-python messages_per_day.py --dir data --total false
-python messages_per_day.py --dir data --metric words
-python messages_per_day.py --dir data --metric words --period W
-python messages_per_day.py --dir data --peaks 8 --quiet 5
-python messages_per_day.py --dir data --peaks 0 --quiet 0 --user-quiet 0
-python messages_per_day.py --dir data --quiet-threshold 0 --quiet 3 --user-quiet 3
-python messages_per_day.py --dir data --user-quiet 5 --user-quiet-min 7
-python messages_per_day.py --dir data --csv daily.csv --out chart.svg
+python messages_per_day.py
+python messages_per_day.py --period W --rolling 4
+python messages_per_day.py --axis linear
+python messages_per_day.py --total false
+python messages_per_day.py --metric words
+python messages_per_day.py --metric words --period W
+python messages_per_day.py --peaks 8 --quiet 5
+python messages_per_day.py --peaks 0 --quiet 0 --user-quiet 0
+python messages_per_day.py --quiet-threshold 0 --quiet 3 --user-quiet 3
+python messages_per_day.py --user-quiet 5 --user-quiet-min 7
+python messages_per_day.py --csv daily.csv --out chart.svg
 ```
 
 ## message_length.py
@@ -378,7 +377,7 @@ against 5.20 words to 5.97 against 5.28.
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
@@ -392,11 +391,11 @@ against 5.20 words to 5.97 against 5.28.
 ### Examples
 
 ```
-python message_length.py --dir data
-python message_length.py --dir data --text-only
-python message_length.py --dir data --period M
-python message_length.py --dir data --min-messages 50
-python message_length.py --dir data --out length.svg
+python message_length.py
+python message_length.py --text-only
+python message_length.py --period M
+python message_length.py --min-messages 50
+python message_length.py --out length.svg
 ```
 
 ## volume_breakdown.py
@@ -430,7 +429,7 @@ than `--min-messages`.
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
@@ -445,11 +444,11 @@ than `--min-messages`.
 ### Examples
 
 ```
-python volume_breakdown.py --dir data
-python volume_breakdown.py --dir data --gap 4
-python volume_breakdown.py --dir data --rolling 0
-python volume_breakdown.py --dir data --period M --rolling 0
-python volume_breakdown.py --dir data --out breakdown.svg
+python volume_breakdown.py
+python volume_breakdown.py --gap 4
+python volume_breakdown.py --rolling 0
+python volume_breakdown.py --period M --rolling 0
+python volume_breakdown.py --out breakdown.svg
 ```
 
 ## conversation_duration.py
@@ -479,7 +478,7 @@ afresh from every conversation in the previous 4 weeks. Points resting on fewer 
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare, one chart each. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
@@ -494,10 +493,10 @@ afresh from every conversation in the previous 4 weeks. Points resting on fewer 
 ### Examples
 
 ```
-python conversation_duration.py --dir data
-python conversation_duration.py --dir data --gap 4
-python conversation_duration.py --dir data --min-conversations 8
-python conversation_duration.py --dir data --period M --rolling 0
+python conversation_duration.py
+python conversation_duration.py --gap 4
+python conversation_duration.py --min-conversations 8
+python conversation_duration.py --period M --rolling 0
 ```
 
 ## reply_times.py
@@ -519,7 +518,7 @@ every long wait is excluded by design. To see those waits instead, use
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
@@ -533,11 +532,11 @@ every long wait is excluded by design. To see those waits instead, use
 ### Examples
 
 ```
-python reply_times.py --dir data
-python reply_times.py --dir data --gap 3
-python reply_times.py --dir data --period M
-python reply_times.py --dir data --min-replies 10
-python reply_times.py --dir data --out replies.svg
+python reply_times.py
+python reply_times.py --gap 3
+python reply_times.py --period M
+python reply_times.py --min-replies 10
+python reply_times.py --out replies.svg
 ```
 
 ## initiators.py
@@ -567,7 +566,7 @@ taken over the same 4 weeks. `--rolling 0` gives the raw weekly view.
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
@@ -582,12 +581,12 @@ taken over the same 4 weeks. `--rolling 0` gives the raw weekly view.
 ### Examples
 
 ```
-python initiators.py --dir data
-python initiators.py --dir data --gap 4
-python initiators.py --dir data --rolling 0
-python initiators.py --dir data --day-start 4
-python initiators.py --dir data --period M --rolling 0
-python initiators.py --dir data --out starts.png
+python initiators.py
+python initiators.py --gap 4
+python initiators.py --rolling 0
+python initiators.py --day-start 4
+python initiators.py --period M --rolling 0
+python initiators.py --out starts.png
 ```
 
 ## last_word.py
@@ -608,7 +607,7 @@ starts more conversations that go unanswered also ends more.
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
@@ -622,9 +621,9 @@ starts more conversations that go unanswered also ends more.
 ### Examples
 
 ```
-python last_word.py --dir data
-python last_word.py --dir data --gap 4
-python last_word.py --dir data --period M --rolling 0
+python last_word.py
+python last_word.py --gap 4
+python last_word.py --period M --rolling 0
 ```
 
 ## messages_in_a_row.py
@@ -644,7 +643,7 @@ blank where that would rest on fewer than `--min-turns`.
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
@@ -658,9 +657,9 @@ blank where that would rest on fewer than `--min-turns`.
 ### Examples
 
 ```
-python messages_in_a_row.py --dir data
-python messages_in_a_row.py --dir data --rolling 0
-python messages_in_a_row.py --dir data --period M --rolling 0
+python messages_in_a_row.py
+python messages_in_a_row.py --rolling 0
+python messages_in_a_row.py --period M --rolling 0
 ```
 
 ## response_curve.py
@@ -691,7 +690,7 @@ overnight.
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
@@ -704,11 +703,11 @@ overnight.
 ### Examples
 
 ```
-python response_curve.py --dir data
-python response_curve.py --dir data --gap 4
-python response_curve.py --dir data --nudge-hours 2
-python response_curve.py --dir data --gap 6 --nudge-hours 3
-python response_curve.py --dir data --out waiting.png
+python response_curve.py
+python response_curve.py --gap 4
+python response_curve.py --nudge-hours 2
+python response_curve.py --gap 6 --nudge-hours 3
+python response_curve.py --out waiting.png
 ```
 
 ## nudges.py
@@ -726,7 +725,7 @@ the start of the wait it belongs to.
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
@@ -740,10 +739,10 @@ the start of the wait it belongs to.
 ### Examples
 
 ```
-python nudges.py --dir data
-python nudges.py --dir data --hours 2
-python nudges.py --dir data --rolling 0
-python nudges.py --dir data --period M --rolling 0
+python nudges.py
+python nudges.py --hours 2
+python nudges.py --rolling 0
+python nudges.py --period M --rolling 0
 ```
 
 ## questions.py
@@ -778,7 +777,7 @@ is taken over the same 4 weeks. The totals are printed to the terminal.
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
@@ -791,10 +790,10 @@ is taken over the same 4 weeks. The totals are printed to the terminal.
 ### Examples
 
 ```
-python questions.py --dir data
-python questions.py --dir data --rolling 0
-python questions.py --dir data --period M --rolling 0
-python questions.py --dir data --key-dates
+python questions.py
+python questions.py --rolling 0
+python questions.py --period M --rolling 0
+python questions.py --key-dates
 ```
 
 ## links.py
@@ -817,7 +816,7 @@ weeks.
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
@@ -830,10 +829,10 @@ weeks.
 ### Examples
 
 ```
-python links.py --dir data
-python links.py --dir data --rolling 0
-python links.py --dir data --period M --rolling 0
-python links.py --dir data --out links.svg
+python links.py
+python links.py --rolling 0
+python links.py --period M --rolling 0
+python links.py --out links.svg
 ```
 
 ## reactions.py
@@ -856,7 +855,7 @@ terminal.
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
@@ -869,10 +868,10 @@ terminal.
 ### Examples
 
 ```
-python reactions.py --dir data
-python reactions.py --dir data --rolling 0
-python reactions.py --dir data --period M --rolling 0
-python reactions.py --dir data --key-dates
+python reactions.py
+python reactions.py --rolling 0
+python reactions.py --period M --rolling 0
+python reactions.py --key-dates
 ```
 
 ## topics.py
@@ -930,7 +929,7 @@ Use `distinctive_words.py` to find words worth adding.
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to chart, one column each. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
@@ -945,10 +944,10 @@ Use `distinctive_words.py` to find words worth adding.
 ### Examples
 
 ```
-python topics.py --dir data
-python topics.py --dir data --period M --rolling 0
-python topics.py --dir data --topics my_topics.toml
-python topics.py --dir data --rolling 8
+python topics.py
+python topics.py --period M --rolling 0
+python topics.py --topics my_topics.toml
+python topics.py --rolling 8
 ```
 
 ## distinctive_words.py
@@ -975,7 +974,7 @@ by month instead of by person.
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to count. They are pooled rather than compared. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
@@ -990,10 +989,10 @@ by month instead of by person.
 ### Examples
 
 ```
-python distinctive_words.py --dir data
-python distinctive_words.py --dir data --top 12
-python distinctive_words.py --dir data --min-ratio 2 --min-uses 5
-python distinctive_words.py --dir data --period W
+python distinctive_words.py
+python distinctive_words.py --top 12
+python distinctive_words.py --min-ratio 2 --min-uses 5
+python distinctive_words.py --period W
 ```
 
 ## daily_rhythm.py
@@ -1022,7 +1021,7 @@ only a few days each.
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to count. They are pooled rather than compared. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. This chart is entirely about local time, so it matters more here than anywhere else. |
@@ -1034,10 +1033,10 @@ only a few days each.
 ### Examples
 
 ```
-python daily_rhythm.py --dir data
-python daily_rhythm.py --dir data --period W
-python daily_rhythm.py --dir data --tz UTC
-python daily_rhythm.py --dir data --out rhythm.svg
+python daily_rhythm.py
+python daily_rhythm.py --period W
+python daily_rhythm.py --tz UTC
+python daily_rhythm.py --out rhythm.svg
 ```
 
 ## word_usage.py
@@ -1068,7 +1067,7 @@ send very different volumes can still be compared.
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `--dir DIR` | `.` | The folder that holds the export CSV files. |
+| `--dir DIR` | `./data` | The folder that holds the export CSV files. |
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
@@ -1086,14 +1085,14 @@ send very different volumes can still be compared.
 ### Examples
 
 ```
-python word_usage.py --dir data --words dear love
-python word_usage.py --dir data --words "love you" --period M
-python word_usage.py --dir data --words love --partial
-python word_usage.py --dir data --words sorry --mode messages
-python word_usage.py --dir data --words love --rolling 4
-python word_usage.py --dir data --words "mum|mom|mother" "dad|father"
-python word_usage.py --dir data --words dear love sorry "miss you" --columns 2
-python word_usage.py --dir data --words dear love --out words.svg --csv words.csv
+python word_usage.py --words dear love
+python word_usage.py --words "love you" --period M
+python word_usage.py --words love --partial
+python word_usage.py --words sorry --mode messages
+python word_usage.py --words love --rolling 4
+python word_usage.py --words "mum|mom|mother" "dad|father"
+python word_usage.py --words dear love sorry "miss you" --columns 2
+python word_usage.py --words dear love --out words.svg --csv words.csv
 ```
 
 ## Project layout
