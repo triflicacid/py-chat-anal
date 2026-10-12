@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """How long conversations last, by who started them, and the difference between the two.
 
-Duration is first message to last. Only conversations more than one person took
-part in are counted.
-
     python conversation_duration.py
     python conversation_duration.py --gap 4 --min-conversations 8
 """

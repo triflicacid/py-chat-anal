@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 """Words per week for each user, split into the three things that make it up.
 
-Words written is conversations held, times messages in each, times words in each
-message. The top panel is the total, the three under it the factors, so a change
-can be put down to talking less often, shorter conversations, or shorter messages.
-
     python volume_breakdown.py
     python volume_breakdown.py --gap 4
     python volume_breakdown.py --period M --rolling 0

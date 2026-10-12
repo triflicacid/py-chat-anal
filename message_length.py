@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """Average message length over time: words per message, for each user.
 
-Counting messages says how much someone talked; this says how they talked. The two
-move independently.
-
     python message_length.py
     python message_length.py --period M
     python message_length.py --text-only

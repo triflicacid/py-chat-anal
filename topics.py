@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """What each user talked about over time, from a list of topics and their words.
 
-One chart per user, side by side, with a heatmap under them of where two differ.
-
 Topics live in topics.toml, a file of names and word lists.
 
     python topics.py

@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """Who has the last word: who sent the final message of each conversation.
 
-The counterpart to initiators.py. The last word is the message followed by --gap
-hours of silence.
-
     python last_word.py
     python last_word.py --gap 4 --period M --rolling 0
 """

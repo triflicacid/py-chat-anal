@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """Every day as one square, coloured by how many messages it holds.
 
-Weeks run left to right, weekdays top to bottom. The longest streak and the
-busiest day are marked.
-
     python calendar_heatmap.py
     python calendar_heatmap.py --out calendar.svg
 """

@@ -3,8 +3,6 @@
 
 With more than one word, the first panel adds them all together.
 
-Produces nothing unless --words is given.
-
     python word_usage.py --words dear love
     python word_usage.py --words "love you" --period M --mode messages
     python word_usage.py --words love --partial   # also "lovely", "loved"

@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Reactions each user's messages received over time, and each user's share of them.
 
-The export records how many reactions a message got, not who gave them. In a
-two-person conversation a line is best read as the other person reacting.
+The export records how many reactions a message got, not who gave them.
 
     python reactions.py
     python reactions.py --period M --rolling 0

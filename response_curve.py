@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """Replying in a conversation vs waiting for one, split at --gap.
 
-Top panel: how fast each person answers while the other is still there.
-Bottom panel: how long the waits run once nobody is, and who breaks the silence.
-
 Unlike reply_times.py this keeps every handover, including the overnight ones.
 
     python response_curve.py

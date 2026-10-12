@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-"""When in the day and week the messages land, and whether that changed over time.
-
-Each column is normalised to its own month, so these are shares, not counts: raw
-counts would restate the volume trend and hide the rhythm.
-
-All users pooled; people talking to each other share a clock, so splitting them
-gives near identical panels.
+"""When in the day and week the messages land.
 
     python daily_rhythm.py
     python daily_rhythm.py --period W

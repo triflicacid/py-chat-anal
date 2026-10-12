@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 """The words that set each month apart from the rest of the history.
 
-A word is listed under a month when it was said several times more often then than
-at any other time. Nothing is told what to look for, so this finds topics a word
-list would miss.
-
     python distinctive_words.py
     python distinctive_words.py --top 12 --min-ratio 2
 """

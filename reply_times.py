@@ -2,7 +2,7 @@
 """Median reply time per week for each user, with the middle 50% shaded.
 
 Counts only replies inside a conversation: anything slower than --gap starts a new
-one. For the waits that cutoff discards, see response_curve.py.
+one.
 
     python reply_times.py
     python reply_times.py --gap 3 --period M

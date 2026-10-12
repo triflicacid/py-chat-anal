@@ -2,8 +2,7 @@
 """Questions each user asked over time, and each user's share of them.
 
 A question is a message holding a question mark or worded as one ("how are you",
-"did it go ok", "... is it"). Wording counts too: someone who leaves the mark off
-would otherwise be badly undercounted.
+"did it go ok", "... is it").
 
     python questions.py
     python questions.py --period M --rolling 0

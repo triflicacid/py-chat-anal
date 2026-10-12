@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """How many messages each user sends in a row before the other one replies.
 
-A run of messages by one person is a turn. 1 means strict back and forth.
+A run of messages by one person is a turn.
 
     python messages_in_a_row.py
     python messages_in_a_row.py --period M --rolling 0
