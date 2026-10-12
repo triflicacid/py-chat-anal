@@ -134,7 +134,7 @@ def _draw_footer(fig, hand: pd.DataFrame, users: list[str], colors: dict[str, st
                  nudge_hours: float) -> None:
     """Every handover again, from the waiting side.
 
-    Monospace, every row padded to one length, so centring still lines the columns up.
+    Monospace, every row padded to one length.
     """
     rows = []
     for u in users:
@@ -162,11 +162,7 @@ def plot_response_curve(
     gap_hours: float = 2.0,
     nudge_hours: float = 1.0,
 ) -> Path:
-    """Two panels over the same handovers, split at the conversation gap.
-
-    Split because most handovers land inside the gap, squeezing the waits into an
-    invisible tail on a single axis.
-    """
+    """Two panels over the same handovers, split at the conversation gap."""
     users = resolve_users(hand, users)
     cut = gap_hours * 3600
     colors = user_colors(users)

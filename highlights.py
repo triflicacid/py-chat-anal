@@ -81,7 +81,7 @@ def pair_tiles(df: pd.DataFrame, users: list[str], conv: pd.DataFrame) -> list[T
 
 
 def user_tiles(df: pd.DataFrame, users: list[str], conv: pd.DataFrame) -> dict[str, list[Tile]]:
-    """The same set of numbers per user, to read side by side."""
+    """The same set of numbers per user."""
     sub = selected(df, users)
     starts = conv[conv["IsStart"]].groupby("User").size().reindex(users, fill_value=0)
     first = first_of_day_counts(df, users, "D").sum()
@@ -113,7 +113,7 @@ def user_tiles(df: pd.DataFrame, users: list[str], conv: pd.DataFrame) -> dict[s
 
 
 def highlights_summary(pair: list[Tile], per_user: dict[str, list[Tile]]) -> None:
-    """Print every tile, so the numbers can be read without opening the card."""
+    """Print every tile."""
     print("\n=== Highlights ===")
     for big, caption in pair:
         print(f"{big:>22}  {caption}")

@@ -75,8 +75,8 @@ def plot_word_usage(
 ) -> Path:
     """A grid of line charts, one per word, sharing a date axis and one legend.
 
-    Each panel keeps its own y axis, or a common word would flatten a rare one.
-    With more than one word, a panel summing all of them comes first.
+    Each panel keeps its own y axis. With more than one word, a panel summing all
+    of them comes first.
     """
     users = resolve_users(tables, users)
     panels = {f'"{word}"': counts for word, counts in tables.items()}

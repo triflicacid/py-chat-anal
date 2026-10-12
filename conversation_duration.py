@@ -74,8 +74,7 @@ def plot_conversation_duration(
     """Top: median duration of each user's conversations, middle half shaded.
     Bottom: the first user's median minus the second's.
 
-    The top row is log, since durations run from a minute to most of a day; the
-    difference is in plain minutes.
+    The top row is log, the difference in plain minutes.
     """
     stats = windowed_stats(convs, users, "Secs", period, rolling, min_conversations, span)
     colors = user_colors(users)

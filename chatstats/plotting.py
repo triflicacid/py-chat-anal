@@ -53,7 +53,7 @@ PALEST = 0.22
 
 
 def shades(color: str, n: int) -> list[tuple[float, ...]]:
-    """`n` shades of one colour, darkest first: parts that still read as one user."""
+    """`n` shades of one colour, darkest first."""
     rgb = to_rgb(color)
     ramp = LinearSegmentedColormap.from_list(
         "shades", [rgb, tuple(1 - PALEST * (1 - c) for c in rgb)])
@@ -67,16 +67,13 @@ def readable_on(color) -> str:
 
 
 def diverging_cmap(low: str, high: str) -> LinearSegmentedColormap:
-    """A ramp from one colour through white to another, for a difference. Grey = no data."""
+    """A ramp from one colour through white to another. Grey = no data."""
     return LinearSegmentedColormap.from_list("difference", [low, "white", high]).with_extremes(
         bad="#E4E4E4")
 
 
 def user_colors(users) -> dict[str, str]:
-    """One colour per user: the config's where given, else a spare one, in name order.
-
-    Name order, not argument order, so that --users cannot repaint anyone.
-    """
+    """One colour per user: the config's where given, else a spare one, in name order."""
     named = configured_colors()
     fixed = {u: named.get(str(u).lower(), "") for u in users}
     spare = iter(SPARE_COLORS)
@@ -115,8 +112,7 @@ def draw_dividers(ax, positions: list[tuple[float, str]], vertical: bool = True,
                   labels: bool = True) -> None:
     """Draw a line across the axes at each position, with its label beside it.
 
-    A vertical line is labelled at the foot of the axes, which is where these charts
-    have the most room; the top is where peak labels and legends go.
+    A vertical line is labelled at the foot of the axes.
     """
     box = dict(boxstyle="round,pad=0.15", fc="white", ec="none", alpha=0.8)
     for pos, label in positions:
@@ -169,7 +165,7 @@ def chart_title(ax, title: str, note: str = "", lift: float = 0.0) -> None:
 
 
 def legend_below(ax, ncol: int = 4) -> None:
-    """Legend under the axes, where it cannot cover an annotation."""
+    """Legend under the axes."""
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.13), ncol=ncol,
               frameon=False, fontsize=9)
 
@@ -206,7 +202,7 @@ def span_label(ax, start, end, period, text, y, color) -> None:
 
 
 def rolling_sums(counts: pd.DataFrame, rolling: int = 0) -> pd.DataFrame:
-    """Counts summed over the rolling window, to match a rolling-average line above."""
+    """Counts summed over the rolling window."""
     return counts.rolling(rolling, min_periods=1).sum() if rolling > 1 else counts
 
 
@@ -214,7 +210,7 @@ def rolling_line(ax, series: pd.Series, color: str, label: str, rolling: int = 0
                  period: str = "W", smoothed: pd.Series | None = None) -> None:
     """One line, or with `rolling` its average over a faint copy of the raw line.
 
-    `smoothed` replaces the plain rolling mean, for a ratio taken from rolling sums.
+    `smoothed` replaces the plain rolling mean.
     """
     if rolling > 1:
         if smoothed is None:
@@ -239,8 +235,7 @@ def stack_date_axis(axes, index: pd.DatetimeIndex, period: str) -> None:
 def narrow_date_axis(ax) -> None:
     """Thin out a date axis for a panel that shares the figure's width with others.
 
-    A narrow panel has no room for a day label under every week, so those go and
-    the month labels are tilted to fit.
+    Day labels are dropped and the month labels tilted to fit.
     """
     ax.xaxis.set_minor_formatter(plt.NullFormatter())
     ax.tick_params(axis="x", which="major", pad=3, labelsize=7.5, labelrotation=45)
@@ -253,7 +248,7 @@ def legend_under_figure(fig, ax, ncol: int = 4) -> None:
 
 
 def cumulative_panel(ax, counts: pd.DataFrame, total: bool = False) -> None:
-    """Running total of each column: slope is the rate, flat is silence. Always linear."""
+    """Running total of each column, always on a linear axis."""
     colors = user_colors(counts.columns)
     for u in counts.columns:
         running = counts[u].cumsum()
@@ -317,7 +312,7 @@ def plot_lines(
     peaks       -> label the top-n local peaks of each line (on the smoothed line if rolling)
     quiet       -> spans when everyone was quiet: shaded grey
     user_quiet  -> {user: spans} when just that user was quiet: shaded in their faint colour
-    axis        -> "log", so that a few huge days do not flatten the rest
+    axis        -> "log" or "linear" (default)
     total       -> add a red line for the combined total across all columns
     cumulative  -> add a lower panel with the running total of each column
     share       -> add a lower panel with each column's share of the period total

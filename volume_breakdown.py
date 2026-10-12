@@ -39,7 +39,7 @@ def add_arguments(p) -> None:
 
 
 def halves_summary(conv: pd.DataFrame, gap_hours: float) -> None:
-    """Print the two halves of the date range side by side, so the trend is explicit."""
+    """Print the two halves of the date range side by side."""
     convs = conversation_list(conv)
     midpoint = convs["Date"].min() + (convs["Date"].max() - convs["Date"].min()) / 2
     print(f"\n=== Conversations (new conversation after {gap_hours:g}h of silence) ===")
@@ -69,9 +69,8 @@ def plot_volume_breakdown(
 ) -> Path:
     """Four stacked panels: words, then the three factors that multiply to give it.
 
-    Conversations are shared, so that panel has one line; the others have one per
-    user. Each ratio is smoothed as one rolling sum over another, so the panels
-    still multiply back to the top one.
+    The conversations panel has one line, the others one per user. Each ratio is
+    smoothed as one rolling sum over another.
     """
     users = resolve_users(df, users)
     words = resample_counts(daily_words(df, users), period)

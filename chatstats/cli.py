@@ -18,7 +18,7 @@ AddArguments = Callable[[argparse.ArgumentParser], None]
 
 
 def use_utf8_console() -> None:
-    """UTF-8 output: the summaries print characters a legacy codepage cannot encode."""
+    """Switch stdout and stderr to UTF-8."""
     for stream in (sys.stdout, sys.stderr):
         if hasattr(stream, "reconfigure"):
             stream.reconfigure(encoding="utf-8", errors="replace")
@@ -47,7 +47,7 @@ def base_parser(doc: str | None = None) -> argparse.ArgumentParser:
 
 
 def add_rolling_args(p: argparse.ArgumentParser) -> None:
-    """Smoothing, shared by the two line charts."""
+    """Smoothing options."""
     p.add_argument("--rolling", type=int, default=0,
                    help="rolling-average window, in periods (0 = raw)")
 
@@ -74,7 +74,7 @@ def run_chart(
     doc: str | None,
     argv: list[str] | None = None,
 ) -> None:
-    """Entry point shared by every script: parse, load, hand over to `run`."""
+    """Parse the arguments, load the messages, hand over to `run`."""
     use_utf8_console()
     p = base_parser(doc)
     for add in needs:

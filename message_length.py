@@ -76,11 +76,7 @@ def plot_message_length(
     min_messages: int = 10,
     text_only: bool = False,
 ) -> Path:
-    """Mean words per message per period, with the middle 50% of messages shaded.
-
-    The band is the quartile range of individual messages, which keeps the skew
-    visible: the mean sits above the median because a few long messages pull it up.
-    """
+    """Mean words per message per period, with the middle 50% of messages shaded."""
     users = resolve_users(df, users)
     stats, sub = length_stats(df, users, period, min_messages, text_only)
     colors = user_colors(users)

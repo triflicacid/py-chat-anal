@@ -31,7 +31,7 @@ def resample_counts(counts: pd.DataFrame, period: str = "D") -> pd.DataFrame:
 
 
 def period_grouper(period: str) -> pd.Grouper:
-    """The same buckets as resample_counts, for grouping a message-level frame."""
+    """The same buckets as resample_counts, as a Grouper on `Date`."""
     return pd.Grouper(key="Date", freq=PERIODS[period][1], label="left", closed="left")
 
 
@@ -42,7 +42,7 @@ def period_start(dates: pd.Series, period: str) -> pd.Series:
 
 
 def period_end(start: pd.Timestamp, period: str) -> pd.Timestamp:
-    """Exclusive end of the bucket starting at `start` (for shading whole periods)."""
+    """Exclusive end of the bucket starting at `start`."""
     return start + {"D": pd.Timedelta(days=1), "W": pd.Timedelta(weeks=1),
                     "M": pd.DateOffset(months=1)}[period]
 

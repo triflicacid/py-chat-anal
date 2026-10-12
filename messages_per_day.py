@@ -63,10 +63,7 @@ def add_arguments(p) -> None:
 def solo_quiet_runs(
     counts: pd.DataFrame, users: list[str], threshold: int, min_length: int
 ) -> dict[str, list[tuple]]:
-    """Each user's quiet runs, minus those falling wholly inside a shared silence.
-
-    Those are already under the grey "both quiet" shading.
-    """
+    """Each user's quiet runs, minus those falling wholly inside a shared silence."""
     everyone_quiet = counts.sum(axis=1) <= threshold
     runs = {}
     for u in users:
@@ -139,8 +136,7 @@ def plot_messages_per_day(
                        combined total for `quiet` and to each user's own count for `user_quiet`
     quiet_min / user_quiet_min -> ignore runs shorter than this many periods
                        (user_quiet_min defaults to 3 days / 1 week / 1 month)
-    axis            -> "log" (default) so the quiet majority of days stays readable next
-                       to the occasional 900-message day; "linear" for the plain view
+    axis            -> "log" (default) or "linear"
     cumulative      -> add a middle panel with each user's running total
     share           -> add a lower panel with each user's share of that period's messages
     metric          -> count "messages", or the "words" inside them

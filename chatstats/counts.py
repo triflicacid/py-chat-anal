@@ -145,7 +145,7 @@ QUESTION_WORDING = re.compile("|".join([
 def is_question(df: pd.DataFrame) -> pd.Series:
     """True for each message holding a question mark or worded as a question.
 
-    Links are removed first: a URL often carries a question mark of its own.
+    Links are removed first.
     """
     text = (df["Content"].str.replace(URL, " ", regex=True).str.lower()
             .str.replace("[’']", "", regex=True).str.replace(r"\s+", " ", regex=True).str.strip())

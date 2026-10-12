@@ -123,10 +123,8 @@ def plot_topics(
 ) -> Path:
     """Top: each user's mix of topics. Middle: where the two differ. Bottom: coverage.
 
-    The top row is the mix out of 100%, so it shows what took the place of what. The
-    bottom row is what neither can show: how much of all talk the topics cover.
-
-    The middle row needs exactly two users and is left out otherwise.
+    The top row is the mix out of 100%, the bottom row the share of all talk the
+    topics cover. The middle row needs exactly two users and is left out otherwise.
     """
     colors = user_colors(tables)
     compare = len(tables) == 2

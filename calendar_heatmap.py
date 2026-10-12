@@ -40,8 +40,7 @@ def add_arguments(p) -> None:
 def calendar_grid(daily: pd.Series) -> tuple[np.ndarray, pd.Timestamp]:
     """Daily totals as weekday rows by week columns.
 
-    Returns the grid and the Monday it starts on. Days outside the range are NaN,
-    to keep them apart from silent days inside it.
+    Returns the grid and the Monday it starts on. Days outside the range are NaN.
     """
     monday = daily.index[0] - pd.Timedelta(days=daily.index[0].weekday())
     days_in = (daily.index - monday).days
@@ -65,10 +64,7 @@ def plot_calendar_heatmap(
     users: list[str] | None = None,
     out: str | Path = OUT,
 ) -> Path:
-    """One strip of squares for the whole range, on a log colour scale.
-
-    Log: the busiest day can hold a hundred times what a typical one does.
-    """
+    """One strip of squares for the whole range, on a log colour scale."""
     users = resolve_users(df, users)
     daily = daily_counts(df, users).sum(axis=1)
     grid, monday = calendar_grid(daily)

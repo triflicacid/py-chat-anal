@@ -14,7 +14,7 @@ _cache: dict | None = None
 
 
 def use_config(path: str | Path = CONFIG_FILE) -> None:
-    """Point every later lookup at this config file. Called once at start-up."""
+    """Point every later lookup at this config file."""
     global _path, _cache
     _path, _cache = Path(path), None
 

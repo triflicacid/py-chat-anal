@@ -47,8 +47,7 @@ def plot_messages_in_a_row(
 ) -> Path:
     """Mean messages per turn per period for each user.
 
-    Smoothed as rolling messages over rolling turns: averaging the weekly averages
-    would weigh a quiet week like a busy one.
+    Smoothed as rolling messages over rolling turns.
     """
     users = resolve_users(df, users)
     sent = resample_counts(daily_counts(df, users), period)

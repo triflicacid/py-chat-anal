@@ -29,7 +29,7 @@ def load_topics(path: str | Path = TOPICS_FILE) -> dict[str, list[str]]:
 def topic_hits(df: pd.DataFrame, topics: dict[str, list[str]]) -> pd.DataFrame:
     """One True/False column per topic: does the message mention any of its words.
 
-    Links are removed first: the text of a URL is not something anyone said.
+    Links are removed first.
     """
     text = df["Content"].str.replace(URL, " ", regex=True)
     return pd.DataFrame({

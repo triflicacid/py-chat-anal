@@ -75,10 +75,7 @@ def _heatmap(ax, table: pd.DataFrame, label: str, mark_peak: bool = True):
 
 
 def rhythm_summary(df: pd.DataFrame, users: list[str]) -> None:
-    """Print how the shape of the day and week changed between the two halves.
-
-    Halves, not first and last column: the range starts and ends mid month.
-    """
+    """Print how the shape of the day and week changed between the two halves."""
     sub = selected(df, users)
     mid = sub["Date"].min() + (sub["Date"].max() - sub["Date"].min()) / 2
     halves = [("first half", sub[sub["Date"] < mid]), ("second half", sub[sub["Date"] >= mid])]

@@ -24,13 +24,13 @@ COUNT_COLUMNS = ("Attachments", "Embeds", "Reactions")
 
 
 def _page_number(path: Path) -> int:
-    """NN from page-NN.csv, for numeric sorting."""
+    """NN from page-NN.csv."""
     m = re.search(r"page-(\d+)", path.stem)
     return int(m.group(1)) if m else 0
 
 
 def _detect_delimiter(path: Path) -> str:
-    """The delimiter: exports may be comma- or tab-separated."""
+    """The delimiter, comma or tab."""
     with path.open("r", encoding="utf-8-sig", newline="") as f:
         header = f.readline()
     try:
@@ -58,10 +58,7 @@ def load_file(path: Path) -> pd.DataFrame:
 
 
 def snowflake_times(ids: pd.Series) -> pd.Series:
-    """Exact UTC send time decoded from message IDs; NaT where an ID is not a snowflake.
-
-    Parsed straight to int64: snowflakes exceed float64's exact range.
-    """
+    """Exact UTC send time decoded from message IDs; NaT where an ID is not a snowflake."""
     ok = ids.str.fullmatch(r"\d{1,19}").fillna(False)
     out = pd.Series(pd.NaT, index=ids.index, dtype="datetime64[ns, UTC]")
     if ok.any():
