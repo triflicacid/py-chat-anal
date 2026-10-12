@@ -374,6 +374,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\data\page-1.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\data\page-10.csv">
           <value>
             <Attribute>
@@ -389,6 +396,13 @@
           </value>
         </entry>
         <entry key="\data\page-12.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\data\page-13.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -416,7 +430,21 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\data\page-17.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\data\page-18.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\data\page-19.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -430,7 +458,28 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\data\page-21.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\data\page-22.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\data\page-23.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\data\page-24.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
@@ -640,6 +689,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\data\page-6.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\data\page-61.csv">
           <value>
             <Attribute>
@@ -739,6 +795,13 @@
           </value>
         </entry>
         <entry key="\data\page-76.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\data\page-77.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

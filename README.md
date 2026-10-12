@@ -4,18 +4,101 @@ Charts and summaries from a Discord conversation export. Nothing about who is in
 conversation is built in: the usernames come from the export, so the same scripts work
 on anyone's. Each output is its own script; the shared code lives in `chatstats/`.
 
-## Requirements
+## Getting started
 
-Python 3.12 or newer, with `pandas` and `matplotlib`.
+**1. Install Python**, version 3.12 or newer, from [python.org](https://www.python.org/downloads/).
+To check what you have:
 
 ```
-uv sync          # or: pip install pandas matplotlib
+python --version
 ```
 
-## The data
+**2. Install the two libraries** the scripts need, from this folder:
 
-Export pages named `page-NN.csv`, generated with Discrub. Pages are sorted by number,
-concatenated and deduplicated on message ID, so overlapping pages do no harm.
+```
+pip install pandas matplotlib
+```
+
+If you use [uv](https://docs.astral.sh/uv/), `uv sync` does the same from the lockfile.
+
+**3. Export the conversation.** These scripts read a CSV export of a Discord channel or
+DM, made with the Discrub browser extension. Choose **CSV** as the export format. A long
+conversation comes out as several numbered pages in the format `(group or dm)-page-NN`.
+Bulk rename them to `page-NN` with one of the commands below, or keep the names and pass
+`--pattern "*-page-*.csv"` to every script instead.
+
+Run this from inside the folder holding the CSVs. It strips everything before `page-`,
+leaves any other file alone, and does nothing if there is nothing to rename.
+
+In PowerShell:
+
+```powershell
+Get-ChildItem -Filter *-page-*.csv | Rename-Item -NewName { $_.Name -replace '^.*-(page-\d+\.csv)$', '$1' }
+```
+
+In bash:
+
+```bash
+for f in *-page-*.csv; do [ -e "$f" ] || continue; mv -- "$f" "page-${f##*-page-}"; done
+```
+
+**4. Put the CSVs in a `data` folder**.
+
+**5. Check it loaded.** Run the scripts from the project folder, since `data` is found
+relative to where you run them. `overview.py` prints a summary and writes no chart,
+which makes it the quickest test:
+
+```
+python overview.py
+```
+
+The first two lines say how much was read and who was found in it:
+
+```
+Loaded 39,072 messages from 79 file(s)
+Users: triflicacid, megamoleys
+```
+
+If those look right, run any of the others. Each writes a PNG into `out/`:
+
+```
+python messages_per_day.py
+python highlights.py
+python topics.py
+```
+
+There is nothing to configure: the usernames come from the export. `config.toml` is
+optional, and only sets each person's chart colour and any dates worth marking.
+
+One option is worth setting if you are not in the UK. The export writes its times in
+the timezone it was made in, and the scripts assume `Europe/London`, so pass your own
+to get the days and hours right:
+
+```
+python daily_rhythm.py --tz America/New_York
+```
+
+Every script takes `--help`, and the sections below list what each one does and the
+options it takes.
+
+### If it does not work
+
+**`No files matching 'page-*.csv' in ...`** — nothing was found to read. The message
+prints the full path it looked in; check the CSVs are there, and see step 4 for the
+name and `--dir`.
+
+**`page-1.csv: missing columns [...]`** — a file was found but is not a Discrub message
+export. Check you exported messages as CSV, and that no unrelated CSV is sitting in the
+folder.
+
+**A chart is empty or missing someone** — check the `Users:` line from step 5. Matching
+ignores case, and `--users` narrows the list when an export holds more people than you
+want on the chart.
+
+## How the export is read
+
+Pages are sorted by number, concatenated and deduplicated on message ID, so overlapping
+pages do no harm.
 
 Two quirks of the export the scripts work around:
 
@@ -23,8 +106,9 @@ Two quirks of the export the scripts work around:
   where over half of all replies land in the same minute as the message they answer.
   The real send time is decoded from the message ID instead: a Discord snowflake's top
   42 bits are milliseconds since 1 January 2015. The column is only a fallback.
-- Those times are written in Europe/London, not UTC. `--tz` sets the timezone used to
-  read them and to bucket messages by local day and hour.
+- Those times are written in whatever timezone the export was made in, not UTC. `--tz`
+  says which, and is also the timezone the day and hour buckets follow. It defaults to
+  `Europe/London`, so set it if that is not yours.
 
 ## Running everything
 
