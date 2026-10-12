@@ -7,7 +7,7 @@ from pathlib import Path
 import pandas as pd
 
 from .counts import URL, selected, word_pattern
-from .loading import DEFAULT_USERS
+from .loading import resolve_users
 from .periods import resample_counts
 
 TOPICS_FILE = "topics.toml"
@@ -41,7 +41,7 @@ def topic_hits(df: pd.DataFrame, topics: dict[str, list[str]]) -> pd.DataFrame:
 def topic_counts(
     df: pd.DataFrame,
     topics: dict[str, list[str]],
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     period: str = "W",
 ) -> pd.DataFrame:
     """Messages mentioning each topic per period, both users together.
@@ -50,6 +50,7 @@ def topic_counts(
     topic, and `messages` is every message sent. A message counts once for each
     topic it mentions, so the topic columns can add up to more than `any`.
     """
+    users = resolve_users(df, users)
     sub = selected(df, users)
     hits = topic_hits(sub, topics)
     hits["any"] = hits.any(axis=1)
@@ -62,7 +63,7 @@ def topic_counts(
 def topic_counts_by_user(
     df: pd.DataFrame,
     topics: dict[str, list[str]],
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     period: str = "W",
 ) -> dict[str, pd.DataFrame]:
     """The topic_counts table for each user alone, all on one shared set of periods.
@@ -70,6 +71,7 @@ def topic_counts_by_user(
     Users with no messages are left out. The shared periods are what let the tables
     be drawn side by side on one date axis.
     """
+    users = resolve_users(df, users)
     present = set(selected(df, users)["User"])
     tables = {u: topic_counts(df, topics, [u], period) for u in users if u in present}
     periods = pd.DatetimeIndex([])

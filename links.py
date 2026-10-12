@@ -13,7 +13,7 @@ import pandas as pd
 
 from chatstats import cli
 from chatstats.counts import daily_links
-from chatstats.loading import DEFAULT_USERS
+from chatstats.loading import resolve_users
 from chatstats.periods import PERIODS, resample_counts, unit
 from chatstats.plotting import plot_lines
 
@@ -33,12 +33,13 @@ def add_arguments(p) -> None:
 
 def plot_links(
     df: pd.DataFrame,
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     out: str | Path = OUT,
     period: str = "W",
     rolling: int = 0,
 ) -> Path:
     """Top: links sent per period by each user. Bottom: each user's share of them."""
+    users = resolve_users(df, users)
     counts = resample_counts(daily_links(df, users), period)
     totals = ", ".join(f"{u}: {counts[u].sum():,}" for u in users)
     return plot_lines(counts, f"Links Shared per {unit(period).title()}", "Links sent", out,

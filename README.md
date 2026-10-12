@@ -1,8 +1,9 @@
 # Discord chat stats
 
-Charts and summaries built from a Discord conversation export between two people.
-Every output has its own script, and the code they share lives in the `chatstats`
-package.
+Charts and summaries built from a Discord conversation export. Nothing about who is
+in the conversation is built in: the usernames come from the export itself, so the
+same scripts work on anyone's. Every output has its own script, and the code they
+share lives in the `chatstats` package.
 
 ## Requirements
 
@@ -14,9 +15,8 @@ uv sync          # or: pip install pandas matplotlib
 
 ## The data
 
-The scripts read export pages named `megamoleys-page-NN.csv`. There are 79 of them in
-`data/`. Pages are sorted by number, concatenated and deduplicated on message ID, so
-overlapping page boundaries do no harm.
+The scripts read export pages named `page-NN.csv`, which is what `--pattern`
+matches. To generate this data, I used Discrub.
 
 The default for `--dir` is the current folder, so in this project you almost always
 want `--dir data`.
@@ -56,15 +56,16 @@ done
 
 ## Shared arguments
 
-These five are accepted by every script, and they are repeated in each table below for
+These six are accepted by every script, and they are repeated in each table below for
 convenience.
 
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages inside that folder. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to compare. Matching ignores case. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages inside that folder. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. Matching ignores case. |
 | `--tz TZ` | `Europe/London` | The timezone the export's wall clock times were written in. It decides which local day and hour each message counts towards. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour, and the order the charts put them in. Optional: with no config file at all, matplotlib picks every colour. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 
 ## Relationship dividers
@@ -98,27 +99,61 @@ as "Nudges per Week" or "Reply Time per Week". Anything needed to read the chart
 as what counts as a conversation or what a band covers, goes in a line of small grey
 type under the title. Both are drawn by `chart_title` in `chatstats/plotting.py`.
 
+## Who gets charted
+
+The usernames are not written into the code. Every script scans the export, collects
+the usernames it finds there and charts all of them, so pointing the scripts at a
+different conversation needs no edit. The loaded count and the names chosen are printed
+first, before anything else:
+
+```
+Loaded 39,072 messages from 79 file(s)
+Users: triflicacid, megamoleys
+```
+
+Matching ignores case throughout, and a name that appears in more than one casing counts
+once, under its most frequent spelling. `--users` narrows the list when an export holds
+more people than you want to chart, which is worth knowing for a group chat: left alone,
+everyone who ever spoke gets a line.
+
+The order is the one `config.toml` gives, for the users it names, and then everyone else
+by how much they said. It matters in two places, both of which subtract the second user
+from the first and so read the other way round if the two swap: the middle row of
+`topics.py`, and the bottom panel of `conversation_duration.py`. Both are drawn only
+when there are exactly two users. Naming users in `config.toml` fixes which way round
+they come.
+
+## config.toml
+
+The config file is optional, and holds one thing: a colour per username.
+
+```toml
+[usernames]
+triflicacid = "#E8730C"   # orange
+megamoleys = "#3B2E8F"    # navy leaning purple
+```
+
+A colour is anything matplotlib accepts, so `"#E8730C"`, `"orange"` and `"C4"` all work.
+Leave it as `""` to pin a user's place in the ordering and let matplotlib pick the colour.
+Naming someone who is not in the export does no harm; they simply never appear.
+`--config` points at a different file.
+
 ## Colours
 
 Each user keeps one colour in every chart, so that a line, a shaded span and a bar for
-the same person always agree. The colour follows the username rather than its position,
-so it does not change when `--users` lists them the other way round.
+the same person always agree. A colour set in `config.toml` is that user's come what
+may. Anyone not named there takes one of matplotlib's own, handed out in name order
+rather than in the order `--users` lists them, so that listing the same people the other
+way round does not repaint them. Charting a *different* set of people still can, since
+the colours are shared out among whoever is in the chart; naming a user in `config.toml`
+is what pins theirs for good. Red is kept out of the set matplotlib picks from, so that
+nothing competes with the crimson total line on `messages_per_day.py`.
 
-| User | Colour |
-| --- | --- |
-| `megamoleys` | Navy leaning purple, `#3B2E8F` |
-| `triflicacid` | Orange, `#E8730C` |
-
-Any username not listed above takes the next spare colour. Red is kept out of the spare
-set so that nothing competes with the crimson total line on `messages_per_day.py`. To
-change a colour, or to pin one for another user, edit `USER_COLORS` at the top of
-`chatstats/plotting.py`.
-
-Quantities belonging to the pair rather than to one person use their own colours, so
+Quantities belonging to everyone rather than to one person use their own colours, so
 that they are never mistaken for a user. The combined total is crimson, conversations
 are a dark slate, and the heatmaps on `daily_rhythm.py` use a single teal ramp running
-light to dark. Teal deliberately: orange and navy already mean a specific person
-everywhere else.
+light to dark. Teal deliberately: it is not in the set a user can be handed, and nor is
+it one this project's `config.toml` gives anybody.
 
 ## overview.py
 
@@ -136,9 +171,10 @@ by weekday, and the busiest hour of the day.
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to compare. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--csv CSV` | not saved | Also writes the per user table to this CSV file. |
 
@@ -180,9 +216,10 @@ folder. Each message is headed by its rank, date, time and word count, longest f
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to include. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to include. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--gap GAP` | `2.0` | How many hours of silence end a conversation. It only affects the biggest conversation tile. |
 | `--out OUT` | `out/highlights.png` | Where to write the card. |
@@ -220,9 +257,10 @@ terminal.
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to count. They are pooled rather than compared. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to count. They are pooled rather than compared. |
 | `--tz TZ` | `Europe/London` | The timezone that decides which day a message belongs to. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--out OUT` | `out/calendar_heatmap.png` | Where to write the chart. |
 
@@ -270,9 +308,10 @@ together, so they become words per day, cumulative words and share of words.
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to compare. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--out OUT` | `out/messages_per_day.png` | Where to write the chart. Any extension matplotlib supports will work, such as `.png`, `.svg` or `.pdf`. |
 | `--metric {messages,words}` | `messages` | What to count. The messages setting counts one per message. The words setting counts the words inside them instead, which rescales all three panels together. |
@@ -333,9 +372,10 @@ against 5.20 words to 5.97 against 5.28.
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to compare. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--out OUT` | `out/message_length.png` | Where to write the chart. |
 | `--period {D,W,M}` | `W` | Whether to plot one point per day, per week starting on Monday, or per calendar month. |
@@ -384,9 +424,10 @@ than `--min-messages`.
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to compare. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--gap GAP` | `2.0` | How many hours of silence end a conversation. Raising it gives fewer and larger conversations, which moves the two middle panels. |
 | `--period {D,W,M}` | `W` | Whether to plot one point per day, per week starting on Monday, or per calendar month. |
@@ -432,9 +473,10 @@ afresh from every conversation in the previous 4 weeks. Points resting on fewer 
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to compare, one chart each. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to compare, one chart each. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--gap GAP` | `2.0` | How many hours of silence end a conversation. Raising it joins conversations together and makes them longer. |
 | `--period {D,W,M}` | `W` | Whether to plot one point per day, per week starting on Monday, or per calendar month. |
@@ -471,9 +513,10 @@ every long wait is excluded by design. To see those waits instead, use
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to compare. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--gap GAP` | `2.0` | How many hours of silence end a conversation. Replies slower than this are counted as a new conversation and leave the chart entirely. |
 | `--period {D,W,M}` | `W` | Whether to plot one point per day, per week starting on Monday, or per calendar month. |
@@ -518,9 +561,10 @@ taken over the same 4 weeks. `--rolling 0` gives the raw weekly view.
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to compare. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--gap GAP` | `2.0` | How many hours of silence end a conversation. This decides what counts as starting one, so raising it produces fewer and longer conversations. |
 | `--period {D,W,M}` | `W` | Whether to plot one point per day, per week starting on Monday, or per calendar month. |
@@ -558,9 +602,10 @@ starts more conversations that go unanswered also ends more.
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to compare. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--gap GAP` | `2.0` | How many hours of silence end a conversation. This decides what counts as the last word. |
 | `--period {D,W,M}` | `W` | Whether to plot one point per day, per week starting on Monday, or per calendar month. |
@@ -593,9 +638,10 @@ blank where that would rest on fewer than `--min-turns`.
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to compare. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--out OUT` | `out/messages_in_a_row.png` | Where to write the chart. |
 | `--period {D,W,M}` | `W` | Whether to plot one point per day, per week starting on Monday, or per calendar month. |
@@ -639,9 +685,10 @@ overnight.
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to compare. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--gap GAP` | `2.0` | How many hours of silence end a conversation. It also sets where the two panels divide and where the wait buckets begin. |
 | `--out OUT` | `out/response_curve.png` | Where to write the chart. |
@@ -673,9 +720,10 @@ the start of the wait it belongs to.
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to compare. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--out OUT` | `out/nudges.png` | Where to write the chart. |
 | `--period {D,W,M}` | `W` | Whether to count by day, by week starting on Monday, or by calendar month. |
@@ -724,9 +772,10 @@ is taken over the same 4 weeks. The totals are printed to the terminal.
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to compare. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--out OUT` | `out/questions.png` | Where to write the chart. |
 | `--period {D,W,M}` | `W` | Whether to count by day, by week starting on Monday, or by calendar month. |
@@ -762,9 +811,10 @@ weeks.
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to compare. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--out OUT` | `out/links.png` | Where to write the chart. |
 | `--period {D,W,M}` | `W` | Whether to count by day, by week starting on Monday, or by calendar month. |
@@ -800,9 +850,10 @@ terminal.
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to compare. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--out OUT` | `out/reactions.png` | Where to write the chart. |
 | `--period {D,W,M}` | `W` | Whether to count by day, by week starting on Monday, or by calendar month. |
@@ -873,9 +924,10 @@ Use `distinctive_words.py` to find words worth adding.
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to chart, one column each. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to chart, one column each. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--out OUT` | `out/topics.png` | Where to write the chart. |
 | `--topics TOPICS` | `topics.toml` | The file of topic names and their words. |
@@ -917,9 +969,10 @@ by month instead of by person.
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to count. They are pooled rather than compared. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to count. They are pooled rather than compared. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--out OUT` | `out/distinctive_words.png` | Where to write the chart. |
 | `--period {D,W,M}` | `M` | How long each row covers. |
@@ -963,9 +1016,10 @@ only a few days each.
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to count. They are pooled rather than compared. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to count. They are pooled rather than compared. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. This chart is entirely about local time, so it matters more here than anywhere else. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--out OUT` | `out/daily_rhythm.png` | Where to write the chart. |
 | `--period {D,W,M}` | `M` | How wide each column is. Months are usually right; weeks give a finer but noisier picture. |
@@ -1008,9 +1062,10 @@ send very different volumes can still be compared.
 | Argument | Default | Description |
 | --- | --- | --- |
 | `--dir DIR` | `.` | The folder that holds the export CSV files. |
-| `--pattern PATTERN` | `megamoleys-page-*.csv` | The filename glob used to find export pages. |
-| `--users USERS [USERS ...]` | `triflicacid megamoleys` | Which usernames to compare. |
+| `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
+| `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
+| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
 | `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
 | `--words WORDS [WORDS ...]` | empty | The words or phrases to chart, one panel each. Quote anything containing a space. Nothing is produced when this is left empty. |
 | `--period {D,W,M}` | `W` | Whether to count by day, by week starting on Monday, or by calendar month. |

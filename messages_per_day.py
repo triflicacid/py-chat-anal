@@ -17,7 +17,7 @@ import pandas as pd
 from chatstats import cli
 from chatstats.counts import daily_counts, daily_words
 from chatstats.formatting import fmt_date, fmt_span
-from chatstats.loading import DEFAULT_USERS
+from chatstats.loading import resolve_users
 from chatstats.peaks import find_quiet_periods, find_peaks
 from chatstats.periods import (DEFAULT_PEAK_DISTANCE, DEFAULT_USER_QUIET_MIN, PERIODS,
                                plural, resample_counts, unit)
@@ -112,7 +112,7 @@ def report(
 
 def plot_messages_per_day(
     df: pd.DataFrame,
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     out: str | Path = OUT,
     rolling: int = 0,
     period: str = "D",
@@ -147,6 +147,7 @@ def plot_messages_per_day(
     metric          -> count "messages", or the "words" inside them
     total           -> draw the red line for both users combined
     """
+    users = resolve_users(df, users)
     build, ylabel, noun = METRICS[metric]
     counts = resample_counts(build(df, users), period)
     if user_quiet_min is None:

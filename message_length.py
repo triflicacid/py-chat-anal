@@ -17,7 +17,7 @@ import pandas as pd
 
 from chatstats import cli
 from chatstats.counts import period_stats, selected
-from chatstats.loading import DEFAULT_USERS
+from chatstats.loading import resolve_users
 from chatstats.periods import PERIODS, format_date_axis, unit
 from chatstats.plotting import chart_title, legend_below, plt, save, user_colors
 
@@ -40,12 +40,13 @@ def add_arguments(p) -> None:
 
 def length_stats(
     df: pd.DataFrame,
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     period: str = "W",
     min_messages: int = 10,
     text_only: bool = False,
 ) -> tuple[dict[str, pd.DataFrame], pd.DataFrame]:
     """Per period length statistics, and the messages they were taken from."""
+    users = resolve_users(df, users)
     sub = selected(df, users)
     if text_only:
         sub = sub[sub["WordCount"] > 0]
@@ -69,7 +70,7 @@ def length_summary(sub: pd.DataFrame, users: list[str]) -> None:
 
 def plot_message_length(
     df: pd.DataFrame,
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     out: str | Path = OUT,
     period: str = "W",
     min_messages: int = 10,
@@ -82,6 +83,7 @@ def plot_message_length(
     messages, which keeps the skew visible: most messages are very short, and the mean
     sits above the median because a few long ones pull it up.
     """
+    users = resolve_users(df, users)
     stats, sub = length_stats(df, users, period, min_messages, text_only)
     colors = user_colors(users)
     fig, ax = plt.subplots(figsize=(14, 6))

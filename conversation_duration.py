@@ -20,7 +20,6 @@ from chatstats import cli
 from chatstats.conversations import conversation_list, conversation_table
 from chatstats.counts import windowed_stats
 from chatstats.formatting import fmt_secs
-from chatstats.loading import DEFAULT_USERS
 from chatstats.periods import format_date_axis, unit
 from chatstats.plotting import chart_title, narrow_date_axis, plt, save, user_colors
 
@@ -66,7 +65,7 @@ def duration_summary(convs: pd.DataFrame, everything: int, users: list[str], gap
 def plot_conversation_duration(
     convs: pd.DataFrame,
     span: pd.DataFrame,
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     out: str | Path = OUT,
     period: str = "W",
     rolling: int = 0,

@@ -20,7 +20,7 @@ import pandas as pd
 from chatstats import cli
 from chatstats.conversations import handover_times, response_summary
 from chatstats.formatting import fmt_secs
-from chatstats.loading import DEFAULT_USERS
+from chatstats.loading import resolve_users
 from chatstats.plotting import chart_title, plt, save, user_colors
 
 OUT = "out/response_curve.png"
@@ -158,7 +158,7 @@ def _draw_footer(fig, hand: pd.DataFrame, users: list[str], colors: dict[str, st
 
 def plot_response_curve(
     hand: pd.DataFrame,
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     out: str | Path = OUT,
     gap_hours: float = 2.0,
     nudge_hours: float = 1.0,
@@ -169,6 +169,7 @@ def plot_response_curve(
     majority of handovers land inside the gap, so on a single axis every wait is
     squeezed into an invisible tail.
     """
+    users = resolve_users(hand, users)
     cut = gap_hours * 3600
     colors = user_colors(users)
     fig, (top, bot) = plt.subplots(2, 1, figsize=(13, 12),

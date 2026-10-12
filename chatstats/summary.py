@@ -4,13 +4,14 @@ from __future__ import annotations
 import pandas as pd
 
 from .counts import daily_counts
-from .loading import DEFAULT_USERS
+from .loading import resolve_users
 
 WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
 
-def summarise(df: pd.DataFrame, users: list[str] = DEFAULT_USERS) -> pd.DataFrame:
+def summarise(df: pd.DataFrame, users: list[str] | None = None) -> pd.DataFrame:
     """Print an overview and return a per-user summary table."""
+    users = resolve_users(df, users)
     start, end = df["Timestamp"].min(), df["Timestamp"].max()
     n_days = (df["Date"].max() - df["Date"].min()).days + 1
 

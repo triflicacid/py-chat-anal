@@ -19,7 +19,6 @@ import pandas as pd
 from chatstats import cli
 from chatstats.conversations import conversation_table, reply_summary, reply_time_stats
 from chatstats.formatting import fmt_secs
-from chatstats.loading import DEFAULT_USERS
 from chatstats.periods import format_date_axis, unit
 from chatstats.plotting import chart_title, legend_below, plt, save, user_colors
 
@@ -41,7 +40,7 @@ def add_arguments(p) -> None:
 
 def plot_reply_times(
     conv: pd.DataFrame,
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     out: str | Path = OUT,
     period: str = "W",
     min_replies: int = 3,

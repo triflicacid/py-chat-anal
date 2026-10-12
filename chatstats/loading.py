@@ -7,11 +7,12 @@ from pathlib import Path
 
 import pandas as pd
 
+from .config import configured_colors
+
 EXPECTED_COLUMNS = [
     "ID", "Timestamp", "Username", "Display Name", "Server Nickname",
     "Content", "Forwarded Content", "Attachments", "Embeds", "Reactions",
 ]
-DEFAULT_USERS = ["triflicacid", "megamoleys"]
 FILE_GLOB = "page-*.csv"
 
 # The exported "Timestamp" column is local wall-clock truncated to the minute, which is
@@ -26,7 +27,7 @@ COUNT_COLUMNS = ("Attachments", "Embeds", "Reactions")
 
 
 def _page_number(path: Path) -> int:
-    """Extract NN from megamoleys-page-NN.csv so pages sort numerically."""
+    """Extract NN from page-NN.csv so pages sort numerically."""
     m = re.search(r"page-(\d+)", path.stem)
     return int(m.group(1)) if m else 0
 
@@ -121,3 +122,20 @@ def load_messages(
 
     print(f"Loaded {len(df):,} messages from {len(files)} file(s)")
     return df
+
+
+def discover_users(df: pd.DataFrame) -> list[str]:
+    """Every username in the export."""
+    counts = df["Username"].str.strip().value_counts()
+    seen: dict[str, str] = {}  # lower case -> spelling, busiest user first
+    for name in counts.index:
+        if name:
+            seen.setdefault(name.lower(), name)
+    named = configured_colors()
+    return ([seen[u] for u in named if u in seen]
+            + [name for u, name in seen.items() if u not in named])
+
+
+def resolve_users(df: pd.DataFrame, users: list[str] | None = None) -> list[str]:
+    """The usernames to work with: the ones asked for, or everyone in the export."""
+    return list(users) if users else discover_users(df)

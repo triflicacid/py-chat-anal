@@ -20,7 +20,7 @@ import pandas as pd
 from chatstats import cli
 from chatstats.conversations import conversation_list, conversation_table, initiator_counts
 from chatstats.counts import daily_counts, daily_words
-from chatstats.loading import DEFAULT_USERS
+from chatstats.loading import resolve_users
 from chatstats.periods import resample_counts, unit
 from chatstats.plotting import (PAIR_COLOR, chart_title, legend_under_figure, plt, rolling_line,
                                 rolling_sums, save, stack_date_axis, user_colors)
@@ -61,7 +61,7 @@ def halves_summary(conv: pd.DataFrame, gap_hours: float) -> None:
 def plot_volume_breakdown(
     df: pd.DataFrame,
     conv: pd.DataFrame,
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     out: str | Path = OUT,
     period: str = "W",
     rolling: int = 0,
@@ -75,6 +75,7 @@ def plot_volume_breakdown(
     the true average for the window and keeps the panels multiplying back to the
     top one. Averaging the weekly ratios would weigh a quiet week like a busy one.
     """
+    users = resolve_users(df, users)
     words = resample_counts(daily_words(df, users), period)
     sent = resample_counts(daily_counts(df, users), period)
     held = initiator_counts(conv, users, period).sum(axis=1).reindex(words.index, fill_value=0)

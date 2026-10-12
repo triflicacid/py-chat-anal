@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from matplotlib.colors import LinearSegmentedColormap
 
+from .config import configured_colors
 from .formatting import fmt_date
 from .peaks import find_peaks
 from .periods import DEFAULT_PEAK_DISTANCE, format_date_axis, period_end, unit
@@ -33,15 +34,11 @@ PANEL_INCH = 1.8
 
 
 # Each user keeps the same colour in every chart, so a line, a shaded span and a bar
-# for one person always agree. Keyed by lowercased username.
-USER_COLORS = {
-    "megamoleys": "#3B2E8F",   # navy leaning purple
-    "triflicacid": "#E8730C",  # orange
-}
-# Used for any username not named above, in order. Red is left out so nothing competes
-# with the crimson total line.
-SPARE_COLORS = ("C2", "C4", "C5", "C6", "C7", "C8", "C9")
-# Quantities belonging to the pair rather than to one person: the combined total,
+# for one person always agree. A colour given in config.toml under [usernames] is that
+# user's for good; anyone not named there takes one of matplotlib's own, below. Red is
+# left out of those so nothing competes with the crimson total line.
+SPARE_COLORS = ("C0", "C1", "C2", "C4", "C5", "C6", "C7", "C8", "C9")
+# Quantities belonging to everyone rather than to one person: the combined total,
 # and the conversations they share.
 TOTAL_COLOR = "crimson"
 PAIR_COLOR = "#3F4A54"
@@ -73,15 +70,19 @@ def diverging_cmap(low: str, high: str) -> LinearSegmentedColormap:
 def user_colors(users) -> dict[str, str]:
     """One stable colour per user, so lines, shading and bars always agree.
 
-    A user named in USER_COLORS keeps that colour whichever order --users lists them
-    in, which is what stops two charts disagreeing about who is who.
+    A user given a colour in config.toml keeps it come what may, which is what stops
+    two charts disagreeing about who is who. Anyone else takes one of matplotlib's own,
+    handed out in name order rather than in the order --users happens to list them, so
+    that at least listing the same people the other way round does not repaint them.
+    Charting a *different* set of people still can, since the colours are handed out
+    among whoever is in the chart: name a user in config.toml to pin theirs for good.
     """
+    named = configured_colors()
+    fixed = {u: named.get(str(u).lower(), "") for u in users}
     spare = iter(SPARE_COLORS)
-    colors = {}
-    for u in users:
-        fixed = USER_COLORS.get(str(u).lower())
-        colors[u] = fixed if fixed else next(spare, "C7")
-    return colors
+    picked = {u: next(spare, SPARE_COLORS[-1])
+              for u in sorted((u for u in users if not fixed[u]), key=lambda u: str(u).lower())}
+    return {u: fixed[u] or picked[u] for u in users}
 
 
 def show_dividers(on: bool) -> None:

@@ -14,7 +14,6 @@ import pandas as pd
 from chatstats import cli
 from chatstats.conversations import (conversation_table, first_of_day_counts,
                                      initiator_counts, starter_summary)
-from chatstats.loading import DEFAULT_USERS
 from chatstats.periods import unit
 from chatstats.plotting import (chart_title, legend_under_figure, plt, rolling_line,
                                 rolling_sums, save, share_panel, stack_date_axis,
@@ -47,7 +46,7 @@ def first_of_day_summary(first: pd.DataFrame, users: list[str], day_start: float
 def plot_initiators(
     conv: pd.DataFrame,
     first: pd.DataFrame,
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     out: str | Path = OUT,
     period: str = "W",
     gap_hours: float = 2.0,

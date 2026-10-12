@@ -16,7 +16,6 @@ import pandas as pd
 
 from chatstats import cli
 from chatstats.conversations import conversation_table, ender_counts
-from chatstats.loading import DEFAULT_USERS
 from chatstats.periods import unit
 from chatstats.plotting import plot_lines
 

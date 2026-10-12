@@ -19,7 +19,6 @@ from chatstats.conversations import (conversation_list, conversation_table, fast
 from chatstats.counts import (daily_counts, daily_links, is_question, selected,
                               signature_words)
 from chatstats.formatting import fmt_date, fmt_secs, fmt_span
-from chatstats.loading import DEFAULT_USERS
 from chatstats.peaks import find_streaks
 from chatstats.plotting import PAIR_COLOR, plt, save, user_colors
 

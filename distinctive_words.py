@@ -20,7 +20,6 @@ from matplotlib.colors import LogNorm
 from chatstats import cli
 from chatstats.counts import period_words
 from chatstats.formatting import fmt_date
-from chatstats.loading import DEFAULT_USERS
 from chatstats.periods import PERIODS, unit
 from chatstats.plotting import (chart_title, divider_positions, draw_dividers,
                                 HEATMAP_CMAP, plt, save)

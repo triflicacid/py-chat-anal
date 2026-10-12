@@ -7,7 +7,8 @@ from typing import Callable, Iterable
 
 import pandas as pd
 
-from .loading import DEFAULT_TZ, DEFAULT_USERS, FILE_GLOB, load_messages
+from .config import CONFIG_FILE, use_config
+from .loading import DEFAULT_TZ, FILE_GLOB, load_messages, resolve_users
 from .periods import PERIODS
 from .plotting import show_dividers
 
@@ -28,10 +29,16 @@ def base_parser(doc: str | None = None) -> argparse.ArgumentParser:
     g = p.add_argument_group("input")
     g.add_argument("--dir", default=".", help="folder containing the export CSVs")
     g.add_argument("--pattern", default=FILE_GLOB, help="filename glob")
-    g.add_argument("--users", nargs="+", default=DEFAULT_USERS, help="usernames to compare")
+    g.add_argument("--users", nargs="+", default=None,
+                   help="usernames to compare (default: every username in the export, "
+                        "those named in the config file first)")
     g.add_argument("--tz", default=DEFAULT_TZ,
                    help="timezone the export's wall-clock times are in, used for local "
                         f"day/hour buckets (default {DEFAULT_TZ})")
+    g.add_argument("--config", default=CONFIG_FILE,
+                   help=f"config file giving each username a chart colour (default "
+                        f"{CONFIG_FILE}; it is optional, and matplotlib picks the "
+                        f"colour of anyone not named in it)")
     p.add_argument("--relationship-dividers", action="store_true",
                    help="mark the days we got together and broke up on the chart")
     return p
@@ -72,5 +79,11 @@ def run_chart(
         add(p)
     add_arguments(p)
     args = p.parse_args(argv)
+    use_config(args.config)
     show_dividers(args.relationship_dividers)
-    run(load_messages(args.dir, args.pattern, args.tz), args)
+    df = load_messages(args.dir, args.pattern, args.tz)
+    # Who is in the conversation is read off the data, not built in, so it can only be
+    # settled once the export is loaded.
+    args.users = resolve_users(df, args.users)
+    print(f"Users: {', '.join(args.users)}")
+    run(df, args)

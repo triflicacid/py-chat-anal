@@ -17,7 +17,7 @@ import pandas as pd
 from chatstats import cli
 from chatstats.conversations import turn_counts
 from chatstats.counts import daily_counts
-from chatstats.loading import DEFAULT_USERS
+from chatstats.loading import resolve_users
 from chatstats.periods import PERIODS, format_date_axis, resample_counts, unit
 from chatstats.plotting import (chart_title, legend_below, plt, rolling_line, rolling_sums,
                                 save, user_colors)
@@ -40,7 +40,7 @@ def add_arguments(p) -> None:
 
 def plot_messages_in_a_row(
     df: pd.DataFrame,
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     out: str | Path = OUT,
     period: str = "W",
     rolling: int = 0,
@@ -51,6 +51,7 @@ def plot_messages_in_a_row(
     Smoothed as rolling messages over rolling turns, which is the true average for
     the window. Averaging the weekly averages would weigh a quiet week like a busy one.
     """
+    users = resolve_users(df, users)
     sent = resample_counts(daily_counts(df, users), period)
     turns = turn_counts(df, users, period).reindex(sent.index, fill_value=0)
     length = sent / turns.where(turns >= min_turns)

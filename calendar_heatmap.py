@@ -19,7 +19,7 @@ from matplotlib.colors import LogNorm
 from chatstats import cli
 from chatstats.counts import daily_counts
 from chatstats.formatting import fmt_date, fmt_span
-from chatstats.loading import DEFAULT_USERS
+from chatstats.loading import resolve_users
 from chatstats.peaks import find_streaks
 from chatstats.periods import plural
 from chatstats.plotting import (chart_title, DIVIDER_COLOR, dividers, HEATMAP_CMAP,
@@ -62,7 +62,7 @@ def streak_summary(streaks: list[tuple], daily: pd.Series) -> None:
 
 def plot_calendar_heatmap(
     df: pd.DataFrame,
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     out: str | Path = OUT,
 ) -> Path:
     """One strip of squares for the whole range, on a log colour scale.
@@ -70,6 +70,7 @@ def plot_calendar_heatmap(
     Log, because the busiest day holds over a thousand messages and a typical one a
     few dozen. On a linear scale every ordinary day would be the same pale square.
     """
+    users = resolve_users(df, users)
     daily = daily_counts(df, users).sum(axis=1)
     grid, monday = calendar_grid(daily)
     weeks = grid.shape[1]

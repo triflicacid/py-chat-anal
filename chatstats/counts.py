@@ -8,7 +8,7 @@ import re
 
 import pandas as pd
 
-from .loading import DEFAULT_USERS
+from .loading import resolve_users
 from .periods import period_grouper, period_start, resample_counts
 
 
@@ -95,13 +95,15 @@ def per_day(df: pd.DataFrame, users: list[str], values: pd.Series | None = None)
     return counts.astype(int)
 
 
-def daily_counts(df: pd.DataFrame, users: list[str] = DEFAULT_USERS) -> pd.DataFrame:
+def daily_counts(df: pd.DataFrame, users: list[str] | None = None) -> pd.DataFrame:
     """Messages per day per user, with zero-filled gaps across the full range."""
+    users = resolve_users(df, users)
     return per_day(df, users)
 
 
-def daily_words(df: pd.DataFrame, users: list[str] = DEFAULT_USERS) -> pd.DataFrame:
+def daily_words(df: pd.DataFrame, users: list[str] | None = None) -> pd.DataFrame:
     """Words written per day per user, with zero-filled gaps across the full range."""
+    users = resolve_users(df, users)
     return per_day(df, users, df["WordCount"])
 
 
@@ -160,18 +162,21 @@ def is_question(df: pd.DataFrame) -> pd.Series:
     return text.str.contains("?", regex=False) | text.str.contains(QUESTION_WORDING)
 
 
-def daily_questions(df: pd.DataFrame, users: list[str] = DEFAULT_USERS) -> pd.DataFrame:
+def daily_questions(df: pd.DataFrame, users: list[str] | None = None) -> pd.DataFrame:
     """Questions asked per day per user."""
+    users = resolve_users(df, users)
     return per_day(df, users, is_question(df).astype(int))
 
 
-def daily_reactions(df: pd.DataFrame, users: list[str] = DEFAULT_USERS) -> pd.DataFrame:
+def daily_reactions(df: pd.DataFrame, users: list[str] | None = None) -> pd.DataFrame:
     """Reactions received per day per user: the reactions left on that user's messages."""
+    users = resolve_users(df, users)
     return per_day(df, users, df["NReactions"])
 
 
-def daily_links(df: pd.DataFrame, users: list[str] = DEFAULT_USERS) -> pd.DataFrame:
+def daily_links(df: pd.DataFrame, users: list[str] | None = None) -> pd.DataFrame:
     """Links sent per day per user, counting every URL in a message."""
+    users = resolve_users(df, users)
     return per_day(df, users, df["Content"].str.count(URL))
 
 
@@ -209,16 +214,17 @@ def distinctive(
 
 
 def signature_words(
-    df: pd.DataFrame, users: list[str] = DEFAULT_USERS, n: int = 3, min_uses: int = 25
+    df: pd.DataFrame, users: list[str] | None = None, n: int = 3, min_uses: int = 25
 ) -> dict[str, list[str]]:
     """Each user's most distinctive words: common for them, rare for everyone else."""
+    users = resolve_users(df, users)
     sub = selected(df, users)
     table = word_table(sub, sub["User"]).reindex(columns=users, fill_value=0)
     return {u: list(scores.index) for u, scores in distinctive(table, n, min_uses).items()}
 
 
 def period_words(
-    df: pd.DataFrame, users: list[str] = DEFAULT_USERS, period: str = "M", n: int = 8,
+    df: pd.DataFrame, users: list[str] | None = None, period: str = "M", n: int = 8,
     min_uses: int = 8, min_ratio: float = 3.0,
 ) -> dict[pd.Timestamp, pd.Series]:
     """Each period's most distinctive words, both users together, keyed by its start.
@@ -226,6 +232,7 @@ def period_words(
     `min_ratio` is what keeps the filler out: in a quiet period nothing stands out,
     and the best of a bad lot would otherwise be words like "there" and "something".
     """
+    users = resolve_users(df, users)
     sub = selected(df, users)
     table = word_table(sub, period_start(sub["Date"], period))
     return distinctive(table, n, min_uses, min_ratio)
@@ -267,7 +274,7 @@ def word_hits(df: pd.DataFrame, word: str, mode: str = "count", partial: bool = 
 def daily_word_counts(
     df: pd.DataFrame,
     word: str,
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     mode: str = "count",
     partial: bool = False,
 ) -> pd.DataFrame:
@@ -276,16 +283,18 @@ def daily_word_counts(
     mode="count"    -> total occurrences ("love love love" counts as 3)
     mode="messages" -> number of messages containing the word at least once
     """
+    users = resolve_users(df, users)
     return per_day(df, users, word_hits(df, word, mode, partial))
 
 
 def word_usage_table(
     df: pd.DataFrame,
     words: list[str],
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     partial: bool = False,
 ) -> pd.DataFrame:
     """Totals per word per user, plus uses per 1,000 messages so users are comparable."""
+    users = resolve_users(df, users)
     lower = {u.lower(): u for u in users}
     mask = df["Username"].str.lower().isin(lower)
     who = df.loc[mask, "Username"].str.lower().map(lower)

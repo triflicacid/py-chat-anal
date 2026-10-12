@@ -21,7 +21,7 @@ import pandas as pd
 
 from chatstats import cli
 from chatstats.counts import selected
-from chatstats.loading import DEFAULT_USERS
+from chatstats.loading import resolve_users
 from chatstats.periods import PERIODS, period_grouper, unit
 from chatstats.plotting import (chart_title, divider_positions, draw_dividers,
                                 HEATMAP_CMAP, plt, save)
@@ -106,11 +106,12 @@ def rhythm_summary(df: pd.DataFrame, users: list[str]) -> None:
 
 def plot_daily_rhythm(
     df: pd.DataFrame,
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     out: str | Path = OUT,
     period: str = "M",
 ) -> Path:
     """Two heatmaps: hour of day, and day of week, both against time."""
+    users = resolve_users(df, users)
     hours = rhythm_table(df, users, period, "hour")
     days = rhythm_table(df, users, period, "weekday")
     fig, (top, bot) = plt.subplots(2, 1, figsize=(14, 9),

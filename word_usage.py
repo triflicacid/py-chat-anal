@@ -19,7 +19,7 @@ import pandas as pd
 
 from chatstats import cli
 from chatstats.counts import daily_word_counts, word_usage_table
-from chatstats.loading import DEFAULT_USERS
+from chatstats.loading import resolve_users
 from chatstats.periods import PERIODS, format_date_axis, resample_counts, unit
 from chatstats.plotting import (legend_under_figure, narrow_date_axis, plt, rolling_line, save,
                                 user_colors)
@@ -53,19 +53,20 @@ def add_arguments(p) -> None:
 def word_tables(
     df: pd.DataFrame,
     words: list[str],
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     period: str = "W",
     mode: str = "count",
     partial: bool = False,
 ) -> dict[str, pd.DataFrame]:
     """Uses of each word per period per user, keyed by the word."""
+    users = resolve_users(df, users)
     return {w: resample_counts(daily_word_counts(df, w, users, mode, partial), period)
             for w in words}
 
 
 def plot_word_usage(
     tables: dict[str, pd.DataFrame],
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     out: str | Path = OUT,
     rolling: int = 0,
     period: str = "W",
@@ -78,6 +79,7 @@ def plot_word_usage(
     rare one. The totals in each panel title make the two comparable anyway. With
     more than one word, a panel summing all of them comes first.
     """
+    users = resolve_users(tables, users)
     panels = {f'"{word}"': counts for word, counts in tables.items()}
     if len(tables) > 1:
         panels = {f"All {len(tables)} Words Combined": sum(tables.values()), **panels}

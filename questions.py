@@ -17,7 +17,6 @@ import pandas as pd
 
 from chatstats import cli
 from chatstats.counts import daily_questions
-from chatstats.loading import DEFAULT_USERS
 from chatstats.periods import PERIODS, resample_counts, unit
 from chatstats.plotting import plot_lines
 
@@ -45,7 +44,7 @@ def questions_summary(counts: pd.DataFrame, users: list[str]) -> None:
 
 def plot_questions(
     counts: pd.DataFrame,
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     out: str | Path = OUT,
     period: str = "W",
     rolling: int = 0,

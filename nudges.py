@@ -16,7 +16,7 @@ import pandas as pd
 
 from chatstats import cli
 from chatstats.conversations import nudge_counts
-from chatstats.loading import DEFAULT_USERS
+from chatstats.loading import resolve_users
 from chatstats.periods import PERIODS, unit
 from chatstats.plotting import plot_lines
 
@@ -38,13 +38,14 @@ def add_arguments(p) -> None:
 
 def plot_nudges(
     df: pd.DataFrame,
-    users: list[str] = DEFAULT_USERS,
+    users: list[str] | None = None,
     out: str | Path = OUT,
     period: str = "W",
     nudge_hours: float = 1.0,
     rolling: int = 0,
 ) -> Path:
     """Top: nudges sent per period by each user. Bottom: each user's share of them."""
+    users = resolve_users(df, users)
     counts = nudge_counts(df, users, nudge_hours, period)
     totals = ", ".join(f"{u}: {counts[u].sum():,}" for u in users)
     return plot_lines(counts, f"Nudges per {unit(period).title()}", "Nudges sent", out,

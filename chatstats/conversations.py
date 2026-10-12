@@ -15,12 +15,12 @@ import pandas as pd
 
 from .counts import per_day, period_stats, selected
 from .formatting import fmt_secs
-from .loading import DEFAULT_USERS
+from .loading import resolve_users
 from .periods import resample_counts
 
 
 def conversation_table(
-    df: pd.DataFrame, users: list[str] = DEFAULT_USERS, gap_hours: float = 2.0
+    df: pd.DataFrame, users: list[str] | None = None, gap_hours: float = 2.0
 ) -> pd.DataFrame:
     """The selected users' messages, annotated with conversation structure.
 
@@ -34,6 +34,7 @@ def conversation_table(
                    starters: answering after a long gap is a new conversation,
                    not a slow reply)
     """
+    users = resolve_users(df, users)
     sub = selected(df, users)
     delta = sub["Timestamp"].diff()
     sub["IsStart"] = delta.isna() | (delta > pd.Timedelta(hours=gap_hours))
@@ -53,13 +54,14 @@ def conversation_list(conv: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
-def fastest_burst(df: pd.DataFrame, users: list[str] = DEFAULT_USERS,
+def fastest_burst(df: pd.DataFrame, users: list[str] | None = None,
                   size: int = 100) -> tuple[float, pd.Timestamp] | None:
     """The shortest time in which `size` messages in a row were sent.
 
     Returns (seconds, when the burst began), or None when there are fewer messages
     than that.
     """
+    users = resolve_users(df, users)
     sub = selected(df, users)
     if len(sub) < size:
         return None
@@ -80,27 +82,29 @@ def _turns(df: pd.DataFrame, users: list[str], nudge_hours: float = 1.0) -> pd.D
 
 
 def turn_counts(
-    df: pd.DataFrame, users: list[str] = DEFAULT_USERS, period: str = "W"
+    df: pd.DataFrame, users: list[str] | None = None, period: str = "W"
 ) -> pd.DataFrame:
     """Turns taken per period per user, each dated by its first message.
 
     A turn is a run of messages by one person, ended by the other one speaking.
     """
+    users = resolve_users(df, users)
     sub = _turns(df, users)
     return resample_counts(per_day(sub[sub["Turn"] != sub["Turn"].shift()], users), period)
 
 
 def nudge_counts(
-    df: pd.DataFrame, users: list[str] = DEFAULT_USERS, nudge_hours: float = 1.0,
+    df: pd.DataFrame, users: list[str] | None = None, nudge_hours: float = 1.0,
     period: str = "W",
 ) -> pd.DataFrame:
     """Nudges sent per period per user, each dated by the nudge itself."""
+    users = resolve_users(df, users)
     sub = _turns(df, users, nudge_hours)
     return resample_counts(per_day(sub, users, sub["IsNudge"].astype(int)), period)
 
 
 def first_of_day_counts(
-    df: pd.DataFrame, users: list[str] = DEFAULT_USERS, period: str = "W",
+    df: pd.DataFrame, users: list[str] | None = None, period: str = "W",
     day_start: float = 5.0,
 ) -> pd.DataFrame:
     """Days on which each user sent the first message, per period.
@@ -108,6 +112,7 @@ def first_of_day_counts(
     The day turns over at `day_start` o'clock local time rather than at midnight, so
     a message at 1am carries on the night before instead of opening the next day.
     """
+    users = resolve_users(df, users)
     sub = selected(df, users)
     day = (sub["Local"] - pd.Timedelta(hours=day_start)).dt.tz_localize(None).dt.normalize()
     first = sub.groupby(day)["User"].first()
@@ -117,7 +122,7 @@ def first_of_day_counts(
 
 
 def handover_times(
-    df: pd.DataFrame, users: list[str] = DEFAULT_USERS, nudge_hours: float = 1.0
+    df: pd.DataFrame, users: list[str] | None = None, nudge_hours: float = 1.0
 ) -> pd.DataFrame:
     """Every speaker change and how long the answer took, with no conversation cutoff.
 
@@ -130,6 +135,7 @@ def handover_times(
                  `nudge_hours` with no answer
       At         when the wait started
     """
+    users = resolve_users(df, users)
     sub = _turns(df, users, nudge_hours)
     turns = sub.groupby("Turn").agg(User=("User", "first"), Start=("Timestamp", "min"),
                                     End=("Timestamp", "max"), Nudges=("IsNudge", "sum"))
