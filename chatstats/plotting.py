@@ -9,7 +9,7 @@ matplotlib.use("Agg")  # render to file without needing a display
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import pandas as pd
-from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.colors import LinearSegmentedColormap, to_rgb
 
 from .config import configured_colors, key_dates
 from .formatting import fmt_date
@@ -46,6 +46,24 @@ _dividers: list[tuple[pd.Timestamp, str]] = []  # filled by show_key_dates
 # Sequential ramp for magnitude, one hue running light to dark.
 HEATMAP_CMAP = LinearSegmentedColormap.from_list(
     "rhythm", ["#F3FAF9", "#A8D9D3", "#4A9E95", "#1E6B64", "#0C3B37"])
+
+
+# How much colour the palest shade keeps, so the last wedge of a pie is still visible.
+PALEST = 0.22
+
+
+def shades(color: str, n: int) -> list[tuple[float, ...]]:
+    """`n` shades of one colour, darkest first: parts that still read as one user."""
+    rgb = to_rgb(color)
+    ramp = LinearSegmentedColormap.from_list(
+        "shades", [rgb, tuple(1 - PALEST * (1 - c) for c in rgb)])
+    return [ramp(i / max(n - 1, 1)) for i in range(n)]
+
+
+def readable_on(color) -> str:
+    """Black or white, whichever shows up on `color`."""
+    r, g, b = to_rgb(color)
+    return "white" if 0.299 * r + 0.587 * g + 0.114 * b < 0.55 else "#222222"
 
 
 def diverging_cmap(low: str, high: str) -> LinearSegmentedColormap:

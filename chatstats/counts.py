@@ -170,15 +170,79 @@ def daily_links(df: pd.DataFrame, users: list[str] | None = None) -> pd.DataFram
     return per_day(df, users, df["Content"].str.count(URL))
 
 
+def message_words(content: pd.Series, min_length: int = 3) -> pd.Series:
+    """Each message's words as a list, lower case. Links are ignored and apostrophes
+    dropped, so "it's" and "its" are one word."""
+    text = (content.str.replace(URL, " ", regex=True).str.lower()
+            .str.replace("[’']", "", regex=True))
+    return text.str.findall(rf"[a-z]{{{min_length},}}")
+
+
 def word_table(sub: pd.DataFrame, by: pd.Series) -> pd.DataFrame:
     """How many messages each word was said in, one column per value of `by`.
 
-    Once per message however often repeated. Links are ignored and apostrophes
-    dropped, so "it's" and "its" are one word.
+    Once per message however often repeated.
     """
-    text = sub["Content"].str.replace(URL, " ", regex=True).str.lower().str.replace("'", "")
-    return (text.str.findall(r"[a-z]{3,}").map(set).explode().dropna()
+    return (message_words(sub["Content"]).map(set).explode().dropna()
             .groupby(by).value_counts().unstack(0, fill_value=0))
+
+
+# Grammar, filler and the light verbs everyone leans on: words that say nothing
+# about who is talking or what about.
+# Short entries only matter below the default min_length of 3.
+STOPWORDS = frozenset("""
+a an the this that these those some any each all both no other another such every
+and or but nor so if then than because as while when where which who whom whose
+what why how though although unless until since whether either neither
+i me my mine myself we us our ours you your yours yourself u ur
+he him his she her hers it its they them their theirs
+im ive id ill youre youve youll youd hes shes theyre theyve weve were wed
+thats whats theres heres its lets
+is am are was be been being do does did doing done have has had having
+can could will would shall should may might must
+dont doesnt didnt cant cannot couldnt wouldnt shouldnt wont isnt arent wasnt werent
+havent hasnt hadnt aint
+of to in on at for with from by about into onto over under up down out off through
+between during above below after before again further with without
+very too much many more most just really quite also still even only there here now
+no not well etc
+um uh erm hmm hm lol lmao haha hahaha hehe ok okay yeah yep yes nah nope oh ah
+go goes going gone went come comes came coming get gets got getting gotten
+make makes made making take takes took taken taking give gives gave given giving
+put puts putting keep keeps kept let lets letting
+say says said saying tell tells told see sees saw seen look looks looked looking
+want wants wanted wanna gonna gotta need needs needed try tries tried trying
+know knows knew think thinks thought mean means meant
+one two thing things stuff bit lot way something anything nothing everything
+someone anyone everyone somewhere anywhere everywhere
+""".split())
+
+
+def stop_list(extra: list[str] | None = None, keep: list[str] | None = None) -> frozenset[str]:
+    """STOPWORDS, plus `extra`, less `keep`."""
+    return ((STOPWORDS | {w.lower() for w in extra or []})
+            - {w.lower() for w in keep or []})
+
+
+def word_frequencies(
+    df: pd.DataFrame,
+    users: list[str] | None = None,
+    stopwords: frozenset[str] | set[str] = STOPWORDS,
+    min_length: int = 3,
+) -> pd.DataFrame:
+    """How often each user said each word: one row per word, one column per user.
+
+    Every occurrence counts, unlike `word_table`. Words in `stopwords` and words
+    shorter than `min_length` are left out.
+    """
+    users = resolve_users(df, users)
+    sub = selected(df, users)
+    words = message_words(sub["Content"], min_length).explode().dropna()
+    words = words[~words.isin(stopwords)]
+    if words.empty:
+        return pd.DataFrame(columns=users, dtype=int)
+    return (words.groupby(sub["User"]).value_counts().unstack(0, fill_value=0)
+            .reindex(columns=users, fill_value=0))
 
 
 def distinctive(

@@ -115,7 +115,7 @@ Two quirks of the export the scripts work around:
 In PowerShell:
 
 ```powershell
-$all = 'overview','highlights','calendar_heatmap','messages_per_day','message_length','volume_breakdown','conversation_duration','daily_rhythm','reply_times','initiators','last_word','messages_in_a_row','response_curve','nudges','questions','links','reactions','topics','distinctive_words'
+$all = 'overview','highlights','calendar_heatmap','messages_per_day','message_length','volume_breakdown','conversation_duration','daily_rhythm','reply_times','initiators','last_word','messages_in_a_row','response_curve','nudges','questions','links','reactions','topics','distinctive_words','top_words'
 foreach ($s in $all) { python "$s.py" }
 ```
 
@@ -123,7 +123,7 @@ In bash:
 
 ```bash
 for s in overview highlights calendar_heatmap messages_per_day message_length volume_breakdown conversation_duration daily_rhythm \
-         reply_times initiators last_word messages_in_a_row response_curve nudges questions links reactions topics distinctive_words; do
+         reply_times initiators last_word messages_in_a_row response_curve nudges questions links reactions topics distinctive_words top_words; do
     python "$s.py"
 done
 ```
@@ -884,6 +884,51 @@ python daily_rhythm.py --tz UTC
 python daily_rhythm.py --out rhythm.svg
 ```
 
+## top_words.py
+
+Writes `out/top_words.png`, one pie per user.
+
+Each pie is that user's most-used words, biggest first from 12 o'clock, in shades of
+their own colour. Grammar, filler and light verbs are dropped first, so the pie shows
+habits rather than sentence structure: "the", "and", "you", "lol", "get", "got" and
+"want" never appear.
+
+Every occurrence counts, so a word repeated in one message counts each time. Links
+are ignored and apostrophes dropped, so "it's" and "its" are one word, and words
+shorter than `--min-length` are left out.
+
+A pie is its own whole: the wedges are shares of that user's top words, not of
+everything they said, so two pies compare habits and not volume. The share the pie
+does cover is in its title, next to the total it is taken from. The same lists are
+printed to the terminal with counts.
+
+The stop list is `STOPWORDS` in `chatstats/counts.py`. `--stopwords` adds to it and
+`--keep` takes words back out, so a word the list drops too eagerly is one flag away.
+
+### Arguments
+
+| Argument | Default | Description |
+| --- | --- | --- |
+| `--out OUT` | `out/top_words.png` | Output image. |
+| `--top TOP` | `10` | Words per pie. |
+| `--stopwords WORD [WORD ...]` | empty | More words to leave out. |
+| `--keep WORD [WORD ...]` | empty | Words to count despite the stop list. |
+| `--min-length MIN_LENGTH` | `3` | Ignore words shorter than this. |
+| `--columns COLUMNS` | up to 3 | Pies per row. |
+| `--csv CSV` | not saved | Also write every word's count, one column per user, to this CSV. |
+
+### Examples
+
+```
+python top_words.py
+python top_words.py --top 15
+python top_words.py --stopwords like know just
+python top_words.py --keep yeah lol
+python top_words.py --min-length 4
+python top_words.py --users alice bob --columns 2
+python top_words.py --csv words.csv
+```
+
 ## word_usage.py
 
 Writes `out/word_usage.png`, a single file holding one panel per word.
@@ -950,13 +995,14 @@ links.py               links shared over time
 reactions.py           reactions each user's messages received
 topics.py              what each user talked about, from topics.toml
 distinctive_words.py   the words that set each month apart
+top_words.py           each user's most-used words, as a pie
 word_usage.py          uses of a word over time
 
 chatstats/
     loading.py         reads the CSVs, resolves timestamps and count columns
     periods.py         day, week and month bucketing, and the shared date axis
     formatting.py      durations and dates written as text
-    counts.py          per day tallies, per period statistics, word matching
+    counts.py          per day tallies, per period statistics, word matching and the stop list
     peaks.py           finding peaks and quiet runs
     conversations.py   turns, handovers, reply statistics, printed summaries
     plotting.py        colours, ramps, saving, legends, the shared renderers
