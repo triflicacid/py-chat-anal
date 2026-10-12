@@ -106,7 +106,7 @@ def plot_calendar_heatmap(
         ax.add_patch(plt.Rectangle((x - 0.5, y - 0.5), 1, 1, fill=False, zorder=5,
                                    edgecolor=DIVIDER_COLOR, linewidth=2))
     if marked:
-        note += ". Outlined: " + ", ".join(f"{label} {fmt_date(date, 'D')}"
+        note += ". Outlined: " + ", ".join(f"{label} {fmt_date(date, 'D')}".lstrip()
                                            for date, label in marked)
     chart_title(ax, "Messages per Day", note, lift=16)
 

@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from matplotlib.colors import LinearSegmentedColormap
 
-from .config import configured_colors
+from .config import configured_colors, key_dates
 from .formatting import fmt_date
 from .peaks import find_peaks
 from .periods import DEFAULT_PEAK_DISTANCE, format_date_axis, period_end, unit
@@ -42,15 +42,15 @@ SPARE_COLORS = ("C0", "C1", "C2", "C4", "C5", "C6", "C7", "C8", "C9")
 # and the conversations they share.
 TOTAL_COLOR = "crimson"
 PAIR_COLOR = "#3F4A54"
-# Topics, which are neither a person nor the pair. Orange, navy and crimson are left
-# out because each already means something specific in these charts.
+# Topics, which are neither a person nor the pair. Crimson is left out because it is
+# the total line, and these are far enough apart to tell a dozen topics apart.
 TOPIC_COLORS = ("#2CA02C", "#17BECF", "#BCBD22", "#8C564B", "#E377C2", "#7F7F7F",
                 "#1B9E77", "#A6761D", "#66A61E", "#9467BD", "#D4A6C8", "#4E9A9A")
-# The dates --relationship-dividers marks on every chart, and the label for each.
-RELATIONSHIP_DIVIDERS = (("got together", "2025-11-30"), ("broke up", "2026-09-19"))
+# A key date is drawn as a divider: a line across the chart, labelled where there is
+# room. Which dates those are comes from the config file, not from here.
 DIVIDER_COLOR = "black"
 DATE_FORMATTERS = (mdates.DateFormatter, mdates.AutoDateFormatter, mdates.ConciseDateFormatter)
-_dividers: list[tuple[pd.Timestamp, str]] = []  # filled by show_dividers
+_dividers: list[tuple[pd.Timestamp, str]] = []  # filled by show_key_dates
 # Sequential ramp for magnitude, one hue running light to dark. Teal deliberately:
 # orange and navy already mean a specific person everywhere else in these charts.
 HEATMAP_CMAP = LinearSegmentedColormap.from_list(
@@ -85,9 +85,13 @@ def user_colors(users) -> dict[str, str]:
     return {u: fixed[u] or picked[u] for u in users}
 
 
-def show_dividers(on: bool) -> None:
-    """Turn the relationship dividers on or off for every chart drawn from here on."""
-    _dividers[:] = [(pd.Timestamp(day), label) for label, day in RELATIONSHIP_DIVIDERS] if on else []
+def show_key_dates(on: bool) -> None:
+    """Turn the key dates on or off for every chart drawn from here on.
+
+    The dates themselves come from the config file, so with none listed there this
+    leaves every chart unmarked however it is called.
+    """
+    _dividers[:] = [(pd.Timestamp(day), label) for day, label in key_dates()] if on else []
 
 
 def dividers() -> list[tuple[pd.Timestamp, str]]:
@@ -123,6 +127,8 @@ def draw_dividers(ax, positions: list[tuple[float, str]], vertical: bool = True,
     for pos, label in positions:
         (ax.axvline if vertical else ax.axhline)(pos, color=DIVIDER_COLOR, linewidth=1.2,
                                                  alpha=0.85, zorder=8)
+        if not label:  # an unlabelled key date is the line on its own
+            continue
         if labels and vertical:
             ax.annotate(label, xy=(pos, 0), xycoords=ax.get_xaxis_transform(), xytext=(-4, 4),
                         textcoords="offset points", rotation=90, ha="right", va="bottom",
@@ -147,7 +153,9 @@ def _divide_date_axes(fig) -> None:
         inside = [(mdates.date2num(date), label) for date, label in _dividers
                   if low <= mdates.date2num(date) <= high]
         draw_dividers(ax, inside, labels=not labelled)
-        labelled = labelled or bool(inside)
+        # Only a panel that actually wrote a label counts as the labelled one, so a
+        # set of unlabelled dates does not silence the panel below.
+        labelled = labelled or any(label for _pos, label in inside)
 
 
 def save(fig, out: str | Path) -> Path:

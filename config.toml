@@ -1,0 +1,12 @@
+# --key-dates draws a labelled line across every one of these dates on the chart.
+key_dates = [
+    { date = 2025-11-30, label = "got together" },
+    { date = 2026-09-19, label = "broke up" },
+]
+
+# Chart colours, one line per username. Usernames are picked up dynamically from the data
+# and need not all be listed here - only if the colour is customised.
+
+[usernames]
+triflicacid = "#E8730C"   # orange
+megamoleys = "#3B2E8F"    # navy leaning purple

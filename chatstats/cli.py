@@ -10,7 +10,7 @@ import pandas as pd
 from .config import CONFIG_FILE, use_config
 from .loading import DEFAULT_TZ, FILE_GLOB, load_messages, resolve_users
 from .periods import PERIODS
-from .plotting import show_dividers
+from .plotting import dividers, show_key_dates
 
 AddArguments = Callable[[argparse.ArgumentParser], None]
 
@@ -36,11 +36,11 @@ def base_parser(doc: str | None = None) -> argparse.ArgumentParser:
                    help="timezone the export's wall-clock times are in, used for local "
                         f"day/hour buckets (default {DEFAULT_TZ})")
     g.add_argument("--config", default=CONFIG_FILE,
-                   help=f"config file giving each username a chart colour (default "
-                        f"{CONFIG_FILE}; it is optional, and matplotlib picks the "
-                        f"colour of anyone not named in it)")
-    p.add_argument("--relationship-dividers", action="store_true",
-                   help="mark the days we got together and broke up on the chart")
+                   help=f"config file holding the key dates and a chart colour per "
+                        f"username (default {CONFIG_FILE}; it is optional, and so is "
+                        f"either part of it)")
+    p.add_argument("--key-dates", action="store_true",
+                   help="mark the dates listed under key_dates in the config file")
     return p
 
 
@@ -80,7 +80,9 @@ def run_chart(
     add_arguments(p)
     args = p.parse_args(argv)
     use_config(args.config)
-    show_dividers(args.relationship_dividers)
+    show_key_dates(args.key_dates)
+    if args.key_dates and not dividers():
+        print(f"Note: --key-dates was given, but {args.config} lists no key_dates")
     df = load_messages(args.dir, args.pattern, args.tz)
     # Who is in the conversation is read off the data, not built in, so it can only be
     # settled once the export is loaded.

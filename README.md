@@ -65,26 +65,27 @@ convenience.
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages inside that folder. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. Matching ignores case. |
 | `--tz TZ` | `Europe/London` | The timezone the export's wall clock times were written in. It decides which local day and hour each message counts towards. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour, and the order the charts put them in. Optional: with no config file at all, matplotlib picks every colour. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the dates `--key-dates` marks and a chart colour for named usernames, which also fixes the order the charts put them in. Optional, as is each part of it. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 
-## Relationship dividers
+## Key dates
 
-`--relationship-dividers` works on every script. It marks two dates on the chart: the
-day we got together, 30 November 2025, and the day we broke up, 19 September 2026.
+`--key-dates` works on every script. It marks the dates listed under `key_dates` in
+`config.toml` on the chart, so that a change in the lines can be read against whatever
+was going on. The dates are not built in: with none listed, the option says so and
+changes nothing.
 
-On a chart with a date axis each is a black vertical line through every panel,
-labelled at the foot of the top one. Three charts have no date axis and mark the dates their own
+On a chart with a date axis each is a black vertical line through every panel, labelled
+at the foot of the top one. Three charts have no date axis and mark the dates their own
 way. `daily_rhythm.py` draws the lines between its month columns, placed by how far
-through the month the date falls. `distinctive_words.py` runs time down the page, so
-its lines lie across, each between the two rows nearest its date. `calendar_heatmap.py` outlines the two days and names them in
-the note under its title. `response_curve.py`, `highlights.py` and `overview.py` have nothing to mark
-and accept the option without effect.
-
-The dates and labels are `RELATIONSHIP_DIVIDERS` at the top of `chatstats/plotting.py`.
+through the month the date falls. `distinctive_words.py` runs time down the page, so its
+lines lie across, each between the two rows nearest its date. `calendar_heatmap.py`
+outlines the days and names them in the note under its title. `response_curve.py`,
+`highlights.py` and `overview.py` have nothing to mark and accept the option without
+effect. A date outside the range of the export is left out wherever it falls.
 
 ```
-python initiators.py --dir data --relationship-dividers
+python initiators.py --dir data --key-dates
 ```
 
 ## Output
@@ -125,18 +126,24 @@ they come.
 
 ## config.toml
 
-The config file is optional, and holds one thing: a colour per username.
+The config file is optional, and holds two things: the dates worth marking, and a
+colour per username.
+An example is present in `config.toml`.
 
-```toml
-[usernames]
-triflicacid = "#E8730C"   # orange
-megamoleys = "#3B2E8F"    # navy leaning purple
-```
+`key_dates` is a list of the dates `--key-dates` draws. Each entry is either a bare
+date, which gets a line and nothing written beside it, or a `{ date = ..., label = ... }`
+table, which gets both. Write the date unquoted, as `2026-09-19`; a time of day is
+accepted but dropped, since the charts bucket by day. Order does not matter, as each
+date is placed by its own value. The list has to come above `[usernames]`, or TOML
+reads it as part of that table.
 
-A colour is anything matplotlib accepts, so `"#E8730C"`, `"orange"` and `"C4"` all work.
-Leave it as `""` to pin a user's place in the ordering and let matplotlib pick the colour.
-Naming someone who is not in the export does no harm; they simply never appear.
-`--config` points at a different file.
+Under `[usernames]`, a colour is anything matplotlib accepts, so `"#E8730C"`, `"orange"`
+and `"C4"` all work. Leave it as `""` to pin a user's place in the ordering and let
+matplotlib pick the colour. Naming someone who is not in the export does no harm; they
+simply never appear.
+
+`--config` points at a different file, and neither the file nor either of its two parts
+has to be there.
 
 ## Colours
 
@@ -174,8 +181,8 @@ by weekday, and the busiest hour of the day.
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--csv CSV` | not saved | Also writes the per user table to this CSV file. |
 
 ### Examples
@@ -219,8 +226,8 @@ folder. Each message is headed by its rank, date, time and word count, longest f
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to include. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--gap GAP` | `2.0` | How many hours of silence end a conversation. It only affects the biggest conversation tile. |
 | `--out OUT` | `out/highlights.png` | Where to write the card. |
 | `--output-longest [N]` | off | Also writes each user's N longest messages to `<username>.txt`. N is 10 when the flag is given without a number. |
@@ -260,8 +267,8 @@ terminal.
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to count. They are pooled rather than compared. |
 | `--tz TZ` | `Europe/London` | The timezone that decides which day a message belongs to. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--out OUT` | `out/calendar_heatmap.png` | Where to write the chart. |
 
 ### Examples
@@ -311,8 +318,8 @@ together, so they become words per day, cumulative words and share of words.
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--out OUT` | `out/messages_per_day.png` | Where to write the chart. Any extension matplotlib supports will work, such as `.png`, `.svg` or `.pdf`. |
 | `--metric {messages,words}` | `messages` | What to count. The messages setting counts one per message. The words setting counts the words inside them instead, which rescales all three panels together. |
 | `--period {D,W,M}` | `D` | Whether to count messages by day, by week starting on Monday, or by calendar month. |
@@ -375,8 +382,8 @@ against 5.20 words to 5.97 against 5.28.
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--out OUT` | `out/message_length.png` | Where to write the chart. |
 | `--period {D,W,M}` | `W` | Whether to plot one point per day, per week starting on Monday, or per calendar month. |
 | `--min-messages MIN_MESSAGES` | `10` | Leaves a period blank when it holds fewer messages than this, so that a quiet week cannot produce a spike. |
@@ -427,8 +434,8 @@ than `--min-messages`.
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--gap GAP` | `2.0` | How many hours of silence end a conversation. Raising it gives fewer and larger conversations, which moves the two middle panels. |
 | `--period {D,W,M}` | `W` | Whether to plot one point per day, per week starting on Monday, or per calendar month. |
 | `--out OUT` | `out/volume_breakdown.png` | Where to write the chart. |
@@ -476,8 +483,8 @@ afresh from every conversation in the previous 4 weeks. Points resting on fewer 
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare, one chart each. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--gap GAP` | `2.0` | How many hours of silence end a conversation. Raising it joins conversations together and makes them longer. |
 | `--period {D,W,M}` | `W` | Whether to plot one point per day, per week starting on Monday, or per calendar month. |
 | `--out OUT` | `out/conversation_duration.png` | Where to write the chart. |
@@ -516,8 +523,8 @@ every long wait is excluded by design. To see those waits instead, use
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--gap GAP` | `2.0` | How many hours of silence end a conversation. Replies slower than this are counted as a new conversation and leave the chart entirely. |
 | `--period {D,W,M}` | `W` | Whether to plot one point per day, per week starting on Monday, or per calendar month. |
 | `--out OUT` | `out/reply_times.png` | Where to write the chart. |
@@ -564,8 +571,8 @@ taken over the same 4 weeks. `--rolling 0` gives the raw weekly view.
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--gap GAP` | `2.0` | How many hours of silence end a conversation. This decides what counts as starting one, so raising it produces fewer and longer conversations. |
 | `--period {D,W,M}` | `W` | Whether to plot one point per day, per week starting on Monday, or per calendar month. |
 | `--out OUT` | `out/initiators.png` | Where to write the chart. |
@@ -605,8 +612,8 @@ starts more conversations that go unanswered also ends more.
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--gap GAP` | `2.0` | How many hours of silence end a conversation. This decides what counts as the last word. |
 | `--period {D,W,M}` | `W` | Whether to plot one point per day, per week starting on Monday, or per calendar month. |
 | `--out OUT` | `out/last_word.png` | Where to write the chart. |
@@ -641,8 +648,8 @@ blank where that would rest on fewer than `--min-turns`.
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--out OUT` | `out/messages_in_a_row.png` | Where to write the chart. |
 | `--period {D,W,M}` | `W` | Whether to plot one point per day, per week starting on Monday, or per calendar month. |
 | `--min-turns MIN_TURNS` | `10` | Leaves the line blank where it would rest on fewer turns than this. |
@@ -688,8 +695,8 @@ overnight.
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--gap GAP` | `2.0` | How many hours of silence end a conversation. It also sets where the two panels divide and where the wait buckets begin. |
 | `--out OUT` | `out/response_curve.png` | Where to write the chart. |
 | `--nudge-hours NUDGE_HOURS` | `1.0` | How many hours of no answer must pass before speaking again counts as a nudge. |
@@ -723,8 +730,8 @@ the start of the wait it belongs to.
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--out OUT` | `out/nudges.png` | Where to write the chart. |
 | `--period {D,W,M}` | `W` | Whether to count by day, by week starting on Monday, or by calendar month. |
 | `--hours HOURS` | `1.0` | How many hours of no answer must pass before speaking again counts as a nudge. |
@@ -775,8 +782,8 @@ is taken over the same 4 weeks. The totals are printed to the terminal.
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--out OUT` | `out/questions.png` | Where to write the chart. |
 | `--period {D,W,M}` | `W` | Whether to count by day, by week starting on Monday, or by calendar month. |
 | `--rolling ROLLING` | `4` | Smooths the upper panel over this many periods and takes the share over the same window. Zero leaves both raw. |
@@ -787,7 +794,7 @@ is taken over the same 4 weeks. The totals are printed to the terminal.
 python questions.py --dir data
 python questions.py --dir data --rolling 0
 python questions.py --dir data --period M --rolling 0
-python questions.py --dir data --relationship-dividers
+python questions.py --dir data --key-dates
 ```
 
 ## links.py
@@ -814,8 +821,8 @@ weeks.
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--out OUT` | `out/links.png` | Where to write the chart. |
 | `--period {D,W,M}` | `W` | Whether to count by day, by week starting on Monday, or by calendar month. |
 | `--rolling ROLLING` | `4` | Smooths the upper panel over this many periods and takes the share over the same window. Zero leaves both raw. |
@@ -853,8 +860,8 @@ terminal.
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--out OUT` | `out/reactions.png` | Where to write the chart. |
 | `--period {D,W,M}` | `W` | Whether to count by day, by week starting on Monday, or by calendar month. |
 | `--rolling ROLLING` | `4` | Smooths the upper panel over this many periods and takes the share over the same window. Zero leaves both raw. |
@@ -865,7 +872,7 @@ terminal.
 python reactions.py --dir data
 python reactions.py --dir data --rolling 0
 python reactions.py --dir data --period M --rolling 0
-python reactions.py --dir data --relationship-dividers
+python reactions.py --dir data --key-dates
 ```
 
 ## topics.py
@@ -927,8 +934,8 @@ Use `distinctive_words.py` to find words worth adding.
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to chart, one column each. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--out OUT` | `out/topics.png` | Where to write the chart. |
 | `--topics TOPICS` | `topics.toml` | The file of topic names and their words. |
 | `--period {D,W,M}` | `W` | Whether to count by day, by week starting on Monday, or by calendar month. |
@@ -972,8 +979,8 @@ by month instead of by person.
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to count. They are pooled rather than compared. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--out OUT` | `out/distinctive_words.png` | Where to write the chart. |
 | `--period {D,W,M}` | `M` | How long each row covers. |
 | `--top TOP` | `8` | The most words to list in each row. |
@@ -1019,8 +1026,8 @@ only a few days each.
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to count. They are pooled rather than compared. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. This chart is entirely about local time, so it matters more here than anywhere else. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--out OUT` | `out/daily_rhythm.png` | Where to write the chart. |
 | `--period {D,W,M}` | `M` | How wide each column is. Months are usually right; weeks give a finer but noisier picture. |
 
@@ -1065,8 +1072,8 @@ send very different volumes can still be compared.
 | `--pattern PATTERN` | `page-*.csv` | The filename glob used to find export pages. |
 | `--users USERS [USERS ...]` | every username in the export | Which usernames to compare. |
 | `--tz TZ` | `Europe/London` | The timezone used for local day and hour buckets. |
-| `--config CONFIG` | `config.toml` | A file giving named usernames a chart colour. Optional; matplotlib picks the colour of anyone not named in it. |
-| `--relationship-dividers` | off | Marks the day we got together and the day we broke up on the chart. |
+| `--config CONFIG` | `config.toml` | The file holding the key dates and a chart colour per username. Optional. |
+| `--key-dates` | off | Marks the dates listed under `key_dates` in the config file on the chart. |
 | `--words WORDS [WORDS ...]` | empty | The words or phrases to chart, one panel each. Quote anything containing a space. Nothing is produced when this is left empty. |
 | `--period {D,W,M}` | `W` | Whether to count by day, by week starting on Monday, or by calendar month. |
 | `--mode {count,messages}` | `count` | Whether to count every occurrence, so that "love love love" counts as three, or to count the number of messages containing the word at least once. |
